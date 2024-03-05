@@ -195,6 +195,24 @@ const Static = () => {
       })
     }, 3000)
   };
+
+
+  const [verified, setVerified] = useState(false)
+
+  useEffect(() => {
+    const unSub = onAuthStateChanged(authentication, (user) => {
+        if (user) {
+            if (!user.emailVerified) {
+                setVerified(false)
+            } else {
+                setVerified(true)
+            }
+        }
+    });
+
+    return () => unSub(); 
+}, [nav]);
+
   return (
     <div>
       <Bg />
@@ -226,11 +244,16 @@ const Static = () => {
           <button
             className="login"
             onClick={() => {
-              nav('/login');
+              verified ?  nav('/system') : nav('/login');
             }}
           >
-            {user ? <>Go to system</> : <>Sign in</>}
+            {verified ? user ? <>Go to system</> : <>Sign in</> : <>Sign in</>}
           </button>
+          <button 
+          onClick={() => {
+            nav('/register')
+          }}
+          className="login">Register</button>
           <button className="about">About</button>
         </div>
       </header>
@@ -283,7 +306,7 @@ const Static = () => {
                       adipisicing elit. Facilis, commodi.</p>
                   </div>
                   <div className="gridsSec firstBtn">
-                    <button>visit</button>
+                    <button onClick={() => {nav('/system/Inventory')}}>visit</button>
                   </div>
                 </div>
                 <div className="gridz">
@@ -297,7 +320,7 @@ const Static = () => {
                       adipisicing elit. Exercitationem, error.</p>
                   </div>
                   <div className="gridzSec firstBtn">
-                    <button>visit</button>
+                    <button onClick={() => {nav('/system/menu')}}>visit</button>
                   </div>
                 </div>
               </div>
@@ -312,7 +335,7 @@ const Static = () => {
                       facilis nam reiciendis!</p>
                   </div>
                   <div className="secGridTwo twos">
-                    <button className='secBtn'>visit</button>
+                    <button className='secBtn' onClick={() => {nav('/system/Security')}} >visit</button>
                   </div>
                 </div>
                 <div className="secGridSec">
@@ -324,7 +347,7 @@ const Static = () => {
                       consectetur adipisicing elit. Ab, tempore!</p>
                   </div>
                   <div className="twos">
-                    <button className='secBtn'>visit</button>
+                    <button className='secBtn' onClick={() => {nav('/system/Report')}}>visit</button>
                   </div>
                 </div>
               </div>
@@ -341,7 +364,7 @@ const Static = () => {
                     adipisicing elit. Exercitationem, error.</p>
                 </div>
                 <div className="gridzSec">
-                  <button>visit</button>
+                  <button onClick={() => {nav('/system/menu')}} >visit</button>
                 </div>
               </div>
               <div className="secSlide">
@@ -353,7 +376,7 @@ const Static = () => {
                     consectetur adipisicing elit. Ab, tempore!</p>
                 </div>
                 <div className="twos">
-                  <button>visit</button>
+                  <button onClick={() => {nav('/system/Reports')}}>visit</button>
                 </div>
               </div>
             </SwiperSlide>
@@ -395,7 +418,7 @@ const Static = () => {
                 <div className="peopleInf">
                   <div className="name">JM Geda</div>
                   <div className="pos">Database</div>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse mollitia amet porro sit suscipit, minima placeat culpa voluptatum repudiandae nihil repellendus, iure rem, eligendi labore perspiciatis asperiores in dolorum quos?</p>
+                  <p>Hi, Everyone! This is Data Analyst of this project, who will be monitor & analyze for the organizing data and security</p>
                   <button>View profile</button>
                 </div>
               </div>
@@ -410,7 +433,7 @@ const Static = () => {
                 <div className="peopleInf">
                   <div className="name">Gabrielle allen Tugay Espejo</div>
                   <div className="pos">Documentation</div>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse mollitia amet porro sit suscipit, minima placeat culpa voluptatum repudiandae nihil repellendus, iure rem, eligendi labore perspiciatis asperiores in dolorum quos?</p>
+                  <p>Hello, I'm the documenter for this group. As part of our research study, I'm assigned to be in charge of all the writings and interview studies about the improvements at this cafe. One thing about me is that I love matcha. I also recommend trying their biscoff croffles. I'm so obsessed with that.</p>
                   <button>View profile</button>
                 </div>
               </div>

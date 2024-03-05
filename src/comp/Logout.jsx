@@ -5,22 +5,22 @@ import { useNavigate } from 'react-router-dom'
 
 const Logout = () => {
 
-    const nav = useNavigate()
+  const nav = useNavigate()
 
-    const handlesignOut = () => {
-        signOut(authentication)
-        .then(() => {
-            console.log('comleted')
-            nav('/')
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
+  const handlesignOut = () => {
+    signOut(authentication)
+      .then(() => {
+        console.log('comleted')
+        nav('/')
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
   return (
     <div className='logOutCon'>
-      <button 
-      className='logOut'
-      onClick={handlesignOut}>
+      <button
+        className='logOut'
+        onClick={handlesignOut}>
         <ion-icon name="log-out-outline"></ion-icon></button>
     </div>
   )

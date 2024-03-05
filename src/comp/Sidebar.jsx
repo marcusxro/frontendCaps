@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import Logout from './Logout'
-import { useNavigate } from 'react-router-dom'
-
+import React, { useState } from 'react';
+import Logout from './Logout';
+import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState('home')
+  const [activeTab, setActiveTab] = useState('home');
 
   const handleTab = (tab) => {
-    setActiveTab(tab)
-  }
-
-  const nav = useNavigate()
+    setActiveTab(tab);
+  };
+  
 
   return (
     <div className='sideBar'>
@@ -18,52 +16,47 @@ const Sidebar = () => {
         <div className="logos">
           CE
         </div>
-
         <div className="buttons">
-          <div 
-          onClick={() => {
-            handleTab('home')
-          }}
-          className={`btns ${activeTab === 'home' ? 'actives' : 'home'}`}>
+          <NavLink
+            to="/system"
+            onClick={() => handleTab('home')}
+            className={`btns`}
+          >
             <ion-icon name="home-outline"></ion-icon>
-          </div>
-          <div 
-          
-          onClick={() => {
-            handleTab('inventory')}
-          }
-          className={`btns ${activeTab === 'inventory' ? 'actives' : 'inventory'}`}>
+          </NavLink>
+          <NavLink
+            to="/system/inventory"
+            onClick={() => handleTab('inventory')}
+            className={`btns`}
+          >
             <ion-icon name="newspaper-outline"></ion-icon>
-          </div>
-
-          <div 
-          onClick={() => {
-
-            handleTab('Menu')}}
-          className={`btns ${activeTab === 'Menu' ? 'actives' : 'Menu'}`}>
+          </NavLink>
+          <NavLink
+            to="/system/menu"
+            onClick={() => handleTab('Menu')}
+            className={`btns`}
+          >
             <ion-icon name="list-outline" />
-          </div>
-          <div 
-          
-          onClick={() => {
-            handleTab('reports')}}
-          className={`btns ${activeTab === 'reports' ? 'actives' : 'reports'}`}>
+          </NavLink>
+          <NavLink
+            to="/system/report"
+            onClick={() => handleTab('reports')}
+            className={`btns`}
+          >
             <ion-icon name="folder-open-outline" />
-          </div>
-          <div 
-          onClick={() => {
-
-            handleTab('security')}}
-          className={`btns ${activeTab === 'security' ? 'actives' : 'security'}`}>
+          </NavLink>
+          <NavLink
+            to="/system/security"
+            onClick={() => handleTab('security')}
+            className={`btns ${activeTab === 'security' ? 'actives' : ''}`}
+          >
             <ion-icon name="lock-closed-outline" />
-          </div>
+          </NavLink>
         </div>
-
       </div>
-
       <Logout />
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

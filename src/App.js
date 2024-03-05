@@ -12,10 +12,14 @@ import Menu from './pages/Menu'
 import Reports from './pages/Reports'
 import Loading from './comp/Loading';
 import NotFound from './pages/NotFound';
+import Register from './pages/Register';
+import Forgotpw from './pages/Forgotpw';
+import Security from './pages/Security';
+
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(authentication, (user) => {
       if (user) {
@@ -23,28 +27,45 @@ function App() {
         setLoading(true)
       } else {
         setAuthenticated(false);
+        setLoading(false)
+
       }
     });
     // Unsubscribe when the component unmounts.
     return () => unsubscribe();
   }, []);
 
-
   return (
     <Router>
     <div className="App">
       <Routes>
         <Route path='/' element={<Static />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/forgotPassword' element={<Forgotpw />} />
         {/* Only render Login component if not authenticated */}
         {!loading && !authenticated && <Route path='/login' element={<Login />} />}
         {/* Redirect authenticated users away from the /login route */}
-        <Route path='/login' element={authenticated ? <Navigate to='/system'/> : <Login />} />
-        <Route path='/system' element={loading ? (authenticated ? <System /> : <Navigate to='/login' />) : <Loading />} />
-        <Route path='/system/Inventory' element={authenticated ? <Inventory /> : <Navigate to='/login' />} />
-        <Route path='/system/Menu' element={authenticated ? <Menu /> : <Navigate to='/login' />} />
-        <Route path='/system/Report' element={authenticated ? <Reports />: <Navigate to='/login' />} />
-        <Route path='*' element={ <NotFound />} />
-        <Route path='/logs' element={<Loading />} />
+        <Route path='/login' 
+        element={<Login />} />
+        <Route path='/system' 
+        element={loading ? (authenticated ? <System /> : <Navigate to='/login' />) : <Loading />} />
+
+        <Route path='/system/inventory' 
+        element={authenticated ? (loading ? <Inventory /> : <Loading />) : <Navigate to='/login' /> } />
+
+        <Route path='/system/menu'
+         element={loading ? (authenticated ? <Menu /> : <Navigate to='/login' />) : <Loading />} />
+
+        <Route path='/system/report' 
+        element={loading ? (authenticated ? <Reports /> : <Navigate to='/login' />) : <Loading />} />
+        
+        <Route path='/system/security' 
+        element={loading ? (authenticated ? <Security /> : <Navigate to='/login' />) : <Loading />} />
+
+        <Route path='*' 
+        element={ <NotFound />} />
+        <Route path='/logs' 
+        element={<Loading />} />
       </Routes>
     </div>
   </Router>

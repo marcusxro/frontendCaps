@@ -2,60 +2,151 @@ import React, { useEffect, useState } from 'react'
 import Logout from '../comp/Logout'
 import Sidebar from '../comp/Sidebar'
 import { authentication } from '../authentication'
-import { onAuthStateChanged } from 'firebase/auth'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
 import logo from '../images/milkTea.png'
 import PieCharts from '../comp/PieCharts'
 import BarCharts from '../comp/BarCharts'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import product from '../images/third.jpg'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import Inventory from './Inventory'
+import { Link } from 'react-router-dom'
+import LearnMore from '../comp/LearnMore'
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
 
 const System = () => {
 
   document.title = "Cafe Eunoia | System"
   const [user, setUser] = useState('')
   const [uid, setUid] = useState('')
+  const nav = useNavigate()
+  const [firstname, setFirstname] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [userInf, setUserInf] = useState('')
+  const [ban, setBan] = useState(false)
+  useEffect(() => {
+    axios.get('http://localhost:8080/accInfos')
+      .then((response) => {
+        const filteredData = response.data.filter((item) => item.Uid === uid);
+        setFirstname(filteredData[0].Firstname)
+        setUserInf(filteredData[0])
+        setLoading(true)
+        setBan(filteredData[0].isBanned)
+        console.log(ban)
+        if(filteredData[0].isBanned) {
+          alert("YOU ARE BANNED")
+          signOut(authentication)
+          .then(() => {
+            console.log("logged out")
+          }).catch((err) => {
+            console.log(err)
+          })
+        }
+        
+      })
+      .catch((error) => {
+        setLoading(false)
+      });
+  }, [firstname, user, ban]);
+
+  const [intAct, setAct] = useState([])
+  const [nonFil, setNonFil] = useState([])
+  const [menuData, setMenuData] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/menuDetails')
+      .then((response) => {
+        setNonFil(response.data)
+        const filteredData = response.data.filter((item) => item.Uid === uid);
+        const filteredDatas = response.data.filter((item) => item.EditedUid === uid);
+        setMenuData(filteredDatas)
+        setAct(filteredData)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }, [user])
+
+
+  const [newData, setNewData] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/getIng')
+      .then((response) => {
+        const filteredData = response.data.filter((item) => item.Uid === uid);
+        setNewData(filteredData)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }, [user])
+
   useEffect(() => {
     const unsub = onAuthStateChanged(authentication, (acc) => {
       if (acc) {
-        setUser(acc.email)
-        setUid(acc.uid)
+        setUser(acc.email);
+        setUid(acc.uid);
+        nav('/system');
+        if (!acc.emailVerified) {
+          console.log("not verified")
+          nav('/login'); // Redirect to login if the user's email is not verified
+        }
+      } else {
+        nav('/login'); // Redirect to login if there's no user authenticated
       }
-    })
-    return () => { unsub() }
-  }, [user])
-
+    });
+    return () => { unsub() };
+  }, []);
   const [activeTab, setActiveTab] = useState('inventory');
-
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
-
-
-
   const [navChart, setNavChart] = useState('barChart')
+  const itemsWithPercentage = nonFil.map(item => ({
+    ...item,
+    percentage: (item.Quantity / item.OverQuan) * 100
+  }));
+  const highestPercentageItem = itemsWithPercentage.reduce((maxItem, currentItem) => {
+    return currentItem.percentage > maxItem.percentage ? currentItem : maxItem;
+  }, itemsWithPercentage[0]);
+
+  const filteredHighestPercentageItem = itemsWithPercentage.filter(item => item.percentage === highestPercentageItem.percentage);
+
+
+  const [repData, setRepData] = useState([])
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/getReports')
+      .then((resp) => {
+        const filteredData = resp.data.filter((item) => item.Uid === uid)
+        setRepData(filteredData)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }, [uid])
+
+
 
   return (
     <div className='system'>
       {user ? (<>
-        <Sidebar />
+        <Sidebar data={"home"} />
         <div className="contentCon">
           <div className="content">
-            <div className="greetFirstText">
-              Dashboard
+            <div className="dashB">
+              <div className="greetFirstText">
+                Dashboard
+              </div>
+              <p>monitor your data here!</p>
             </div>
             <div className="greet">
               <div className="greetFirst">
                 <div className="greetTextFirst">
-                  Hello {
-                    user &&
-                    (uid === '833zG9kIPiUlSIksfg9aIEaeAkZ2' ? <span className='owner'>Marilyn 👋 </span> :
-                      uid === 'VquNk68fY6gYZomxUfQgD2MjuRw1' ? <span className='owner'>Alondra 👋 </span> :
-                        uid === 'r7vZ5uITjtaBMJpZzKkVU8AUbc73' ? <span className='owner'>Carol 👋 </span> :
-                          uid === '6W4fIbuFhVgbw4U5kxR3rLVt2Wd2' ? <span className='owner'>Elizabeth 👋 </span> :
-                            <>{user}</>)
-                  }
-
+                  Hello {loading ? firstname : <>loading...</>}
+                </div>
+                <div className="greetPosition">
+                  position: {userInf.Position}
                 </div>
                 <p>It's good to see you again.</p>
               </div>
@@ -93,63 +184,64 @@ const System = () => {
                 {activeTab === 'inventory' &&
                   <div className='tabContent'>
 
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
-                    <div className="tabContentInt">
-                      <div className="tabContentIntText">
-                        Inventory content goes here
-                      </div>
-                      <button>View activity</button>
-                    </div>
+                    {loading ? (
+                      <>
+                        {intAct.map((item) => (
+                          <div className="tabContentInt" key={item._id}>
+                            <div className="tabContentIntText">
+                              {item.ProductName}
+                            </div>
+                            <Link className='actView' to={{ pathname: '/system/Inventory', state: { productName: item.ProductName } }}>
+                              View Activity
+                            </Link>
+                          </div>
+                        ))}
+                        {newData.map((item) => (
+                          <div className="tabContentInt" key={item._id}>
+                            <div className="tabContentIntText">
+                              {item.IngName}
+                            </div>
+                            <Link className='actView'  to={{ pathname: '/system/Inventory', state: { firstValue: item.IngName, secondValue: true } }}>
+                              View Activity
+                            </Link>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <>loading...</>
+                    )}
+
                   </div>}
-                {activeTab === 'menu' && <div className='tabContent'>Menu content goes here</div>}
-                {activeTab === 'reports' && <div className='tabContent'>Reports content goes here</div>}
+
+                {activeTab === 'menu' &&
+                  <div className='tabContents'>
+                    {menuData.map((item) => (
+                      <div className="menuAct">
+                        <div className="menuTabTitle">
+                          you edited <span>{item.ProductName}</span>
+                        </div>
+                      <button onClick={() => {nav('/system/menu')}}>Visit</button>
+
+                      </div>
+                    ))}
+                  </div>}
+                {activeTab === 'reports' && <div className='tabContent'>
+                      {repData.map((item) => (
+                          <div className="reportItems">
+                            <div className="reportFirst">
+                              <div className="reportItemTitle">
+                                {item.Incident}
+                              </div>
+                              <div className="reportItemType">
+                                type: {item.RepType}
+                              </div>
+                            </div>
+                            <div className="reportLast">
+                              <button onClick={() => {nav('/system/report')}}>Visit</button>
+                            </div>
+                          </div>
+                      ))}
+                  </div>}
               </div>
 
             </div>
@@ -182,30 +274,46 @@ const System = () => {
             <div className="contentBot">
               <Swiper className='contentBotSwipe'>
                 <SwiperSlide className='swiperForBot'>
-                  <div className="swiperForBot">
-                    <div className="firstSwiper">
-                      <img src={product} alt="" />
-                    </div>
-                    <div className="secSwiper">
-                      <div className="productName">
-                        Waffles
+                  {filteredHighestPercentageItem.map((item) => (
+                    <div className="swiperForBot">
+                      <div className="firstSwiper">
+                        <img src={product} alt="" />
                       </div>
-                      <div className="productReport">
-                        out of stock
+                      <div className="secSwiper">
+                        <div className="productName">
+                          {item.ProductName}
+                        </div>
+                        <div className="productReport">
+                          {
+                            parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 90 ?
+                              <>WARNING (PLEASE UPDATE STOCK COUNTS)</> :
+                              parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 80 ?
+                                <>WARNING (UPDATE STOCK COUNTS)</> :
+                                parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 60 ?
+                                  <>consider updating</> :
+                                  (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 30 ?
+                                    <>Good</> :
+                                    (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 5 ?
+                                      <>Very Good</> :
+                                      null
+                                    )
+                                  )
+                          }
+                        </div>
+                        <p>add your stock counts to increase the availability</p>
+                        <button onClick={() => {nav('/system/Menu')}}>
+                          update
+                        </button>
                       </div>
-                      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio totam veritatis harum impedit ipsa cumque natus modi accusantium tempore asperiores maiores ducimus sapiente nam molestias iure possimus error, culpa esse.</p>
-                      <button>
-                        update
-                      </button>
                     </div>
-                  </div>
+                  ))}
                 </SwiperSlide>
-
               </Swiper>
             </div>
           </div>
         </div>
       </>) : <></>}
+      <LearnMore />
     </div>
   )
 }
