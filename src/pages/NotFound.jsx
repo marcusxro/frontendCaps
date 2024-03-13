@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 const NotFound = () => {
     const nav = useNavigate()
-
+ document.title = "Not Found!"
   return (
     <div className='notFoundCon'>
       <div className="notFoundFirstText">

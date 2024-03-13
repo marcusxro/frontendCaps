@@ -8,7 +8,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import Lenis from '@studio-freight/lenis'
 import { gsap } from 'gsap'
-import Cursor from '../comp/Cursor';
 import vid from '../images/hoverOne.mp4'
 import loader from '../images/loader.png'
 import bookmark from '../images/bookMark.png'
@@ -20,6 +19,22 @@ import Spline from '@splinetool/react-spline';
 import pictureOne from '../images/jm.jpg'
 import pictureTwo from '../images/dm.jpg'
 import pictureThree from '../images/gb.JPG'
+import ReactLogo from '../images/React.png'
+import javaScriptLogo from '../images/JavaScript.png'
+import gsapLogo from '../images/greensock_2x-removebg-preview.png'
+import lenisLogo from '../images/lenis-new-smooth-scroll-library-removebg-preview.png'
+import axiosLogo from '../images/91-913031_axios-axios-logo-hd-png-download-removebg-preview.png'
+import postManLogo from '../images/postman-icon-497x512-beb7sy75-removebg-preview.png'
+import cssLogo from '../images/kisspng-cascading-style-sheets-logo-css3-html-javascript-5cac98c601a161.7443571115548151740067-removebg-preview.png'
+import reactRouterLogo from '../images/image-82-removebg-preview.png'
+import momentLogo from '../images/moment.png'
+import nodeLog from '../images/nodejs-icon-512x512-vl7ew1eg-removebg-preview.png'
+import nodemonLogo from '../images/nodemon-logo-png-transparent-removebg-preview.png'
+import expressLogo from '../images/express-removebg-preview.png'
+import firebaseLogo from '../images/firebase-removebg-preview.png'
+import mongoLogo from '../images/mongoDb-removebg-preview.png'
+import Marquee from 'react-fast-marquee'
+
 
 const Static = () => {
   const hoverz = useRef(null)
@@ -135,18 +150,18 @@ const Static = () => {
                       onComplete: () => {
                         gsap.to('.btnBot', {
                           opacity: 1,
-                            onComplete: () => {
-                                gsap.to('.abso',  {
+                          onComplete: () => {
+                            gsap.to('.abso', {
+                              opacity: 1,
+                              duration: 1,
+                              onComplete: () => {
+                                gsap.to('.first', {
                                   opacity: 1,
-                                  duration: 1,
-                                  onComplete: () => {
-                                    gsap.to('.first', {
-                                      opacity: 1,
-                                      duration: 1
-                                    })
-                                  }
+                                  duration: 1
                                 })
-                            }
+                              }
+                            })
+                          }
                         })
                       }
                     })
@@ -164,8 +179,10 @@ const Static = () => {
     }, 10);
     return () => clearInterval(interval);
   }, [perc]);
+
   const form = useRef()
   const nameInput = useRef()
+
   const sendEmail = (e) => {
     e.preventDefault();
     emailjs.sendForm('service_14tu68a',
@@ -201,17 +218,17 @@ const Static = () => {
 
   useEffect(() => {
     const unSub = onAuthStateChanged(authentication, (user) => {
-        if (user) {
-            if (!user.emailVerified) {
-                setVerified(false)
-            } else {
-                setVerified(true)
-            }
+      if (user) {
+        if (!user.emailVerified) {
+          setVerified(false)
+        } else {
+          setVerified(true)
         }
+      }
     });
 
-    return () => unSub(); 
-}, [nav]);
+    return () => unSub();
+  }, [nav]);
 
   return (
     <div>
@@ -244,25 +261,25 @@ const Static = () => {
           <button
             className="login"
             onClick={() => {
-              verified ?  nav('/system') : nav('/login');
+              verified ? nav('/system') : nav('/login');
             }}
           >
             {verified ? user ? <>Go to system</> : <>Sign in</> : <>Sign in</>}
           </button>
-          <button 
-          onClick={() => {
-            nav('/register')
-          }}
-          className="login">Register</button>
-          <button className="about">About</button>
+          {user ? (<></>) : (<button
+            onClick={() => {
+              nav('/register')
+            }}
+            className="login">Register</button>)}
+          <button className="about" onClick={() => {window.location = "#contact"}}>Contact us</button>
         </div>
       </header>
       <div className="big">
-            <div className="abso">
-            <Spline
-          className='.abso'
-          scene="https://prod.spline.design/FHLnU6mxr1YiKLxs/scene.splinecode" />
-            </div>
+        <div className="abso">
+          <Spline
+            className='.abso'
+            scene="https://prod.spline.design/FHLnU6mxr1YiKLxs/scene.splinecode" />
+        </div>
         <h1>
           your <span
             ref={hoverz}
@@ -270,7 +287,8 @@ const Static = () => {
           neighborhood cafe
         </h1>
         <div className="btnBot">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Exercitationem porro doloribus ratione veniam inventore nobis est aliquid odio officia explicabo incidunt, commodi quia reiciendis ea sint? Nostrum accusantium modi illum!
+
+          Welcome to Cafe Eunoia, your cozy neighborhood cafe with a high-tech twist. Enjoy delicious coffee and snacks while our innovative system keeps things running smoothly. It's the perfect blend of comfort and convenience.
         </div>
       </div>
       <div className="Con">
@@ -302,11 +320,10 @@ const Static = () => {
                       INVENTORY <br />
                       UPDATE
                     </div>
-                    <p>Lorem ipsum, dolor sit amet consectetur<br />
-                      adipisicing elit. Facilis, commodi.</p>
+                    <p>Indulge in the cozy ambiance while staying connected to our latest inventory updates.</p>
                   </div>
                   <div className="gridsSec firstBtn">
-                    <button onClick={() => {nav('/system/Inventory')}}>visit</button>
+                    <button onClick={() => { nav('/system/Inventory') }}>visit</button>
                   </div>
                 </div>
                 <div className="gridz">
@@ -316,11 +333,10 @@ const Static = () => {
                       Customer<br />
                       Service
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur,
-                      adipisicing elit. Exercitationem, error.</p>
+                    <p>Discover our commitment to providing exceptional service, ensuring your satisfaction with every visit.</p>
                   </div>
                   <div className="gridzSec firstBtn">
-                    <button onClick={() => {nav('/system/menu')}}>visit</button>
+                    <button onClick={() => { nav('/system/menu') }}>visit</button>
                   </div>
                 </div>
               </div>
@@ -331,11 +347,10 @@ const Static = () => {
                       Robust<br />
                       Security
                     </div>
-                    <p>Lorem ipsum dolor sit amet  consectetur adipisicing elit.   Quod libero obcaecati necessitatibus
-                      facilis nam reiciendis!</p>
+                    <p>Relax and enjoy your time knowing that your safety and privacy are our top priorities.</p>
                   </div>
                   <div className="secGridTwo twos">
-                    <button className='secBtn' onClick={() => {nav('/system/Security')}} >visit</button>
+                    <button className='secBtn' onClick={() => { nav('/system/Security') }} >visit</button>
                   </div>
                 </div>
                 <div className="secGridSec">
@@ -343,11 +358,10 @@ const Static = () => {
                     <div className="gridsText">
                       REPORTS
                     </div>
-                    <p>Lorem ipsum dolor sit amet<br />
-                      consectetur adipisicing elit. Ab, tempore!</p>
+                    <p>Stay informed with detailed reports on inventory issues, providing transparency and efficiency in problem-solving</p>
                   </div>
                   <div className="twos">
-                    <button className='secBtn' onClick={() => {nav('/system/Report')}}>visit</button>
+                    <button className='secBtn' onClick={() => { nav('/system/Report') }}>visit</button>
                   </div>
                 </div>
               </div>
@@ -364,7 +378,7 @@ const Static = () => {
                     adipisicing elit. Exercitationem, error.</p>
                 </div>
                 <div className="gridzSec">
-                  <button onClick={() => {nav('/system/menu')}} >visit</button>
+                  <button onClick={() => { nav('/system/menu') }} >visit</button>
                 </div>
               </div>
               <div className="secSlide">
@@ -376,7 +390,7 @@ const Static = () => {
                     consectetur adipisicing elit. Ab, tempore!</p>
                 </div>
                 <div className="twos">
-                  <button onClick={() => {nav('/system/Reports')}}>visit</button>
+                  <button onClick={() => { nav('/system/Reports') }}>visit</button>
                 </div>
               </div>
             </SwiperSlide>
@@ -392,7 +406,7 @@ const Static = () => {
           <div className="title">
             <span>THE TEAM BEHIND THIS</span> <span className='spans'>PROJECT</span>
           </div>
-          <Swiper className="peopleCon">
+          <Swiper className="peopleCon" id='about'>
             <SwiperSlide className='peopleSlide'>
               <div className="people">
                 <div className="peopleFirst">
@@ -403,8 +417,10 @@ const Static = () => {
                 <div className="peopleInf">
                   <div className="name">Marcus Salopaso</div>
                   <div className="pos">Programmer/Leader</div>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse mollitia amet porro sit suscipit, minima placeat culpa voluptatum repudiandae nihil repellendus, iure rem, eligendi labore perspiciatis asperiores in dolorum quos?</p>
-                  <button>View profile</button>
+                  <p>Hello, I'm Marcus! I'm a full-stack developer, passionate about creating interactive websites. With a keen eye for design and a knack for problem-solving, I turn ideas into reality, bringing them to life across the entire stack, from front-end to back-end.</p>
+                  <button onClick={() => { window.open('https://marcusxro.github.io/', '_blank') }}>View Portfolio</button>
+
+
                 </div>
               </div>
             </SwiperSlide>
@@ -412,14 +428,15 @@ const Static = () => {
               <div className="people">
                 <div className="peopleFirst">
                   <div className="pfp">
-                  <img src={pictureOne} alt="" />
+                    <img src={pictureOne} alt="" />
                   </div>
                 </div>
                 <div className="peopleInf">
                   <div className="name">JM Geda</div>
                   <div className="pos">Database</div>
                   <p>Hi, Everyone! This is Data Analyst of this project, who will be monitor & analyze for the organizing data and security</p>
-                  <button>View profile</button>
+                  <button onClick={() => { window.open('https://jeemdevvv.github.io/portfolio/', '_blank') }}>View Portfolio</button>
+
                 </div>
               </div>
             </SwiperSlide>
@@ -427,14 +444,14 @@ const Static = () => {
               <div className="people">
                 <div className="peopleFirst">
                   <div className="pfp">
-                  <img src={pictureThree} alt="" />
+                    <img src={pictureThree} alt="" />
                   </div>
                 </div>
                 <div className="peopleInf">
                   <div className="name">Gabrielle allen Tugay Espejo</div>
                   <div className="pos">Documentation</div>
                   <p>Hello, I'm the documenter for this group. As part of our research study, I'm assigned to be in charge of all the writings and interview studies about the improvements at this cafe. One thing about me is that I love matcha. I also recommend trying their biscoff croffles. I'm so obsessed with that.</p>
-                  <button>View profile</button>
+                  <button onClick={() => { window.open('https://www.facebook.com/profile.php?id=100082564345261', '_blank') }}>View Profile</button>
                 </div>
               </div>
             </SwiperSlide>
@@ -442,14 +459,15 @@ const Static = () => {
               <div className="people">
                 <div className="peopleFirst">
                   <div className="pfp">
-                  <img src={pictureTwo} alt="" />
+                    <img src={pictureTwo} alt="" />
                   </div>
                 </div>
                 <div className="peopleInf">
                   <div className="name">Denmark Salvador</div>
                   <div className="pos">System analyst</div>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse mollitia amet porro sit suscipit, minima placeat culpa voluptatum repudiandae nihil repellendus, iure rem, eligendi labore perspiciatis asperiores in dolorum quos?</p>
-                  <button>View profile</button>
+                  <p>Denmark Salvador
+                    Hi, im Denmark and im the system analyst for this group. My job is to maintain software systems and im also checking if there's improvement needed in our system.</p>
+                  <button onClick={() => { window.open('https://www.facebook.com/denmark.salvador.5070', '_blank') }}>View Profile</button>
                 </div>
               </div>
             </SwiperSlide>
@@ -461,15 +479,359 @@ const Static = () => {
                 <div className="peopleInf">
                   <div className="name">Marc Kevin Del Mundo</div>
                   <div className="pos">System Design</div>
-                  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Esse mollitia amet porro sit suscipit, minima placeat culpa voluptatum repudiandae nihil repellendus, iure rem, eligendi labore perspiciatis asperiores in dolorum quos?</p>
-                  <button>View profile</button>
+                  <p>Hello, I am the system designer of this system, and I focus on designing the panel interface and user experience. My role is to ensure that the system is intuitive, efficient, and visually appealing for all users.</p>
+                  <button onClick={() => { window.open('https://www.facebook.com/marckevin.delmundo.5', '_blank') }}>View Profile</button>
                 </div>
               </div>
             </SwiperSlide>
           </Swiper>
         </div>
 
+        <div className="techs">
+          <div className="techTitle">
+            <Marquee pauseOnHover>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+              <div className="textMarq">
+                <span></span> TECHNOLOGIES WE USED
+              </div>
+            </Marquee>
+          </div>
+          <div className="techContent">
+            <div className="techCon">
+              <div className="techItems">
+                <div className="techItemsTitle">
+                  Front-End
+                </div>
 
+                <div className="techItemCon">
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={ReactLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      React
+                    </div>
+                  </div>
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={javaScriptLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      JavaScript
+                    </div>
+                  </div>
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={gsapLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Gsap
+                    </div>
+                  </div>
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={lenisLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Lenis
+                    </div>
+                  </div>
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={axiosLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Axios
+                    </div>
+                  </div>
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={cssLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Css
+                    </div>
+                  </div>
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={reactRouterLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Moment
+                    </div>
+                  </div>
+
+
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={momentLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      React Router
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div className="techItems">
+                <div className="techItemsTitle">
+                  API Testing
+                </div>
+
+
+                <div className="techItemCon centered">
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={postManLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Postman
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+              <div className="techItems">
+                <div className="techItemsTitle">
+                  Back-End
+                </div>
+                <div className="techItemCon">
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={nodeLog} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Node
+                    </div>
+                  </div>
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={firebaseLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Firebase
+                    </div>
+                  </div>
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={nodemonLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Nodemon
+                    </div>
+                  </div>
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={expressLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      Express
+                    </div>
+                  </div>
+                  <div className="techItemFromCon">
+                    <div className="techLogo">
+                      <img src={mongoLogo} alt="" />
+                    </div>
+                    <div className="techItemDesc">
+                      MongoDB
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Swiper
+            autoplay={{
+              delay: 2000,
+              pauseOnMouseEnter: true,
+              disableOnInteraction: false
+            }}
+            className="techSwiper"
+            spaceBetween={50}
+            slidesPerView={1}
+            navigation
+            pagination={{ clickable: true }}
+            scrollbar={{ draggable: true }}
+            onSwiper={(swiper) => console.log(swiper)}
+            onSlideChange={() => console.log('slide change')}>
+            <SwiperSlide>
+              <div className="techTitle">
+                Front-End
+              </div>
+              <div className="techItemCon">
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={ReactLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    React
+                  </div>
+                </div>
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={javaScriptLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    JavaScript
+                  </div>
+                </div>
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={gsapLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Gsap
+                  </div>
+                </div>
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={lenisLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Lenis
+                  </div>
+                </div>
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={axiosLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Axios
+                  </div>
+                </div>
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={cssLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Css
+                  </div>
+                </div>
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={reactRouterLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Moment
+                  </div>
+                </div>
+
+
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={momentLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    React Router
+                  </div>
+                </div>
+
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="techTitle">
+                API tester
+              </div>
+              <div className="techItemCon">
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={postManLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Postman
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className="techTitle">
+                Back-end
+              </div>
+              <div className="techItemCon">
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={nodeLog} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Node
+                  </div>
+                </div>
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={firebaseLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Firebase
+                  </div>
+                </div>
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={nodemonLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Nodemon
+                  </div>
+                </div>
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={expressLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    Express
+                  </div>
+                </div>
+                <div className="techItemFromCon">
+                  <div className="techLogo">
+                    <img src={mongoLogo} alt="" />
+                  </div>
+                  <div className="techItemDesc">
+                    MongoDB
+                  </div>
+                </div>
+              </div>
+
+            </SwiperSlide>
+          </Swiper>
+        </div>
 
         <div className="third">
           <div className="reachOut">
@@ -478,7 +840,7 @@ const Static = () => {
               <div className="reachText">
                 CONTACT THE <span>DEVS! </span>
               </div>
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus vero repudiandae itaque, laborum dolorum iure id temporibus eum pariatur, ab fugit quo quos, accusamus iste at tempora ex facilis earum.</p>
+              <p>Have something to share or a question to ask? Our friendly and knowledgeable development team is here to help! Whether you're curious about our latest features or need assistance with any aspect of our service, we're just a message away.</p>
             </div>
 
             <form
@@ -498,7 +860,7 @@ const Static = () => {
             </form>
           </div>
         </div>
-        <div className="fourth">
+        <div className="fourth" id='contact'>
 
         </div>
       </div>

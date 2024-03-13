@@ -42,9 +42,11 @@ const Ingredients = ({ searchedItem }) => {
         setClick(click + 1);
     };
     const [filtered, setFil] = useState([]);
+
     const handleDelete = (id) => {
         setConfirmId(id);
     };
+
     const handleConfirmDelete = (id) => {
         const newData = data.filter(item => item._id !== id);
         setData(newData);
@@ -57,12 +59,14 @@ const Ingredients = ({ searchedItem }) => {
                 console.log("error", err);
             });
     };
+
     const handleEdit = (index, value, weight, quantity) => {
         setEditIndex(index);
         setEditValue(value);
         setWeight(weight);
         setQuan(quantity);
     };
+
     const handleSaveEdit = async (e, productId) => {
         e.preventDefault()
         console.log(productId);
@@ -80,12 +84,15 @@ const Ingredients = ({ searchedItem }) => {
             console.error("error editing item: ", error);
         }
     };
+    const [showItem, setShowItem] = useState(false)
     useEffect(() => {
         const filteredItems = data.filter(item => item.IngName.toLowerCase().includes(quer.toLowerCase()));
         if (filteredItems.length > 0) {
             setRedo(filteredItems[0].IngName);
+            setShowItem(false)
         } else {
             setRedo(null);
+            setShowItem(true)
         }
         setFil(filteredItems);
     }, [quer, data]);
@@ -154,6 +161,7 @@ const Ingredients = ({ searchedItem }) => {
                 </thead>
                 {newItem ? <AddNewIng /> : null}
                 <tbody>
+                    {showItem == true ? "No items found!" : ""}
                     {filtered && filtered.map((item, index) => (
                         <tr key={item._id}>
                             <td>{editIndex === index ? <input className='ingInput' value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : item.IngName}</td>

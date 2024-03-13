@@ -10,7 +10,7 @@ const Forgotpw = () => {
     const [loading, setLoading] = useState('')
     const [cooldown, setCooldown] = useState(0);
     const cooldownHolder = useRef(null)
-
+    document.title = "Forgot password"
     useEffect(() => { //if it reaches 3 requests
         if (counter >= 3) {
             setCooldown(3 * counter); //automatically adds a cooldown based on click

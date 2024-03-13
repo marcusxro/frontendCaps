@@ -4,7 +4,9 @@ import axios from 'axios'
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
 import { authentication } from '../authentication'
 import gsap from 'gsap'
-import milkTea from '../images/milkTea.png'
+import milkTea from '../images/register.jpg'
+import filipinoBadwords from "filipino-badwords-list"
+
 
 const Register = () => {
     const nav = useNavigate()
@@ -16,19 +18,27 @@ const Register = () => {
     const [status, setStatus] = useState('')
     const [error, setError] = useState('')
     const [repeat, setRepeat] = useState('')
+    document.title = "Create new account"
+
+
 
     const createAccount = (e) => {
-        e.preventDefault()
+        e.preventDefault()  
         if (password.length <= 5) {
             alert("make it longer!")
-        }else if(password != repeat) {
+        } else if (filipinoBadwords.array.some(word => firstname.includes(word)) || filipinoBadwords.array.some(word => lastname.includes(word))) {
+            setStatus("bad words are prohibited!")
+            gsap.to('.accountStatus', {
+                backgroundColor: "red"
+            })
+        }
+        else if (password !== repeat) {
             setStatus("password are not the same")
             gsap.to('.accountStatus', {
                 backgroundColor: "red"
             })
-            return
         }
-         else {
+        else {
             createUserWithEmailAndPassword(authentication, email, password)
                 .then((userCred) => {
                     if (userCred) {
@@ -37,6 +47,9 @@ const Register = () => {
                                 const user = authentication.currentUser;
                                 if (user && !user.emailVerified) {
                                     setStatus("Account created! please verify your account")
+                                    gsap.to('.accountStatus', {
+                                        backgroundColor: "green"
+                                    })
                                     console.log(position)
                                     axios.post('http://localhost:8080/GetAcc', {
                                         Email: email,
@@ -94,7 +107,7 @@ const Register = () => {
         secPass.current.type = "text"
         setCLick(click + 1)
 
-        if(click === 1) {
+        if (click === 1) {
             firstPass.current.type = "password"
             secPass.current.type = "password"
             setCLick(0)
@@ -105,7 +118,7 @@ const Register = () => {
         <div className='register'>
             <div className="registerLeft">
                 <div className="registerImg">
-                <img src={milkTea} alt="" />
+                    <img src={milkTea} alt="" />
                 </div>
             </div>
             <div className="registerRight">
@@ -146,9 +159,9 @@ const Register = () => {
                         required
                         onChange={(e) => { setRepeat(e.target.value) }}
                         type="password" placeholder='Repeat your password' />
-                    <div 
-                    onClick={showPassword}
-                    className="show">
+                    <div
+                        onClick={showPassword}
+                        className="show">
                         <input type="checkbox" name='check' />
                         <label htmlFor="check">Show password</label>
                     </div>
@@ -160,6 +173,7 @@ const Register = () => {
                         <option value="">Select a position</option> {/* Add a default option */}
                         <option value="Barrista">Barrista</option>
                         <option value="Staff">Staff</option>
+                        <option value="Owner">Owner</option>
                     </select>
 
                     <div className="already">

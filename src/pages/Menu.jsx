@@ -11,14 +11,14 @@ const Menu = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState('home');
   const [Uid, setUid] = useState('')
-  const { state } = location;
   const nav = useNavigate()
 
   useEffect(() => {
     if(location.state) {
-      console.log(location)
+      setQuer(location.state.productName)
     }
-  }, [state, location])
+  }, [location])
+
 
 
   useEffect(() => {
@@ -37,7 +37,6 @@ const Menu = () => {
     setActiveTab(tab);
   }
   const [nonFil, setNonFil] = useState([])
-
   useEffect(() => {
     axios.get('http://localhost:8080/menuDetails')
       .then((response) => {
@@ -46,14 +45,12 @@ const Menu = () => {
         console.log(err)
       })
   }, [nonFil])
-
   const [handleEdit, setHandle] = useState('')
   const [editQuan, setEdit] = useState('')
   const [editedQuantity, setEditedQuan] = useState('')
   const [editedOver, setEditedOver] = useState('')
   const [Fullname, setFullname] = useState("")
   const [loading, setLoading] = useState(false)
-
   useEffect(() => {
     setLoading(false)
     axios.get('http://localhost:8080/accInfos')
@@ -66,8 +63,6 @@ const Menu = () => {
         console.error('Error fetching data:', error);
       });
   }, [Fullname, Uid]);
-
-
   const handleEditQuan = (itemId) => {
     axios.put(`http://localhost:8080/editProduct/${itemId}`, {
       Fullname: Fullname,
@@ -86,17 +81,24 @@ const Menu = () => {
     setEditedQuan(Quantity)
     setEditedOver(OverQuan)
   }
-  const [quer, setQuer] = useState('')
-
-  const [filteredItem, setFil] = useState([])
-
-
-
-
+const [quer, setQuer] = useState('')
+const [filteredItem, setFil] = useState([])
+const [showItem, setShow] = useState(false)
 useEffect(() => {
-  const filteredData = nonFil.filter(item => item.ProductName.toLowerCase().includes(quer.toLowerCase()));
+  const filteredData = nonFil.filter(item => {
+    if(typeof quer === 'string') {
+        return item.ProductName.toLowerCase().includes(quer.toLowerCase())
+    } else {
+      return false
+    }
+  })
   setFil(filteredData);
-}, [nonFil, quer]);
+  if(filteredData.length === 0) {
+      setShow(true)
+  }else {
+    setShow(false)
+  }
+}, [filteredItem, quer]);
 
 const [getPos, setGetPos] = useState('')
 useEffect(() => {
@@ -136,13 +138,13 @@ useEffect(() => {
         </div>
 
       <div className="menuCont">
+        {showItem === true ? "No items found!" : ""}
         {loading ? (
            filteredItem.map((item) => (
             <div className="menuItem" key={item.id}>
               <div className="menutitle">
                 {item.ProductName}
               </div>
-              
               <div className="availability">
                 {handleEdit === item._id ? <input type='number'
                  value={editedQuantity} 
@@ -179,8 +181,7 @@ useEffect(() => {
                               <>Very Good</> :
                               null
                             )
-                            
-                          )
+                       )
                   }
   
                 </div>

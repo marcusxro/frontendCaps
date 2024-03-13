@@ -4,6 +4,8 @@ import moment from 'moment';
 import NewItem from './NewItem';
 import { authentication } from '../authentication';
 import { onAuthStateChanged } from 'firebase/auth';
+import { useLocation } from 'react-router-dom';
+
 const Table = ({ searchedItem }) => {
   const [data, setData] = useState([]);
   const [confirmIndex, setConfirmIndex] = useState(null);
@@ -18,6 +20,13 @@ const Table = ({ searchedItem }) => {
   const [loading, setLoading] = useState(false)
   const [uid, setUid] = useState('')
   const [getPos, setGetPos] = useState('')
+  const location = useLocation()
+
+  useEffect(() => {
+    if (location) {
+      console.log(location);
+    }
+  }, [location])
 
   useEffect(() => {
     axios.get('http://localhost:8080/menuDetails')
@@ -53,10 +62,10 @@ const Table = ({ searchedItem }) => {
 
 
   useEffect(() => {
-    if (searchedItem) {
-      setQuer(searchedItem);
+    if (location.state) {
+      setQuer(location.state.productName);
     }
-  }, [searchedItem]);
+  }, [location]);
 
   const handleDelete = (index) => {
     setConfirmIndex(index);
@@ -111,19 +120,26 @@ const Table = ({ searchedItem }) => {
       setClick(0)
     }
   };
+  const [showItem, setShow] = useState(false)
 
   useEffect(() => {
-    const filteredData = data.filter(item => item.ProductName.toLowerCase().includes(quer.toLowerCase()));
-    if (filteredData.length > 0) {
-      setSearchedItem(filteredData[0].ProductName);
-    } else {
-      setSearchedItem(null);
-    }
+    const filteredData = data.filter(item => {
+      if (typeof quer === 'string') {
+        return item.ProductName.toLowerCase().includes(quer.toLowerCase());
+      } else {
+        return false; // or any other appropriate handling for non-string values
+      }
+    });
     setFil(filteredData);
-    setLoading(true)
-  }, [quer, data]);
+    if (filteredData.length === 0) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+    setLoading(true);
+  }, [quer, data, showItem, location]);
+  
 
-  console.log(getPos)
   return (
     <div className="tableCon">
       {loading ? (
@@ -176,6 +192,7 @@ const Table = ({ searchedItem }) => {
               </tr>
             </thead>
             <tbody className='tableBody'>
+            {showItem == true ? "No items found!" : ""}
               {filtedItem ? (
                 filtedItem.map((item) => (
                   <tr className='productList' key={item._id}>

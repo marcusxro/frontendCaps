@@ -54,7 +54,7 @@ const Inventory = () => {
         console.log(err);
       });
 
-  }, []);
+  }, [data]);
   const [ingCount, setIng] = useState([])
   useEffect(() => {
     axios.get('http://localhost:8080/getIng')
@@ -64,7 +64,7 @@ const Inventory = () => {
         console.log(err);
       });
 
-  }, []);
+  }, [ingCount]);
 
   const [quer, setQuer] = useState('')
 

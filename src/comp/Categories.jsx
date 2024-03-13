@@ -153,6 +153,7 @@ const Categories = () => {
                                 <th>Weight</th>
                                 <th>Quantity</th>
                                 <th>Date</th>
+                                <th>Written by</th>
                                 {getPos === "Staff" ? (<></>) : (<th>Actions</th>)}
                             </tr>
                         </thead>
@@ -167,6 +168,7 @@ const Categories = () => {
                                     <td>{editIndex === item._id ?
                                         <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                    <td>{item.Fullname}</td>
                                     {getPos === "Staff" ? (<></>) : (
                                         <td className='btnCon'>
                                             <button onClick={() => handleDelete(item._id)}>Delete</button>
@@ -196,6 +198,7 @@ const Categories = () => {
                                 <th>Weight</th>
                                 <th>Quantity</th>
                                 <th>Date</th>
+                                <th>Written by</th>
                                 {getPos === "Staff" ? (<></>) : (<th>Actions</th>)}
                             </tr>
                         </thead>
@@ -210,6 +213,7 @@ const Categories = () => {
                                     <td>{editIndex === item._id ?
                                         <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                    <td>{item.Fullname}</td>
                                     {getPos === "Staff" ? (<></>) : (
                                         <td className='btnCon'>
                                             <button onClick={() => handleDelete(item._id)}>Delete</button>

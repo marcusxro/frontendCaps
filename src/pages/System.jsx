@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Logout from '../comp/Logout'
 import Sidebar from '../comp/Sidebar'
 import { authentication } from '../authentication'
@@ -7,7 +7,7 @@ import logo from '../images/milkTea.png'
 import PieCharts from '../comp/PieCharts'
 import BarCharts from '../comp/BarCharts'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import product from '../images/third.jpg'
+import product from '../images/updateStock.png'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Inventory from './Inventory'
@@ -36,16 +36,16 @@ const System = () => {
         setLoading(true)
         setBan(filteredData[0].isBanned)
         console.log(ban)
-        if(filteredData[0].isBanned) {
+        if (filteredData[0].isBanned) {
           alert("YOU ARE BANNED")
           signOut(authentication)
-          .then(() => {
-            console.log("logged out")
-          }).catch((err) => {
-            console.log(err)
-          })
+            .then(() => {
+              console.log("logged out")
+            }).catch((err) => {
+              console.log(err)
+            })
         }
-        
+
       })
       .catch((error) => {
         setLoading(false)
@@ -67,7 +67,7 @@ const System = () => {
       }).catch((err) => {
         console.log(err)
       })
-  }, [user])
+  }, [intAct])
 
 
   const [newData, setNewData] = useState([])
@@ -126,8 +126,10 @@ const System = () => {
       })
   }, [uid])
 
-
-
+  const [showModal, setModal] = useState(false)
+  const toggleModal = useCallback(() => {
+    setModal(!showModal)
+  }, [showModal])
   return (
     <div className='system'>
       {user ? (<>
@@ -183,27 +185,28 @@ const System = () => {
               <div className="tab-content">
                 {activeTab === 'inventory' &&
                   <div className='tabContent'>
-
                     {loading ? (
                       <>
+                        {intAct.length === 0 ? "No activity found!" : ""}
                         {intAct.map((item) => (
                           <div className="tabContentInt" key={item._id}>
                             <div className="tabContentIntText">
                               {item.ProductName}
                             </div>
-                            <Link className='actView' to={{ pathname: '/system/Inventory', state: { productName: item.ProductName } }}>
+                            <button className='actView' onClick={() => { nav('/system/Inventory', { state: { productName: item.ProductName } }) }}>
                               View Activity
-                            </Link>
+                            </button>
                           </div>
                         ))}
+
                         {newData.map((item) => (
                           <div className="tabContentInt" key={item._id}>
                             <div className="tabContentIntText">
                               {item.IngName}
                             </div>
-                            <Link className='actView'  to={{ pathname: '/system/Inventory', state: { firstValue: item.IngName, secondValue: true } }}>
+                            <button className='actView' onClick={() => { nav('/system/Inventory', { state: { firstValue: item.IngName, secondValue: true } }) }}>
                               View Activity
-                            </Link>
+                            </button>
                           </div>
                         ))}
                       </>
@@ -213,35 +216,42 @@ const System = () => {
 
                   </div>}
 
-                {activeTab === 'menu' &&
-                  <div className='tabContents'>
-                    {menuData.map((item) => (
-                      <div className="menuAct">
-                        <div className="menuTabTitle">
-                          you edited <span>{item.ProductName}</span>
-                        </div>
-                      <button onClick={() => {nav('/system/menu')}}>Visit</button>
 
-                      </div>
-                    ))}
-                  </div>}
-                {activeTab === 'reports' && <div className='tabContent'>
-                      {repData.map((item) => (
-                          <div className="reportItems">
-                            <div className="reportFirst">
-                              <div className="reportItemTitle">
-                                {item.Incident}
-                              </div>
-                              <div className="reportItemType">
-                                type: {item.RepType}
-                              </div>
-                            </div>
-                            <div className="reportLast">
-                              <button onClick={() => {nav('/system/report')}}>Visit</button>
-                            </div>
+                {activeTab === 'menu' &&
+                  <>
+                    {menuData.length === 0 ? "No activity found!" : ""}
+                    < div className='tabContents'>
+                      {menuData.map((item) => (
+                        <div className="menuAct">
+                          <div className="menuTabTitle">
+                            you edited <span>{item.ProductName}</span>
                           </div>
+                          <button className='actView' onClick={() => { nav('/system/menu', { state: { productName: item.ProductName } }) }}>
+                            View Activity
+                          </button>
+                        </div>
                       ))}
-                  </div>}
+                    </div>
+                  </>
+                }
+                {activeTab === 'reports' && <div className='tabContent'>
+                {repData.length === 0 ? "No activity found!" : ""}
+                  {repData.map((item) => (
+                    <div className="reportItems">
+                      <div className="reportFirst">
+                        <div className="reportItemTitle">
+                          {item.Incident}
+                        </div>
+                        <div className="reportItemType">
+                          type: {item.RepType}
+                        </div>
+                      </div>
+                      <div className="reportLast">
+                        <button onClick={() => { nav('/system/report') }}>Visit</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>}
               </div>
 
             </div>
@@ -256,7 +266,7 @@ const System = () => {
                   <span>What's new?</span>
                   <p>Let's see the changes in our system!</p>
                 </div>
-                <button>Learn more</button>
+                <button onClick={() => { toggleModal() }}>Learn more</button>
               </div>
               <div className="arrows">
                 <div
@@ -301,7 +311,7 @@ const System = () => {
                           }
                         </div>
                         <p>add your stock counts to increase the availability</p>
-                        <button onClick={() => {nav('/system/Menu')}}>
+                        <button onClick={() => { nav('/system/menu', { state: { productName: item.ProductName } }) }}>
                           update
                         </button>
                       </div>
@@ -312,9 +322,10 @@ const System = () => {
             </div>
           </div>
         </div>
-      </>) : <></>}
-      <LearnMore />
-    </div>
+      </>) : <></>
+      }
+      {showModal ? (<LearnMore func={toggleModal} />) : <></>}
+    </div >
   )
 }
 
