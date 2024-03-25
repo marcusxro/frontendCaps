@@ -43,7 +43,7 @@ const Inventory = () => {
     return () => { unbsub() }
   }, [])
   useEffect(() => {
-    axios.get('http://localhost:8080/menuDetails')
+    axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
       .then((res) => {
         setData(res.data);
       }).catch((err) => {
@@ -52,7 +52,7 @@ const Inventory = () => {
   }, [data]);
   const [ingCount, setIng] = useState([])
   useEffect(() => {
-    axios.get('http://localhost:8080/getIng')
+    axios.get('https://backendcaps-7zrx.onrender.com/getIng')
       .then((res) => {
         setIng(res.data);
       }).catch((err) => {

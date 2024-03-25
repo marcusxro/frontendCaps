@@ -25,7 +25,7 @@ const Equipment = () => {
 
     useEffect(() => {
         setLoading(false)
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -40,7 +40,7 @@ const Equipment = () => {
 
     useEffect(() => {
         setLoading(false)
-        axios.get('http://localhost:8080/EquipGet')
+        axios.get('https://backendcaps-7zrx.onrender.com/EquipGet')
             .then((response) => {
                 setEquipData(response.data)
             })
@@ -70,7 +70,7 @@ const Equipment = () => {
     }
 
     const handleEdit = (itemId) => {
-        axios.put(`http://localhost:8080/equipment/${itemId}`, {
+        axios.put(`https://backendcaps-7zrx.onrender.com/equipment/${itemId}`, {
             EquipmentName: EquipName,
             Type: itemType,
             Usage: itemUsage,
@@ -87,7 +87,7 @@ const Equipment = () => {
     }
     const handleConfirmDelete = (itemId) => {
         const newData = equipData.filter(item => item._id === itemId);
-        axios.post(`http://localhost:8080/DeletedEquip`, {
+        axios.post(`https://backendcaps-7zrx.onrender.com/DeletedEquip`, {
             DeletedEquipmentName: newData[0].EquipmentName,
             DeletedType: newData[0].Type,
             DeletedUsage: newData[0].Usage,
@@ -100,7 +100,7 @@ const Equipment = () => {
             userNameDel: fullName
         }).then(() => {
             console.log("details sent!")
-            axios.delete(`http://localhost:8080/deleteEquipment/${itemId}`)
+            axios.delete(`https://backendcaps-7zrx.onrender.com/deleteEquipment/${itemId}`)
                 .then(() => {
                     console.log("deleted")
                 }).catch((err) => {

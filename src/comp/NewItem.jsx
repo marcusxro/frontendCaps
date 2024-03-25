@@ -48,7 +48,7 @@ const NewItem = () => {
     }, [data, productName])
 
     useEffect(() => {
-        axios.get('http://localhost:8080/menuDetails')
+        axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
             .then((res) => {
                 setData(res.data);
             }).catch((err) => {
@@ -57,7 +57,7 @@ const NewItem = () => {
     }, [data]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((res) => {
                 const filteredData = res.data.filter((item) => item.Uid === Uid);
                 console.log(filteredData)
@@ -90,7 +90,7 @@ const NewItem = () => {
         console.log(name)
         const dateNOw = Date.now()
 
-        axios.post('http://localhost:8080/postMenu', {
+        axios.post('https://backendcaps-7zrx.onrender.com/postMenu', {
             ProductName: productName,
             Category: category,
             Weight: weight,

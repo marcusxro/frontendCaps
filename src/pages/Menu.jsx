@@ -39,7 +39,7 @@ const Menu = () => {
   }
   const [nonFil, setNonFil] = useState([])
   useEffect(() => {
-    axios.get('http://localhost:8080/menuDetails')
+    axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
       .then((response) => {
         setNonFil(response.data)
       }).catch((err) => {
@@ -54,7 +54,7 @@ const Menu = () => {
   const [loading, setLoading] = useState(false)
   useEffect(() => {
     setLoading(false)
-    axios.get('http://localhost:8080/accInfos')
+    axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === Uid);
         setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -65,7 +65,7 @@ const Menu = () => {
       });
   }, [Fullname, Uid]);
   const handleEditQuan = (itemId) => {
-    axios.put(`http://localhost:8080/editProduct/${itemId}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/editProduct/${itemId}`, {
       Fullname: Fullname,
       OverQuan: editedOver,
       Quantity: editedQuantity,
@@ -104,7 +104,7 @@ useEffect(() => {
 const [getPos, setGetPos] = useState('')
 useEffect(() => {
   setLoading(false)
-  axios.get('http://localhost:8080/accInfos')
+  axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
     .then((response) => {
       const filteredData = response.data.filter((item) => item.Uid === Uid);
       setGetPos(filteredData[0].Position)

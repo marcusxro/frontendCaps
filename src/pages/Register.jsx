@@ -51,7 +51,7 @@ const Register = () => {
                                         backgroundColor: "green"
                                     })
                                     console.log(position)
-                                    axios.post('http://localhost:8080/GetAcc', {
+                                    axios.post('https://backendcaps-7zrx.onrender.com/GetAcc', {
                                         Email: email,
                                         Firstname: firstname,
                                         Lastname: lastname,

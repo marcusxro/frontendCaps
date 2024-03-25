@@ -29,7 +29,7 @@ const AddNewIng = () => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === Uid);
                 setFirst(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -51,7 +51,7 @@ const AddNewIng = () => {
 
     const sendIng = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8080/postIng', {
+        axios.post('https://backendcaps-7zrx.onrender.com/postIng', {
             IngName: ingName,
             Weight: weight,
             Measure: measurements,
@@ -76,7 +76,7 @@ const AddNewIng = () => {
     const [nameEqual, setNameEq] = useState(null)
     const pNameEl = useRef(null)
     useEffect(() => {
-        axios.get('http://localhost:8080/getIng')
+        axios.get('https://backendcaps-7zrx.onrender.com/getIng')
             .then((res) => {
                 setData(res.data);
             }).catch((err) => {

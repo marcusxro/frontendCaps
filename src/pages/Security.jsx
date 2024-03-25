@@ -12,7 +12,7 @@ const Security = () => {
     const [isOwner, setOwner] = useState(null)
 
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setLoading(true)
@@ -45,7 +45,7 @@ const Security = () => {
     }
     const [boolBan, setBoolBan] = useState(false)
     const banUser = (userUid) => {
-        axios.put(`http://localhost:8080/ban/${userUid}`, {
+        axios.put(`https://backendcaps-7zrx.onrender.com/ban/${userUid}`, {
             isBanned: boolBan
         }).then(() => {
             console.log("successfully banned")

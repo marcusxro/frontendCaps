@@ -36,7 +36,7 @@ const Reports = () => {
   }, [Uid])
 
   useEffect(() => { // for products
-    axios.get('http://localhost:8080/getReports')
+    axios.get('https://backendcaps-7zrx.onrender.com/getReports')
       .then((resp) => {
         setRepData(resp.data)
       }).catch((err) => {
@@ -47,7 +47,7 @@ const Reports = () => {
   const [IngData, setIngData] = useState([])
 
   useEffect(() => { // for ingredients
-    axios.get('http://localhost:8080/getIngRep')
+    axios.get('https://backendcaps-7zrx.onrender.com/getIngRep')
       .then((resp) => {
         setIngData(resp.data)
       }).catch((err) => {
@@ -59,7 +59,7 @@ const Reports = () => {
   const [EquipData, setEquipData] = useState([])
 
   useEffect(() => { // for equipment
-    axios.get('http://localhost:8080/EquipReport')
+    axios.get('https://backendcaps-7zrx.onrender.com/EquipReport')
       .then((resp) => {
         setEquipData(resp.data)
       }).catch((err) => {
@@ -75,7 +75,7 @@ const Reports = () => {
 
 
   const sendEdited = (item) => {
-    axios.put(`http://localhost:8080/reportEdit/${item}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/reportEdit/${item}`, {
       isResolved: true,
       Uid: Uid,
       Date: Date.now()
@@ -89,7 +89,7 @@ const Reports = () => {
 
 
   const sendEditedIng = (item) => {
-    axios.put(`http://localhost:8080/IngReport/${item}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/IngReport/${item}`, {
       isResolved: true,
       Uid: Uid,
       Date: Date.now()
@@ -102,7 +102,7 @@ const Reports = () => {
 
 
   const sendEditedEquip = (item) => {
-    axios.put(`http://localhost:8080/EquipReport/${item}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/EquipReport/${item}`, {
       isResolved: true,
       Uid: Uid,
       Date: Date.now()

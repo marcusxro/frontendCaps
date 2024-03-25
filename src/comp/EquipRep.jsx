@@ -17,7 +17,7 @@ const EquipRep = () => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === Uid);
                 setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -46,7 +46,7 @@ const EquipRep = () => {
         if (!incTitle || !reportType || !RepDetails) {
             return alert("please type something")
         }
-        axios.post('http://localhost:8080/EquipRep', {
+        axios.post('https://backendcaps-7zrx.onrender.com/EquipRep', {
             Incident: incTitle,
             RepType: reportType,
             isResolved: isResolved,

@@ -16,9 +16,7 @@ import LearnMore from '../comp/LearnMore'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
-
 const System = () => {
-
   document.title = "Cafe Eunoia | System"
   const [user, setUser] = useState('')
   const [uid, setUid] = useState('')
@@ -28,7 +26,7 @@ const System = () => {
   const [userInf, setUserInf] = useState('')
   const [ban, setBan] = useState(false)
   useEffect(() => {
-    axios.get('http://localhost:8080/accInfos')
+    axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         setFirstname(filteredData[0].Firstname)
@@ -51,13 +49,11 @@ const System = () => {
         setLoading(false)
       });
   }, [firstname, user, ban]);
-
   const [intAct, setAct] = useState([])
   const [nonFil, setNonFil] = useState([])
   const [menuData, setMenuData] = useState([])
-
   useEffect(() => {
-    axios.get('http://localhost:8080/menuDetails')
+    axios.get('https://backendcaps-7zrx.onrender.com/menuDetails') 
       .then((response) => {
         setNonFil(response.data)
         const filteredData = response.data.filter((item) => item.Uid === uid);
@@ -68,12 +64,9 @@ const System = () => {
         console.log(err)
       })
   }, [intAct])
-
-
   const [newData, setNewData] = useState([])
-
   useEffect(() => {
-    axios.get('http://localhost:8080/getIng')
+    axios.get('https://backendcaps-7zrx.onrender.com/getIng')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         setNewData(filteredData)
@@ -81,7 +74,6 @@ const System = () => {
         console.log(err)
       })
   }, [user])
-
   useEffect(() => {
     const unsub = onAuthStateChanged(authentication, (acc) => {
       if (acc) {
@@ -110,14 +102,10 @@ const System = () => {
   const highestPercentageItem = itemsWithPercentage.reduce((maxItem, currentItem) => {
     return currentItem.percentage > maxItem.percentage ? currentItem : maxItem;
   }, itemsWithPercentage[0]);
-
   const filteredHighestPercentageItem = itemsWithPercentage.filter(item => item.percentage === highestPercentageItem.percentage);
-
-
   const [repData, setRepData] = useState([])
-
   useEffect(() => {
-    axios.get('http://localhost:8080/getReports')
+    axios.get('https://backendcaps-7zrx.onrender.com/getReports')
       .then((resp) => {
         const filteredData = resp.data.filter((item) => item.Uid === uid)
         setRepData(filteredData)
@@ -125,7 +113,6 @@ const System = () => {
         console.log(err)
       })
   }, [uid])
-
   const [showModal, setModal] = useState(false)
   const toggleModal = useCallback(() => {
     setModal(!showModal)

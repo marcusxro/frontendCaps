@@ -13,7 +13,7 @@ const Notif = () => {
     const [deletedEquip, setDeletedEquip] = useState([])
     const [DeletedIng, setDeletedIng] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 setLoading(true);
                 const bannedUsersData = response.data.filter((item) => item.isBanned === true);
@@ -23,7 +23,7 @@ const Notif = () => {
                 console.log(error);
             });
 
-        axios.get('http://localhost:8080/GetDel')
+        axios.get('https://backendcaps-7zrx.onrender.com/GetDel')
             .then((response) => {
                 setLoading(true);
                 setDelInfo(response.data)
@@ -31,7 +31,7 @@ const Notif = () => {
             .catch((error) => {
                 console.log(error);
             });
-        axios.get('http://localhost:8080/GetDelIng')
+        axios.get('https://backendcaps-7zrx.onrender.com/GetDelIng')
             .then((response) => {
                 setLoading(true);
                 setDeletedIng(response.data)
@@ -41,7 +41,7 @@ const Notif = () => {
             });
 
 
-        axios.get('http://localhost:8080/GetDelEq')
+        axios.get('https://backendcaps-7zrx.onrender.com/GetDelEq')
             .then((response) => {
                 setLoading(true);
                 setDeletedEquip(response.data)
@@ -50,7 +50,7 @@ const Notif = () => {
                 console.log(error);
             });
 
-        axios.get('http://localhost:8080/menuDetails')
+        axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
             .then((res) => {
                 setMenuUpdates(res.data);
             }).catch((err) => {
@@ -58,7 +58,7 @@ const Notif = () => {
             });
 
 
-        axios.get('http://localhost:8080/getIng')
+        axios.get('https://backendcaps-7zrx.onrender.com/getIng')
             .then((res) => {
                 setIngredientUpdates(res.data);
             }).catch((err) => {
@@ -66,7 +66,7 @@ const Notif = () => {
             });
 
 
-        axios.get('http://localhost:8080/EquipGet')
+        axios.get('https://backendcaps-7zrx.onrender.com/EquipGet')
             .then((res) => {
                 setEquipment(res.data);
             }).catch((err) => {
@@ -82,7 +82,7 @@ const Notif = () => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/getReports')
+        axios.get('https://backendcaps-7zrx.onrender.com/getReports')
             .then((resp) => {
                 setRep(resp.data)
             }).catch((err) => {

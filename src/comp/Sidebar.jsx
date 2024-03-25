@@ -23,7 +23,7 @@ const Sidebar = () => {
   const [userPos, setUserPos] = useState({ Position: '' });
 
   useEffect(() => {
-    axios.get('http://localhost:8080/accInfos')
+    axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
       .then((response) => {
         const isManager = response.data.filter((item) => item.Uid === uid);
         setUserPos(isManager[0].Position);
@@ -45,7 +45,7 @@ const Sidebar = () => {
   const [reports, setRep] = useState([])
   const [edited, setEdited] = useState([])
   useEffect(() => {
-    axios.get('http://localhost:8080/getReports')
+    axios.get('https://backendcaps-7zrx.onrender.com/getReports')
       .then((resp) => {
         const filteredData = resp.data.filter((item) => item.Uid === uid)
         setRep(filteredData)
@@ -55,7 +55,7 @@ const Sidebar = () => {
       })
   }, [uid])
   useEffect(() => {
-    axios.get('http://localhost:8080/getIng')
+    axios.get('https://backendcaps-7zrx.onrender.com/getIng')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         setMenu(filteredData)
@@ -65,7 +65,7 @@ const Sidebar = () => {
   }, [uid])
 
   useEffect(() => {
-    axios.get('http://localhost:8080/menuDetails')
+    axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         const filteredDatas = response.data.filter((item) => item.EditedUid === uid);

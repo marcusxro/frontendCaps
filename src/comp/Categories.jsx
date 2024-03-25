@@ -19,7 +19,7 @@ const Categories = () => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/menuDetails')
+        axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
             .then((res) => {
                 setData(res.data);
             }).catch((err) => {
@@ -40,7 +40,7 @@ const Categories = () => {
         const newData = data.filter(item => item._id !== id);
         setData(newData);
         setConfirmIndex(null);
-        axios.delete(`http://localhost:8080/item/${id}`)
+        axios.delete(`https://backendcaps-7zrx.onrender.com/item/${id}`)
             .then(() => {
                 console.log("deleted");
             }).catch((err) => {
@@ -58,7 +58,7 @@ const Categories = () => {
     const handleSaveEdit = async (productId) => {
         console.log(productId)
         try {
-            await axios.put(`http://localhost:8080/editInventory/${productId}`, {
+            await axios.put(`https://backendcaps-7zrx.onrender.com/editInventory/${productId}`, {
                 ProductName: editValue,
                 Weight: editedWeight,
                 Quantity: editedQuan,
@@ -89,7 +89,7 @@ const Categories = () => {
 
     useEffect(() => {
         setLoading(false)
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setGetPos(filteredData[0].Position)

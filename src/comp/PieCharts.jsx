@@ -15,7 +15,7 @@ import axios from 'axios';
 const PieCharts = () => {
   const [nonFil, setNonFil] = useState([]);
   useEffect(() => {
-    axios.get('http://localhost:8080/getIng')
+    axios.get('https://backendcaps-7zrx.onrender.com/getIng')
       .then((response) => {
         setNonFil(response.data);
       }).catch((err) => {

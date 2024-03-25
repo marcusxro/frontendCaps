@@ -6,7 +6,7 @@ const BarCharts = () => {
   const [nonFil, setNonFil] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/menuDetails')
+    axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
       .then((response) => {
         setNonFil(response.data);
       }).catch((err) => {

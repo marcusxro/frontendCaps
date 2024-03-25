@@ -33,7 +33,7 @@ const Ingredients = ({ searchedItem }) => {
 
     useEffect(() => {
         setLoading(false)
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setGetPos(filteredData[0].Position)
@@ -54,7 +54,7 @@ const Ingredients = ({ searchedItem }) => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/getIng')
+        axios.get('https://backendcaps-7zrx.onrender.com/getIng')
             .then((info) => {
                 setData(info.data);
             })
@@ -82,7 +82,7 @@ const Ingredients = ({ searchedItem }) => {
         setData(newData);
         setConfirmId(null);
 
-        axios.post(`http://localhost:8080/DeletedIng`, {
+        axios.post(`https://backendcaps-7zrx.onrender.com/DeletedIng`, {
             DeletedIngName: newData[0].IngName,
             DeletedWeight: newData[0].Weight,
             DeletedCategory: newData[0].Category,
@@ -94,7 +94,7 @@ const Ingredients = ({ searchedItem }) => {
             userNameDel: fullName
         }).then(() => {
             console.log("SENT")
-            axios.delete(`http://localhost:8080/ingItem/${id}`)
+            axios.delete(`https://backendcaps-7zrx.onrender.com/ingItem/${id}`)
                 .then(() => {
                     console.log("deleted");
                 })
@@ -120,7 +120,7 @@ const Ingredients = ({ searchedItem }) => {
         console.log(productId);
         try {
             e.preventDefault()
-            await axios.put(`http://localhost:8080/editIng/${productId}`, {
+            await axios.put(`https://backendcaps-7zrx.onrender.com/editIng/${productId}`, {
                 IngName: editValue,
                 Weight: editedWeight,
                 Quantity: editedQuan,

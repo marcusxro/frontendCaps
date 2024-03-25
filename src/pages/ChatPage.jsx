@@ -21,7 +21,7 @@ const ChatPage = () => {
     }, [uid]);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setUserDetails(filteredData[0])
@@ -33,7 +33,7 @@ const ChatPage = () => {
     const chatContainerRef = useRef(null);
     const [messageData, setMessageData] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:8080/getMessage')
+        axios.get('https://backendcaps-7zrx.onrender.com/getMessage')
             .then((res) => {
                 setMessageData(res.data)
             }).catch((err) => {
@@ -42,7 +42,7 @@ const ChatPage = () => {
     }, [messageData])
 
     const handleDeleteMessage = (itemId) => {
-        axios.delete(`http://localhost:8080/deleteMessage/${itemId}`)
+        axios.delete(`https://backendcaps-7zrx.onrender.com/deleteMessage/${itemId}`)
             .then(() => {
                 console.log("message deleted")
             }).catch((err) => {
@@ -60,7 +60,7 @@ const ChatPage = () => {
 
     const sendMessage = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:8080/message', {
+        axios.post('https://backendcaps-7zrx.onrender.com/message', {
             userName: userDetails.Firstname + " " + userDetails.Lastname,
             Message: messageText,
             Date: Date.now(),
@@ -100,7 +100,7 @@ const ChatPage = () => {
 
     const [peopleData, setDataPeople] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.isBanned === false);
                 setDataPeople(filteredData)

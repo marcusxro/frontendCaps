@@ -22,7 +22,7 @@ const NewEquipment = () => {
         return () => { unsub() }
     }, [uid])
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -49,7 +49,7 @@ const NewEquipment = () => {
             || !itemBrand) {
             return alert("please fill up the details")
         }
-        axios.post('http://localhost:8080/PostEquipement', {
+        axios.post('https://backendcaps-7zrx.onrender.com/PostEquipement', {
             EquipmentName: EquipName,
             Type: itemType,
             Usage: itemUsage,
@@ -70,7 +70,7 @@ const NewEquipment = () => {
     const [nameEqual, setNameEq] = useState(null)
     const pNameEl = useRef(null)
     useEffect(() => {
-        axios.get('http://localhost:8080/EquipGet')
+        axios.get('https://backendcaps-7zrx.onrender.com/EquipGet')
             .then((res) => {
                 setData(res.data);
             }).catch((err) => {

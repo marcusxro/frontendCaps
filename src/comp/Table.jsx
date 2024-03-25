@@ -32,7 +32,7 @@ const Table = ({ searchedItem }) => {
   }, [location])
 
   useEffect(() => {
-    axios.get('http://localhost:8080/menuDetails')
+    axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
       .then((res) => {
         setData(res.data);
       }).catch((err) => {
@@ -52,7 +52,7 @@ const Table = ({ searchedItem }) => {
 const [userName, setUsername] = useState('')
   useEffect(() => {
     setLoading(false)
-    axios.get('http://localhost:8080/accInfos')
+    axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         setGetPos(filteredData[0].Position)
@@ -85,7 +85,7 @@ const [userName, setUsername] = useState('')
 
 
     console.log(uid)
-    axios.post(`http://localhost:8080/DeletedInv`, {
+    axios.post(`https://backendcaps-7zrx.onrender.com/DeletedInv`, {
       DeletedProductName: newDatas[0].ProductName,
       DeletedCategory: newDatas[0].Category,
       DeletedWeight: newDatas[0].Weight,
@@ -101,7 +101,7 @@ const [userName, setUsername] = useState('')
       userNameDel: userName
     }).then(() => {
       console.log("SENT DELTED DATA")
-      axios.delete(`http://localhost:8080/item/${id}`)
+      axios.delete(`https://backendcaps-7zrx.onrender.com/item/${id}`)
         .then(() => {
           console.log("deleted");
         }).catch((err) => {
@@ -121,14 +121,6 @@ const [userName, setUsername] = useState('')
     setExpiry(Expiry)
   };
 
-  const removeVal = () => {
-    setEditValue('');
-    setWeight('');
-    setQuan('');
-    setCondition('')
-    setExpiry('')
-  }
-
   const handleSaveEdit = async (productId) => {
     console.log(productId);
 
@@ -136,7 +128,7 @@ const [userName, setUsername] = useState('')
       if(!editValue || !editedWeight || !editedQuan || !editedCondition || !editedExpiry) {
         return alert("please type something")
       }
-      await axios.put(`http://localhost:8080/editInventory/${productId}`, {
+      await axios.put(`https://backendcaps-7zrx.onrender.com/editInventory/${productId}`, {
         ProductName: editValue,
         Weight: editedWeight,
         Quantity: editedQuan,
@@ -144,11 +136,6 @@ const [userName, setUsername] = useState('')
         ExpiryDate: editedExpiry,
         Date: Date.now()
       }).then(() => {
-        setEditValue('');
-        setWeight('');
-        setQuan('');
-        setCondition('')
-        setExpiry('')
         console.log("edited")
       }).catch((err) => {
         console.log("error", err)
@@ -170,7 +157,6 @@ const [userName, setUsername] = useState('')
     }
   };
   const [showItem, setShow] = useState(false)
-
   useEffect(() => {
     const filteredData = data.filter(item => {
       if (typeof quer === 'string') {
@@ -266,13 +252,9 @@ const [userName, setUsername] = useState('')
                         <option value="Spoiled">Spoiled</option>
                         <option value="Prepared">Prepared</option>
                       </select>
-
                       : item.Condition ? item.Condition : "N/A"}</td>
-
                     <td>{editIndex === item._id ?
                       <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
-
-
                     <td>{item.Fullname}</td>
                     {getPos === "Manager" ? null : (
                       <td className='btnCon'>
