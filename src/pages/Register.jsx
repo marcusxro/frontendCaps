@@ -166,13 +166,14 @@ const Register = () => {
                         <label htmlFor="check">Show password</label>
                     </div>
                     <select
+                    className='registerSelect'
                         value={position}
                         required
                         onChange={(e) => setPosition(e.target.value)}
                         name="" id="">
                         <option value="">Select a position</option> {/* Add a default option */}
                         <option value="Barrista">Barrista</option>
-                        <option value="Staff">Staff</option>
+                        <option value="Staff">Manager</option>
                         <option value="Owner">Owner</option>
                     </select>
 

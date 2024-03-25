@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth'
 import { authentication } from '../authentication'
-const ReportsModal = () => {
 
+
+
+const IngRep = () => {
     const [incTitle, setTitle] = useState('')
     const [reportType, setType] = useState('')
     const [isResolved, setRes] = useState(false)
@@ -44,7 +46,7 @@ const ReportsModal = () => {
         if(!incTitle || !reportType ||  !RepDetails) {
             return alert("please type something")
         }
-        axios.post('http://localhost:8080/reportCreate', {
+        axios.post('http://localhost:8080/IngReport', {
             Incident: incTitle,
             RepType: reportType,
             isResolved: isResolved,
@@ -67,7 +69,7 @@ const ReportsModal = () => {
     return (
         <div className='reportsModal'>
             <div className="creRep">
-                Create report for Products
+                Create report for Ingredients
             </div>
             <form onSubmit={createReport}>
                 <input value={incTitle} onChange={(e) => { setTitle(e.target.value) }} type="text" placeholder='Enter report title' />
@@ -89,4 +91,4 @@ const ReportsModal = () => {
     )
 }
 
-export default ReportsModal
+export default IngRep

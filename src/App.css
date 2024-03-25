@@ -2287,6 +2287,9 @@ html::-webkit-scrollbar {
 .searchBar {
   display: flex;
   width: 100%;
+  position: sticky;
+  top: 0;
+  background-color: aliceblue;
   padding: 10px;
   gap: 5px;
   max-width: 500px;
@@ -2400,7 +2403,6 @@ html::-webkit-scrollbar {
 .btnCon>button {
   transition: 0.5s ease-in-out;
 }
-
 
 
 
@@ -2724,9 +2726,12 @@ html::-webkit-scrollbar {
 }
 
 .activated {
-  text-decoration: 5px #4f4cb0 underline;
-  color: #4f4cb0;
+  background-color: #4f4cb0;
   font-weight: bold;
+  height: 30px;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 5px;
 }
 
 .All,
@@ -2835,6 +2840,9 @@ html::-webkit-scrollbar {
 .tableCon {
   max-height: 900px;
   overflow-y: auto;
+
+  padding-bottom: 130px;
+
 }
 
 
@@ -3025,10 +3033,12 @@ html::-webkit-scrollbar {
   border-radius: 30px;
   text-align: center;
 }
+
 .menuItem:hover {
-transform: translateY(-5px);
-transition: 0.5s ease-in-out;
+  transform: translateY(-5px);
+  transition: 0.5s ease-in-out;
 }
+
 .menuItem>button {
   all: unset;
   width: 100%;
@@ -3066,6 +3076,44 @@ transition: 0.5s ease-in-out;
 .quanCon {
   display: flex;
   gap: 10px;
+  align-items: center;
+}
+.slash {
+  font-size: 20px;
+  font-weight: bold;
+}
+.modalTitle {
+  background-color: #4f4cb0;
+  text-align: center;
+  border-radius: 10px;
+  color: white;
+}
+.dateModal {
+  display: flex;
+  border-radius: 10px;
+  height: 50px;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.dateModal .dateText {
+  background-color: #4f4cb0;
+  padding: 10px;
+  height: 100%;
+  border-radius: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  width: 58%;
+  justify-content: center;
+}
+.dateModal input {
+  height: 100%;
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
 }
 
 .quanCon>input {
@@ -3264,18 +3312,26 @@ transition: 0.5s ease-in-out;
   margin-top: 10px;
   overflow: hidden;
   height: 100%;
-  max-height: 400px;
+  max-height: 80%;
   margin-bottom: 30px;
   overflow-y: scroll;
 }
+
 .reportItem:hover {
   transform: translateY(-5px);
   transition: 0.5s ease-in-out;
-  }
-.reportDetails::-webkit-scrollbar {
-  display: none;
 }
 
+.reportDetails::-webkit-scrollbar {
+  color: #cc9999;
+  display: none;
+}
+.burger .color {
+  background-color: #cc9999;
+}
+.croffles .color {
+  background-color: #0088FE;
+}
 .absoForm {
   height: 50px;
   width: 50px;
@@ -3341,6 +3397,12 @@ transition: 0.5s ease-in-out;
 .creRep {
   font-size: 25px;
   font-weight: bold;
+  background-color: #4f4cb0;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
 }
 
 .reportsModal>form {
@@ -3356,7 +3418,6 @@ transition: 0.5s ease-in-out;
   border-radius: 20px;
   background-color: white;
   padding: 10px;
-  border: 1px solid black;
 }
 
 .reportsModal>form>select {
@@ -3369,7 +3430,6 @@ transition: 0.5s ease-in-out;
   align-items: center;
   justify-content: center;
   padding: 10px;
-  border: 1px solid black;
 }
 
 .reportsModal>form>textarea {
@@ -3380,7 +3440,6 @@ transition: 0.5s ease-in-out;
   border-radius: 20px;
   background-color: white;
   max-height: 200px;
-  border: 1px solid black;
 }
 
 .reportsModal>form>button {
@@ -3432,7 +3491,8 @@ transition: 0.5s ease-in-out;
 }
 
 .warningMenu {
-  color: red;
+  font-weight: bold;
+  margin: 20px;
 }
 
 .menuFirstRow {
@@ -3935,6 +3995,7 @@ transition: 0.5s ease-in-out;
   width: 100px;
   border-radius: 20px;
 }
+
 .accountAction>button:hover {
   all: unset;
   padding: 10px;
@@ -3944,6 +4005,7 @@ transition: 0.5s ease-in-out;
   border-radius: 20px;
   transition: 0.3s ease-in-out;
 }
+
 .accountActionCon {
   display: flex;
   gap: 10px;
@@ -3980,53 +4042,12 @@ transition: 0.5s ease-in-out;
   gap: 10px;
 }
 
+
 .notifCon {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  padding: 20px;
-  gap: 10px;
-  width: 100%;
-  border-radius: 20px;
-  overflow-y: scroll;
-  grid-auto-rows: auto;
+  display: flex;
 }
 
-@media only screen and (max-width: 1510px) {
-  .notifCon {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
 
-@media only screen and (max-width: 1250px) {
-  .notifCon {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media only screen and (max-width: 1050px) {
-  .notifCon {
-    margin-top: 90px;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media only screen and (max-width: 860px) {
-  .notifCon {
-    margin-top: 90px;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media only screen and (max-width: 580px) {
-  .notifCon {
-    margin-top: 90px;
-    grid-template-columns: repeat(1, 1fr);
-  }
-}
-
-.notifCon::-webkit-scrollbar {
-  display: none;
-}
 
 .notifItem {
   background-color: white;
@@ -4190,9 +4211,11 @@ transition: 0.5s ease-in-out;
   width: 10%;
   border-radius: 20px;
 }
-.chatName{
+
+.chatName {
   font-weight: bold;
 }
+
 .chatCon>form>button:hover {
   background-color: #4f4cb0;
   color: white;
@@ -4210,17 +4233,17 @@ transition: 0.5s ease-in-out;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
--webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
 }
 
 .chatDate {
   padding-top: 10px;
-  
+
 }
 
- .rightMessage {
+.rightMessage {
   display: flex;
   align-self: flex-end;
   justify-content: flex-end;
@@ -4235,10 +4258,11 @@ transition: 0.5s ease-in-out;
   border-top-right-radius: 20px;
   color: white;
   position: relative;
-  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
--webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
 }
+
 .messageCon:hover {
   background-color: #00C49F;
   transition: 0.2s ease-in-out;
@@ -4253,7 +4277,7 @@ transition: 0.5s ease-in-out;
   outline: none;
 }
 
-.messageCon{
+.messageCon {
   transition: height 0.5s ease-in-out;
 }
 
@@ -4265,13 +4289,13 @@ transition: 0.5s ease-in-out;
   color: white;
   border-radius: 20px;
   height: 100%;
-  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
--webkit-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
-overflow: hidden;
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+  overflow: hidden;
 }
 
-.contactsCon{
+.contactsCon {
   height: inherit;
   overflow: hidden;
 }
@@ -4284,7 +4308,7 @@ overflow: hidden;
   overflow-y: auto;
 }
 
-.peopleItem{
+.peopleItem {
   background-color: #AFE1AF;
   padding: 10px;
   color: black;
@@ -4311,10 +4335,454 @@ overflow: hidden;
   .contactsForChat {
     display: none;
   }
-  .chatCon{
+
+  .chatCon {
     margin-top: 20%;
   }
+
   .chatTitle {
     text-align: center;
+  }
+}
+
+
+.tableBody tr td input {
+  width: 80%;
+}
+.tableBody tr td select {
+  padding: 10px;
+  border-radius: 20px;
+  height: 50px;
+  border: none;
+  outline: none;
+}
+
+.drinksBody select, input[type="date"] {
+  padding: 10px;
+  border-radius: 20px;
+  height: 50px;
+  border: none;
+  width: 80%;
+  outline: none;
+}
+
+.AddNewIngtext {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background-color: #4f4cb0;
+  height: 50px;
+  color: white;
+  width: 100%;
+  align-self: center;
+  margin-bottom: 10px;
+}
+
+.ingredientsCon table {
+  padding-bottom: 50px;
+}
+
+
+.AddNewIng .date {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+}
+
+.AddNewIng .dateText {
+  width: 80%;
+  background-color: #4f4cb0;
+  height: 50px;
+  padding: 10px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+
+}.AddNewIng input[type="Date"] {
+  border-radius: 10px;
+
+}
+
+.ingredientsCon table tbody input {
+  width: auto;
+  width: 60%;
+}
+.ingredientsCon table tbody select {
+  height: 40px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+}
+.ingredientsCon table input[type="Date"] {
+  width: auto;
+  width: 80%;
+}
+.equipmentTable{
+  overflow-y: scroll;
+  height: 90%;
+  padding-bottom: 180px;
+  height: 90vh;
+}
+
+.equipmentTable table {
+  width: 100%;
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.equipmentTable table thead  {
+  background-color: #4f4cb0;
+}
+
+.equipmentTable table thead th {
+  padding: 10px;
+  text-align: left;
+  color: white;
+}
+
+.equipmentTable table tbody  {
+  text-align: left;
+  color: white;
+  background-color: #AFE1AF;
+}
+.equipmentTable table tbody td   {
+  text-align: left;
+  padding: 10px;
+  color: black;
+  background-color: #AFE1AF;
+}
+
+
+
+.newEquipmentCon {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  gap: 10px;
+}
+.newEquipmentText, .newEquipmentCon button {
+  background-color: #4f4cb0;
+  height: 50px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight:  bold;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+.newEquipmentCon input, select{
+  height: 50px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.buttonCon {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.buttonCon button {
+padding: 10px;
+width: 100%;
+background-color: #4f4cb0;
+border-radius: 10px;
+border: none;
+outline: none;
+height: 50px;
+color: white;
+font-size: 15px;
+}
+
+.buttonCon .save, .buttonCon .CDel {
+  padding: 10px;
+  width: 100%;
+  background-color: green;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  height: 50px;
+  color: white;
+  font-size: 15px;
+  }
+
+  .EquipmentCon table input {
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    padding: 10px;
+  }
+
+  .EquipmentCon table select {
+    width: 80%;
+  }
+.menuItem {
+  position: relative;
+}
+  .best {
+    height: 100px;
+    width: 100px;
+    top: -5%;
+    left: -5%;
+    position: absolute;
+  }
+.menutitle {
+  width: 100%;
+  max-width: 50%;
+  word-wrap: break-word;
+}
+  .best img {
+    width: 100%;
+    object-fit: contain;
+    height: 100%;
+  }
+
+  .uniqueId {
+    margin-top: 10px;
+    color: #4f4cb0;
+  }
+
+  .registerSelect {
+    border: 1px solid black;
+  }
+
+  .firstHeader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    height: 40px;
+    margin-bottom: 20px;
+  }
+
+  .headerItem {
+    border: 1px solid #4f4cb0;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 30px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .navi {
+    background-color: #00C49F;
+    color: white;
+    border: none;
+  }
+
+  .isRes {
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .reportsHeader {
+    z-index: 22;
+  }
+
+  .notifCon {
+    width: 100%;
+  }
+
+.notifHeader {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+
+.notifItems {
+  padding: 10px 30px;
+  border: 1px solid #4f4cb0;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.notifCon {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+
+.notifContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-inline: 5%;
+  height: 100%;
+  max-height: 90%;
+  padding: 20px;
+  overflow-y: scroll;
+  background-color: #4f4cb0;
+  border-radius: 20px;
+}
+
+.buttons {
+  height: 100%;
+  padding: 10px;
+}
+.skel {
+  height: 30px;
+  width: 30px;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.loads {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.dels {
+  background-color: #960018;
+  color: white;
+}
+
+.dels .firstUpdate span:nth-child(2) {
+  color: #AFE1AF;
+}
+
+.moreDetails {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.moreInf {
+  height: 30px;
+  width: 100px;
+  border-radius: 20px;
+  background-color: #4f4cb0;
+  outline: none;
+  border: none;
+  color: white;
+
+}
+
+
+.map {
+  height: 75vh;
+  background-color: #00C49F;
+  width: 100%;
+  position: sticky;
+  top: 28%;
+  z-index: 2;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.mapAbso {
+  position: absolute;
+  right: 0;
+  top: -10%;
+  height: 20%;
+  overflow: visible;
+  width: 10%;
+  z-index: 999;
+}
+
+.mapAbso img {
+  width: 100%;
+  height: 100%;
+}
+
+.mapContent {
+  height: 90%;
+  width: 100%;
+  display: flex;
+  gap: 5px;
+  position: relative;
+}
+
+.mapContent .firstMap {
+  background-color: blue ;
+  width: 50%;
+  height: 100%;
+}
+.firstMap {
+  border-radius: 20px;
+  overflow: hidden;
+}
+.secMap {
+  background-color: bisque;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.absoHover {
+  height: 100%;
+  width: 50%;
+  position: absolute;
+  left: 0;
+  background-color: #3A5311;
+  border-radius: 20px;
+  z-index: 22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  color: white;
+}
+
+
+.firstMap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.mapEl {
+  width: 100%;
+  height: 100%;
+}
+
+@media only screen and (max-width: 800px) {
+  .absoHover {
+    display: none;
+  }
+  .secMap {
+    opacity: 1;
   }
 }

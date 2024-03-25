@@ -7,8 +7,10 @@ import { authentication } from '../authentication';
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [uid, setUid] = useState('')
+  const [loading, setLoad] = useState(false)
 
-  useEffect(() => {
+
+  useEffect(() => { 
     const unsub = onAuthStateChanged(authentication, (acc) => {
       if (acc) {
         setUid(acc.uid)
@@ -17,9 +19,27 @@ const Sidebar = () => {
     return () => { unsub() }
   }, [uid])
 
+
+  const [userPos, setUserPos] = useState({ Position: '' });
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/accInfos')
+      .then((response) => {
+        const isManager = response.data.filter((item) => item.Uid === uid);
+        setUserPos(isManager[0].Position);
+        setLoad(true)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [uid]);
+  
+  
+
   const handleTab = (tab) => {
     setActiveTab(tab);
   };
+
   const [inv, setInv] = useState([])
   const [menu, setMenu] = useState([])
   const [reports, setRep] = useState([])
@@ -56,6 +76,9 @@ const Sidebar = () => {
       })
   }, [uid])
 
+
+
+
   return (
     <div className='sideBar'>
       <div className="sidebarFirst">
@@ -63,14 +86,15 @@ const Sidebar = () => {
           CE
         </div>
 
-        <div className="buttons">
+        {loading ?
+          <div className="buttons">
           <NavLink
             to="/system"
             onClick={() => handleTab('home')}
             className={`btns`}
           >
             <ion-icon name="home-outline"></ion-icon>
-          <span> {reports.length + inv.length + menu.length + edited.length}</span>
+            <span> {reports.length + inv.length + menu.length + edited.length}</span>
           </NavLink>
           <NavLink
             to="/system/inventory"
@@ -93,14 +117,18 @@ const Sidebar = () => {
           >
             <ion-icon name="folder-open-outline" />
           </NavLink>
-          <NavLink
-            to="/system/security"
-            onClick={() => handleTab('security')}
-            className={`btns`}
-          >
-            <ion-icon name="lock-closed-outline" />
-          </NavLink>
-          
+          {userPos === "Staff" ?
+            (<></>) :
+            <>
+              <NavLink
+                to="/system/security"
+                onClick={() => handleTab('security')}
+                className={`btns`}
+              >
+                <ion-icon name="lock-closed-outline" />
+              </NavLink>
+            </>
+          }
           <NavLink
             to="/system/notification"
             onClick={() => handleTab('notification')}
@@ -114,9 +142,13 @@ const Sidebar = () => {
             onClick={() => handleTab('notification')}
             className={`btns`}
           >
-           <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+            <ion-icon name="chatbox-ellipses-outline"></ion-icon>
           </NavLink>
-        </div>
+        </div>  : 
+          <div className="loads">
+            Loading..
+          </div>
+        }
       </div>
       <Logout />
     </div>

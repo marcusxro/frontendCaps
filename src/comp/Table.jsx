@@ -21,6 +21,9 @@ const Table = ({ searchedItem }) => {
   const [uid, setUid] = useState('')
   const [getPos, setGetPos] = useState('')
   const location = useLocation()
+  const [editedExpiry, setExpiry] = useState('')
+  const [editedCondition, setCondition] = useState('')
+
 
   useEffect(() => {
     if (location) {
@@ -46,19 +49,21 @@ const Table = ({ searchedItem }) => {
     })
     return () => { unsub() }
   }, [uid])
-  
+const [userName, setUsername] = useState('')
   useEffect(() => {
     setLoading(false)
     axios.get('http://localhost:8080/accInfos')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         setGetPos(filteredData[0].Position)
+        setUsername(filteredData[0].Firstname + " " + filteredData[0].Lastname )
         setLoading(true)
       })
       .catch((error) => {
         //
       });
   }, [data, getPos]);
+
 
 
   useEffect(() => {
@@ -74,32 +79,76 @@ const Table = ({ searchedItem }) => {
   const handleConfirmDelete = (id) => {
     const newData = data.filter(item => item._id !== id);
     setData(newData);
+
     setConfirmIndex(null);
-    axios.delete(`http://localhost:8080/item/${id}`)
-      .then(() => {
-        console.log("deleted");
-      }).catch((err) => {
-        console.log("error", err);
-      });
+    const newDatas = data.filter(item => item._id === id);
+
+
+    console.log(uid)
+    axios.post(`http://localhost:8080/DeletedInv`, {
+      DeletedProductName: newDatas[0].ProductName,
+      DeletedCategory: newDatas[0].Category,
+      DeletedWeight: newDatas[0].Weight,
+      DeletedQuantity: newDatas[0].Quantity,
+      DeletedOverQuan: newDatas[0].OverQuan,
+      DeletedExpiryDate: newDatas[0].ExpiryDate,
+      DeletedCondition: newDatas[0].Condition,
+      DeletedEmail: newDatas[0].Email,
+      DeletedFullname: newDatas[0].Fullname,
+      DeletedDate: Date.now(),
+      DeletedUid: newDatas[0].Uid,
+      CurrentUid: uid,
+      userNameDel: userName
+    }).then(() => {
+      console.log("SENT DELTED DATA")
+      axios.delete(`http://localhost:8080/item/${id}`)
+        .then(() => {
+          console.log("deleted");
+        }).catch((err) => {
+          console.log("error", err);
+        });
+    }).catch((err) => {
+      console.log("error", err)
+    });
   };
 
-  const handleEdit = (index, value, weight, quantity) => {
+  const handleEdit = (index, value, weight, quantity, Condition, Expiry) => {
     setEditIndex(index);
     setEditValue(value);
     setWeight(weight);
     setQuan(quantity);
+    setCondition(Condition)
+    setExpiry(Expiry)
   };
 
-  const handleSaveEdit = async (productId) => {
+  const removeVal = () => {
+    setEditValue('');
+    setWeight('');
+    setQuan('');
+    setCondition('')
+    setExpiry('')
+  }
 
+  const handleSaveEdit = async (productId) => {
     console.log(productId);
+
     try {
+      if(!editValue || !editedWeight || !editedQuan || !editedCondition || !editedExpiry) {
+        return alert("please type something")
+      }
       await axios.put(`http://localhost:8080/editInventory/${productId}`, {
         ProductName: editValue,
         Weight: editedWeight,
         Quantity: editedQuan,
+        Condition: editedCondition,
+        ExpiryDate: editedExpiry,
         Date: Date.now()
       }).then(() => {
+        setEditValue('');
+        setWeight('');
+        setQuan('');
+        setCondition('')
+        setExpiry('')
         console.log("edited")
       }).catch((err) => {
         console.log("error", err)
@@ -138,7 +187,7 @@ const Table = ({ searchedItem }) => {
     }
     setLoading(true);
   }, [quer, data, showItem, location]);
-  
+
 
   return (
     <div className="tableCon">
@@ -153,24 +202,24 @@ const Table = ({ searchedItem }) => {
               setSearchedItem(null);
             }}
           />
-           {getPos === "Staff" ? (<></>) : (
+          {getPos === "Staff" ? (<></>) : (
             <button onClick={viewModal}>
-            {newItem ? (
-              <span>
-                Close modal <div className="openModal">
-                  <ion-icon name="close-circle-outline"></ion-icon>
-                </div>
-              </span>
-            ) : (
-              <span>
-                Add new item <div className="exitModal">
-                  <ion-icon name="add-circle-outline"></ion-icon>
-                </div>
-              </span>
-            )}
-          </button>
-           )}
-          
+              {newItem ? (
+                <span>
+                  Close modal <div className="openModal">
+                    <ion-icon name="close-circle-outline"></ion-icon>
+                  </div>
+                </span>
+              ) : (
+                <span>
+                  Add new item <div className="exitModal">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                  </div>
+                </span>
+              )}
+            </button>
+          )}
+
         </div>
       ) : (
         <>loading...</>
@@ -183,29 +232,49 @@ const Table = ({ searchedItem }) => {
             <thead>
               <tr>
                 <th>Product Name</th>
-                <th>Category</th>
-                <th>Weight</th>
+                <th>Type</th>
+                <th>Size</th>
                 <th>Quantity</th>
-                <th>time</th>
-                <th>Written by</th>
-                {getPos === "Staff" ? null : <th>Action</th>}
+                <th>Uploaded on</th>
+                <th>Condition</th>
+                <th>Expiry Date</th>
+                <th>Added by</th>
+                {getPos === "Manager" ? null : <th>Action</th>}
               </tr>
             </thead>
             <tbody className='tableBody'>
-            {showItem == true ? "No items found!" : ""}
+              {showItem == true ? "No items found!" : ""}
               {filtedItem ? (
-                filtedItem.map((item) => (
+                filtedItem.slice().reverse().map((item) => (
                   <tr className='productList' key={item._id}>
                     <td>{editIndex === item._id ?
-                      <input value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                      <input required value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
                     <td>{item.Category}</td>
                     <td>{editIndex === item._id ?
-                      <input type='number' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                      <input required type='number'  value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
                     <td>{editIndex === item._id ?
-                      <input type='number' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                      <input required type='number'  value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+
+                    <td>{editIndex === item._id ?
+                      <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                        <option value="">Enter product condition</option>
+                        <option value="Fresh">Fresh</option>
+                        <option value="Frozen">Frozen</option>
+                        <option value="Expired">Expired</option>
+                        <option value="Damaged">Damaged</option>
+                        <option value="Spoiled">Spoiled</option>
+                        <option value="Prepared">Prepared</option>
+                      </select>
+
+                      : item.Condition ? item.Condition : "N/A"}</td>
+
+                    <td>{editIndex === item._id ?
+                      <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+
+
                     <td>{item.Fullname}</td>
-                    {getPos === "Staff" ? null : (
+                    {getPos === "Manager" ? null : (
                       <td className='btnCon'>
                         <button onClick={() => handleDelete(item._id)}>Delete</button>
                         {confirmIndex === item._id ? (
@@ -215,7 +284,7 @@ const Table = ({ searchedItem }) => {
                           </>
                         ) : (
                           <>
-                            {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity)}>Edit</button>}
+                            {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
                           </>
                         )}
                       </td>
@@ -225,10 +294,10 @@ const Table = ({ searchedItem }) => {
               ) : (
                 data.map((product, index) => (
                   <tr key={product._id}>
-                    <td>{editIndex === index ? <input value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : product.ProductName}</td>
+                    <td>{editIndex === index ? <input required value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : product.ProductName}</td>
                     <td>{product.Category}</td>
-                    <td>{editIndex === index ? <input value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : product.Weight}</td>
-                    <td>{editIndex === index ? <input value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : product.Quantity}</td>
+                    <td>{editIndex === index ? <input required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : product.Weight}</td>
+                    <td>{editIndex === index ? <input required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : product.Quantity}</td>
                     <td>{moment(new Date(parseInt(product.Date, 10))).fromNow()}</td>
                     <td className='btnCon'>
                       {confirmIndex === index ? (

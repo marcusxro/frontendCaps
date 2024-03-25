@@ -34,7 +34,11 @@ import expressLogo from '../images/express-removebg-preview.png'
 import firebaseLogo from '../images/firebase-removebg-preview.png'
 import mongoLogo from '../images/mongoDb-removebg-preview.png'
 import Marquee from 'react-fast-marquee'
-
+import mapAbsoImg from '../images/Map_symbol_location_02 (1).png'
+import shopEmploee from '../images/shop.jpg'
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css"
+import L from 'leaflet';
 
 const Static = () => {
   const hoverz = useRef(null)
@@ -228,7 +232,55 @@ const Static = () => {
     });
 
     return () => unSub();
+
   }, [nav]);
+
+
+  const [SlideHori, setSlide] = useState('')
+  const goHori = useRef(null)
+
+  const slideLeft = () => {
+    gsap.to('.absoHover', {
+      x: 0,
+      duration: 0.8,
+      backgroundColor: "#cc9999"
+    });
+    gsap.to('.firstMap', {
+      opacity: 0,
+      x: 100,
+      duration: 0.5
+    })
+    gsap.to('.secMap', {
+      opacity: 1,
+      x: 0
+    })
+
+  };
+
+  const slideRight = () => {
+    gsap.to('.absoHover', {
+      x: "100%",
+      backgroundColor: "#3A5311",
+      duration: 0.8
+    });
+
+    gsap.to('.firstMap', {
+      opacity: 1,
+      x: 0
+    })
+    gsap.to('.secMap', {
+      opacity: 0,
+      x: -100
+    })
+
+
+  };
+
+  const milkTeas = L.icon({
+  iconUrl: milkTea,
+  iconSize: [40, 40], // Adjust the size of the icon as needed
+  iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
+});
 
   return (
     <div>
@@ -271,7 +323,7 @@ const Static = () => {
               nav('/register')
             }}
             className="login">Register</button>)}
-          <button className="about" onClick={() => {window.location = "#contact"}}>Contact us</button>
+          <button className="about" onClick={() => { window.location = "#contact" }}>Contact us</button>
         </div>
       </header>
       <div className="big">
@@ -832,7 +884,31 @@ const Static = () => {
             </SwiperSlide>
           </Swiper>
         </div>
-
+        <div className="map">
+          <div className="mapAbso">
+            <img src={mapAbsoImg} alt="" />
+          </div>
+          <div className="mapContent">
+            <div ref={goHori} className="absoHover">
+              Kindly click the images to slide
+            </div>
+            <div className="firstMap" onClick={slideLeft}>
+              <img src={shopEmploee} alt="" />
+            </div>
+            <div className="secMap" onClick={slideRight}>
+              <MapContainer className='mapEl' center={[14.3747447, 120.9254805]} zoom={20} style={{ width: '100%', height: '100%' }}>
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+                <Marker position={[14.3747447, 120.9254805]} icon={milkTeas}>
+                  <Popup>
+                    Greengate Homes, Imus, 4103 Cafe Eunoia
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            </div>
+          </div>
+        </div>
         <div className="third">
           <div className="reachOut">
 
@@ -860,6 +936,7 @@ const Static = () => {
             </form>
           </div>
         </div>
+        z
         <div className="fourth" id='contact'>
 
         </div>

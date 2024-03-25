@@ -13,7 +13,37 @@ const Ingredients = ({ searchedItem }) => {
     const [editedWeight, setWeight] = useState('');
     const [editedQuan, setQuan] = useState('');
     const [redo, setRedo] = useState('')
+    const [Brand, setBrand] = useState('')
+    const [ExpiryDate, setExpiryDate] = useState('')
+    const [itemType, setItemType] = useState('')
+    const [uid, setUid] = useState('')
+    const [getPos, setGetPos] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [fullName, setFullname] = useState('')
 
+
+    useEffect(() => {
+        const unsub = onAuthStateChanged(authentication, (acc) => {
+            if (acc) {
+                setUid(acc.uid)
+            }
+        })
+        return () => { unsub() }
+    }, [uid])
+
+    useEffect(() => {
+        setLoading(false)
+        axios.get('http://localhost:8080/accInfos')
+            .then((response) => {
+                const filteredData = response.data.filter((item) => item.Uid === uid);
+                setGetPos(filteredData[0].Position)
+                setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
+                setLoading(true)
+            })
+            .catch((error) => {
+                //
+            });
+    }, [data, getPos]);
 
     useEffect(() => {
         if (searchedItem) {
@@ -48,23 +78,41 @@ const Ingredients = ({ searchedItem }) => {
     };
 
     const handleConfirmDelete = (id) => {
-        const newData = data.filter(item => item._id !== id);
+        const newData = data.filter(item => item._id === id);
         setData(newData);
         setConfirmId(null);
-        axios.delete(`http://localhost:8080/ingItem/${id}`)
-            .then(() => {
-                console.log("deleted");
-            })
-            .catch((err) => {
-                console.log("error", err);
-            });
+
+        axios.post(`http://localhost:8080/DeletedIng`, {
+            DeletedIngName: newData[0].IngName,
+            DeletedWeight: newData[0].Weight,
+            DeletedCategory: newData[0].Category,
+            DeletedMeasure: newData[0].Measure,
+            DeletedQuantity: newData[0].Quantity,
+            DeletedEmail: newData[0].Email,
+            DeletedDate: newData[0].Date,
+            DeletedFullname: newData[0].Fullname,
+            userNameDel: fullName
+        }).then(() => {
+            console.log("SENT")
+            axios.delete(`http://localhost:8080/ingItem/${id}`)
+                .then(() => {
+                    console.log("deleted");
+                })
+                .catch((err) => {
+                    console.log("error", err);
+                });
+        }).catch((err) => {
+            console.log(err)
+        })
     };
 
-    const handleEdit = (index, value, weight, quantity) => {
+    const handleEdit = (index, value, weight, quantity, brand, date) => {
         setEditIndex(index);
         setEditValue(value);
         setWeight(weight);
         setQuan(quantity);
+        setExpiryDate(date)
+        setBrand(brand)
     };
 
     const handleSaveEdit = async (e, productId) => {
@@ -76,6 +124,9 @@ const Ingredients = ({ searchedItem }) => {
                 IngName: editValue,
                 Weight: editedWeight,
                 Quantity: editedQuan,
+                Brand: Brand,
+                Category: itemType,
+                ExpiryDate: ExpiryDate,
                 Date: Date.now()
             });
             console.log("edited");
@@ -85,6 +136,7 @@ const Ingredients = ({ searchedItem }) => {
         }
     };
     const [showItem, setShowItem] = useState(false)
+    
     useEffect(() => {
         const filteredItems = data.filter(item => item.IngName.toLowerCase().includes(quer.toLowerCase()));
         if (filteredItems.length > 0) {
@@ -97,32 +149,7 @@ const Ingredients = ({ searchedItem }) => {
         setFil(filteredItems);
     }, [quer, data]);
 
-    const [uid, setUid] = useState('')
-    const [getPos, setGetPos] = useState('')
-    const [loading, setLoading] = useState(false)
 
-
-    useEffect(() => {
-        const unsub = onAuthStateChanged(authentication, (acc) => {
-            if (acc) {
-                setUid(acc.uid)
-            }
-        })
-        return () => { unsub() }
-    }, [uid])
-
-    useEffect(() => {
-        setLoading(false)
-        axios.get('http://localhost:8080/accInfos')
-            .then((response) => {
-                const filteredData = response.data.filter((item) => item.Uid === uid);
-                setGetPos(filteredData[0].Position)
-                setLoading(true)
-            })
-            .catch((error) => {
-                //
-            });
-    }, [data, getPos]);
 
     return (
         <div className='ingredientsCon'>
@@ -136,55 +163,74 @@ const Ingredients = ({ searchedItem }) => {
                         setRedo(null);
                     }}
                 />
-                {getPos === 'Staff' ? (<></>) : (
+
                     <button onClick={viewModal}>{newItem ?
                         <span>Close modal <div className="openModal">
                             <ion-icon name="close-circle-outline"></ion-icon></div></span> :
                         <span>Add new item <div className="exitModal">
                             <ion-icon name="add-circle-outline"></ion-icon></div></span>}
-                    </button>)
-                }
+                    </button>
+                
             </div>
             <table>
                 <thead>
                     <tr>
                         <th>Ingredients name</th>
-                        <th>Category</th>
+                        <th>Brand</th>
+                        <th>Expiry date</th>
+                        <th>Type</th>
                         <th>Weight</th>
                         <th>Quantity</th>
-                        <th>Time</th>
-                        <th>Written by</th>
-                        {getPos === 'Staff' ? (<></>) : (
-                        <th>Actions</th>
+                        <th>Uploaded on</th>
+                        <th>Added by</th>
+                        {getPos === 'Manager' ? (<></>) : (
+                            <th>Actions</th>
                         )}
                     </tr>
                 </thead>
                 {newItem ? <AddNewIng /> : null}
                 <tbody>
                     {showItem == true ? "No items found!" : ""}
-                    {filtered && filtered.map((item, index) => (
+                    {filtered && filtered.slice().reverse().map((item, index) => (
                         <tr key={item._id}>
                             <td>{editIndex === index ? <input className='ingInput' value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : item.IngName}</td>
-                            <td>{item.Category}</td>
+                            <td>{editIndex === index ? <input className='ingInput' value={Brand} onChange={(e) => { setBrand(e.target.value) }} /> : item.Brand ? item.Brand : "N/A"}</td>
+
+                            <td>{editIndex === index ? <input className='ingInput' type='Date' value={ExpiryDate} onChange={(e) => setExpiryDate(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+
+
+                            <td>
+                                {editIndex == index ? <select required value={itemType} onChange={(e) => { setItemType(e.target.value) }}>
+                                    <option value="">Enter ingredient type</option>
+                                    <option value="Fresh">Fresh</option>
+                                    <option value="Frozen">Frozen</option>
+                                    <option value="Dried">Dried</option>
+                                    <option value="Powdered">Powdered</option>
+                                    <option value="Sliced">Sliced</option>
+                                </select> : item.Category}
+                            </td>
                             <td>{editIndex === index ? <input className='ingInput' type='number' value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+
+
+
                             <td>{editIndex === index ? <input className='ingInput' type='number' value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                             <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
                             <td>{item.Fullname}</td>
-                            {getPos === 'Staff' ? (<></>) : (
-                            <td className='btnCon'>
-                                <button onClick={() => handleDelete(item._id)}>Delete</button>
-                                {confirmId === item._id ? (
-                                    <>
-                                        <button className='confirmBtn' onClick={() => handleConfirmDelete(item._id)}>Confirm</button>
-                                        <button className='cancelBtn' onClick={() => setConfirmId(null)}>Cancel</button>
-                                    </>
-                                ) : (
-                                    <>
-                                        {editIndex === index ? <button onClick={(e) => handleSaveEdit(e, item._id)}>Save</button> : <button onClick={() => handleEdit(index, item.IngName, item.Weight, item.Quantity)}>Edit</button>}
+                            {getPos === 'Manager' ? (<></>) : (
+                                <td className='btnCon'>
+                                    <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                    {confirmId === item._id ? (
+                                        <>
+                                            <button className='confirmBtn' onClick={() => handleConfirmDelete(item._id)}>Confirm</button>
+                                            <button className='cancelBtn' onClick={() => setConfirmId(null)}>Cancel</button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            {editIndex === index ? <button onClick={(e) => handleSaveEdit(e, item._id)}>Save</button> : <button onClick={() => handleEdit(index, item.IngName, item.Weight, item.Quantity, item.Brand, item.ExpiryDate)}>Edit</button>}
 
-                                    </>
-                                )}
-                            </td>
+                                        </>
+                                    )}
+                                </td>
                             )}
                         </tr>
                     ))}

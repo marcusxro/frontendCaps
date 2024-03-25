@@ -14,6 +14,9 @@ const Categories = () => {
     const [editedWeight, setWeight] = useState('')
     const [editedQuan, setQuan] = useState('')
     const [loading, setLoading] = useState(false)
+    const [editedExpiry, setExpiry] = useState('')
+    const [editedCondition, setCondition] = useState('')
+
 
     useEffect(() => {
         axios.get('http://localhost:8080/menuDetails')
@@ -24,10 +27,10 @@ const Categories = () => {
             });
     }, [data]);
 
-    const drinksData = data.filter((item) => item.Category === "Drinks");
+    const NachosData = data.filter((item) => item.Category === "Nachos");
     const snacksData = data.filter((item) => item.Category === "Snacks");
-    const teaData = data.filter((item) => item.Category === "Tea");
-    console.log(drinksData)
+    const CrofflesData = data.filter((item) => item.Category === "Croffles");
+    const BurgerData = data.filter((item) => item.Category === "Burger");
 
     const handleDelete = (index) => {
         setConfirmIndex(index);
@@ -59,6 +62,8 @@ const Categories = () => {
                 ProductName: editValue,
                 Weight: editedWeight,
                 Quantity: editedQuan,
+                Condition: editedCondition,
+                ExpiryDate: editedExpiry,
                 Date: Date.now()
             }).then(() => {
                 console.log("edited")
@@ -103,17 +108,19 @@ const Categories = () => {
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
                             <tr>
-                                <th>Drinks Name</th>
-                                <th>Category</th>
-                                <th>Weight</th>
+                                <th>Product Name</th>
+                                <th>Type</th>
+                                <th>Size</th>
                                 <th>Quantity</th>
-                                <th>Date</th>
-                                <th>Written by</th>
-                                {getPos === "Staff" ? (<></>) : (<th>Actions</th>)}
+                                <th>Uploaded on</th>
+                                <th>Condition</th>
+                                <th>Expiry Date</th>
+                                <th>Added by</th>
+                                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
                             </tr>
                         </thead>
                         <tbody className='drinksBody'>
-                            {drinksData.map((item) => (
+                            {NachosData.map((item) => (
                                 <tr className='tdForDrink' key={item._id}>
                                     <td>{editIndex === item._id ?
                                         <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
@@ -123,8 +130,23 @@ const Categories = () => {
                                     <td>{editIndex === item._id ?
                                         <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                    <td>{editIndex === item._id ?
+                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                            <option value="">Enter product condition</option>
+                                            <option value="Fresh">Fresh</option>
+                                            <option value="Frozen">Frozen</option>
+                                            <option value="Expired">Expired</option>
+                                            <option value="Damaged">Damaged</option>
+                                            <option value="Spoiled">Spoiled</option>
+                                            <option value="Prepared">Prepared</option>
+                                        </select>
+
+                                        : item.Condition ? item.Condition : "N/A"}</td>
+
+                                    <td>{editIndex === item._id ?
+                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
                                     <td>{item.Fullname}</td>
-                                    {getPos === "Staff" ? (<></>) : (
+                                    {getPos === "Manager" ? (<></>) : (
                                         <td className='btnCon'>
                                             <button onClick={() => handleDelete(item._id)}>Delete</button>
                                             {confirmIndex === item._id ? (
@@ -148,13 +170,15 @@ const Categories = () => {
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
                             <tr>
-                                <th>Snacks Name</th>
-                                <th>Category</th>
-                                <th>Weight</th>
+                                <th>Product Name</th>
+                                <th>Type</th>
+                                <th>Size</th>
                                 <th>Quantity</th>
-                                <th>Date</th>
-                                <th>Written by</th>
-                                {getPos === "Staff" ? (<></>) : (<th>Actions</th>)}
+                                <th>Uploaded on</th>
+                                <th>Condition</th>
+                                <th>Expiry Date</th>
+                                <th>Added by</th>
+                                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
                             </tr>
                         </thead>
                         <tbody className='drinksBody'>
@@ -168,8 +192,23 @@ const Categories = () => {
                                     <td>{editIndex === item._id ?
                                         <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                    <td>{editIndex === item._id ?
+                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                            <option value="">Enter product condition</option>
+                                            <option value="Fresh">Fresh</option>
+                                            <option value="Frozen">Frozen</option>
+                                            <option value="Expired">Expired</option>
+                                            <option value="Damaged">Damaged</option>
+                                            <option value="Spoiled">Spoiled</option>
+                                            <option value="Prepared">Prepared</option>
+                                        </select>
+
+                                        : item.Condition ? item.Condition : "N/A"}</td>
+
+                                    <td>{editIndex === item._id ?
+                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
                                     <td>{item.Fullname}</td>
-                                    {getPos === "Staff" ? (<></>) : (
+                                    {getPos === "Manager" ? (<></>) : (
                                         <td className='btnCon'>
                                             <button onClick={() => handleDelete(item._id)}>Delete</button>
                                             {confirmIndex === item._id ? (
@@ -193,17 +232,19 @@ const Categories = () => {
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
                             <tr>
-                                <th>Tea Name</th>
-                                <th>Category</th>
-                                <th>Weight</th>
+                            <th>Product Name</th>
+                                <th>Type</th>
+                                <th>Size</th>
                                 <th>Quantity</th>
-                                <th>Date</th>
-                                <th>Written by</th>
-                                {getPos === "Staff" ? (<></>) : (<th>Actions</th>)}
+                                <th>Uploaded on</th>
+                                <th>Condition</th>
+                                <th>Expiry Date</th>
+                                <th>Added by</th>
+                                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
                             </tr>
                         </thead>
                         <tbody className='drinksBody'>
-                            {teaData.map((item) => (
+                            {CrofflesData.map((item) => (
                                 <tr className='tdForDrink' key={item._id}>
                                     <td>{editIndex === item._id ?
                                         <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
@@ -213,8 +254,85 @@ const Categories = () => {
                                     <td>{editIndex === item._id ?
                                         <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                    <td>{editIndex === item._id ?
+                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                            <option value="">Enter product condition</option>
+                                            <option value="Fresh">Fresh</option>
+                                            <option value="Frozen">Frozen</option>
+                                            <option value="Expired">Expired</option>
+                                            <option value="Damaged">Damaged</option>
+                                            <option value="Spoiled">Spoiled</option>
+                                            <option value="Prepared">Prepared</option>
+                                        </select>
+
+                                        : item.Condition ? item.Condition : "N/A"}</td>
+
+                                    <td>{editIndex === item._id ?
+                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
                                     <td>{item.Fullname}</td>
-                                    {getPos === "Staff" ? (<></>) : (
+                                    {getPos === "Manager" ? (<></>) : (
+                                        <td className='btnCon'>
+                                            <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                            {confirmIndex === item._id ? (
+                                                <>
+                                                    <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                                    <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity)}>Edit</button>}
+                                                </>
+                                            )}
+                                        </td>
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </SwiperSlide>
+                <SwiperSlide>
+                    <table className='drinksCon'>
+                        <thead className='drinkTitles'>
+                            <tr>
+                            <th>Product Name</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Quantity</th>
+                                <th>Uploaded on</th>
+                                <th>Condition</th>
+                                <th>Expiry Date</th>
+                                <th>Added by</th>
+                                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
+                            </tr>
+                        </thead>
+                        <tbody className='drinksBody'>
+                            {BurgerData.map((item) => (
+                                <tr className='tdForDrink' key={item._id}>
+                                    <td>{editIndex === item._id ?
+                                        <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                                    <td>{item.Category}</td>
+                                    <td>{editIndex === item._id ?
+                                        <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                                    <td>{editIndex === item._id ?
+                                        <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                                    <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                    <td>{editIndex === item._id ?
+                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                            <option value="">Enter product condition</option>
+                                            <option value="Fresh">Fresh</option>
+                                            <option value="Frozen">Frozen</option>
+                                            <option value="Expired">Expired</option>
+                                            <option value="Damaged">Damaged</option>
+                                            <option value="Spoiled">Spoiled</option>
+                                            <option value="Prepared">Prepared</option>
+                                        </select>
+
+                                        : item.Condition ? item.Condition : "N/A"}</td>
+
+                                    <td>{editIndex === item._id ?
+                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                                    <td>{item.Fullname}</td>
+                                    {getPos === "Manager" ? (<></>) : (
                                         <td className='btnCon'>
                                             <button onClick={() => handleDelete(item._id)}>Delete</button>
                                             {confirmIndex === item._id ? (

@@ -5,6 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import { authentication } from '../authentication';
 import { onAuthStateChanged } from 'firebase/auth';
+import BestMenu from '../images/bestSeller.png'
 
 
 const Menu = () => {
@@ -145,6 +146,11 @@ useEffect(() => {
               <div className="menutitle">
                 {item.ProductName}
               </div>
+              {item.Quantity / item.OverQuan * 100 >= 95 &&
+              <div className="best">
+                <img src={BestMenu} alt="" />
+              </div>
+              }
               <div className="availability">
                 {handleEdit === item._id ? <input type='number'
                  value={editedQuantity} 
@@ -169,24 +175,28 @@ useEffect(() => {
                 </div>
                 <div className="warning">
                   {
-                    parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 90 ?
-                      <div className='warningMenu'>WARNING (PLEASE UPDATE STOCK COUNTS)</div> :
-                      parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 80 ?
-                        <>WARNING (UPDATE STOCK COUNTS)</> :
-                        parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 60 ?
-                          <>consider updating</> :
-                          (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 30 ?
-                            <>Good</> :
-                            (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 0.000 ?
-                              <>Very Good</> :
-                              null
+                parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 100 ?
+                <div className='warningMenu' style={{ color: 'red' }}>Stock Count Exceeds Capacity (Please Update)</div> :
+                parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 90 ?
+                  <div className='warningMenu' style={{ color: 'orange' }}>Stock Running Dangerously Low (Please Update)</div> :
+                  parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 80 ?
+                    <div className='warningMenu' style={{ color: 'yellow' }}>Stock Level Low (Update Required)</div> :
+                    parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 60 ?
+                      <div className='warningMenu' style={{ color: 'green' }}>Consider Updating Stock</div> :
+                      (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 30 ?
+                        <div className='warningMenu' style={{ color: 'blue' }}>Adequate Stock</div> :
+                        (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 0.000 ?
+                          <div className='warningMenu' style={{ color: 'purple' }}>Stock in Abundance</div> :
+                          null
+              
+                 
                             )
                        )
                   }
   
                 </div>
               </div>
-              {getPos === "Staff" ? (<button>you have no access</button>) : (
+              {getPos === "Manager" ? (<button>you have no access</button>) : (
                 handleEdit === item._id ? (<button onClick={() => { editQuantity(null); handleEditQuan(item._id) }}>save</button>) :
                 (<button onClick={() => { setEdit(true); editQuantity(item._id,  item.Quantity, item.OverQuan)}}>edit</button>)
               )}

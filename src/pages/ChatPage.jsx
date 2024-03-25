@@ -4,7 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { authentication } from '../authentication'
 import axios from 'axios'
 import moment from 'moment'
-
+import gsap from 'gsap'
 const ChatPage = () => {
     const [uid, setUid] = useState('')
     const [userDetails, setUserDetails] = useState([])
@@ -14,6 +14,7 @@ const ChatPage = () => {
         const unsub = onAuthStateChanged(authentication, (acc) => {
             if (acc) {
                 setUid(acc.uid);
+                
             }
         });
         return () => { unsub(); };
@@ -66,10 +67,28 @@ const ChatPage = () => {
             Uid: uid
         }).then(() => {
             console.log("message sent!")
+            gsap.to(".rightMessage", {
+                display: "flex",
+                alignSelf: "flex-end",
+                justifyContent: "flex-end",
+                flexDirection: "column",
+                width: "100%",
+                maxWidth: "500px",
+                backgroundColor: "#4f4cb0",
+                padding: "20px",
+                height: "auto",
+                borderTopLeftRadius: "20px",
+                borderBottomLeftRadius: "20px",
+                borderTopRightRadius: "20px",
+                color: "white",
+                position: "relative",
+                boxShadow: "0px 0px 6px 0px rgba(0, 0, 0, 0.75)",
+                ease: "power1.inOut" // easing function
+            });
             setMessage('')
             setTimeout(() => {
                 chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight - chatContainerRef.current.clientHeight;
-            }, 300);
+            }, 500);
 
         }).catch((err) => {
             console.log(err)
@@ -90,6 +109,8 @@ const ChatPage = () => {
                 console.log(error)
             });
     }, [peopleData]);
+
+
 
     return (
         <div className='chatPage'>

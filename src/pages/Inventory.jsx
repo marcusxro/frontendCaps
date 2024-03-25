@@ -9,17 +9,15 @@ import Ingredients from './Ingredients';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authentication } from '../authentication';
 import { onAuthStateChanged } from 'firebase/auth';
-
+import Equipment from './Equipment';
 const Inventory = () => {
   const [data, setData] = useState([])
   const location = useLocation();
   const [searchedItem, setSearched] = useState(null);
   const { state } = location;
-
   // Check if state exists and handle accordingly
   const itemName = state ? (state.firstValue || state) : null;
   const itemBool = state ? (state.secondValue || state) : null;
-
   useEffect(() => {
     if (location.state) {
       console.log(location)
@@ -33,7 +31,6 @@ const Inventory = () => {
       }
     }
   }, [state, itemName]);
-
   const nav = useNavigate()
   useEffect(() => {
     const unbsub = onAuthStateChanged(authentication, (acc) => {
@@ -45,7 +42,6 @@ const Inventory = () => {
     })
     return () => { unbsub() }
   }, [])
-
   useEffect(() => {
     axios.get('http://localhost:8080/menuDetails')
       .then((res) => {
@@ -53,7 +49,6 @@ const Inventory = () => {
       }).catch((err) => {
         console.log(err);
       });
-
   }, [data]);
   const [ingCount, setIng] = useState([])
   useEffect(() => {
@@ -63,36 +58,30 @@ const Inventory = () => {
       }).catch((err) => {
         console.log(err);
       });
-
   }, [ingCount]);
-
   const [quer, setQuer] = useState('')
-
-
   const [navi, setNavi] = useState('All')
   const [navToTab, setNav] = useState(true)
 
-
-  const drinksData = data.filter((item) => item.Category === "Drinks");
+  const CrofflesData = data.filter((item) => item.Category === "Croffles");
   const snacksData = data.filter((item) => item.Category === "Snacks");
-  const teaData = data.filter((item) => item.Category === "Tea");
+  const NachosData = data.filter((item) => item.Category === "Nachos");
+  const BurgerData = data.filter((item) => item.Category === "Burger");
+
   const datas = [
-    { name: 'Group A', value: drinksData.length },
+    { name: 'Group A', value: CrofflesData.length },
     { name: 'Group B', value: snacksData.length },
-    { name: 'Group C', value: teaData.length },
+    { name: 'Group C', value: NachosData.length },
+    { name: 'Group D', value: BurgerData.length },
   ];
 
   const solidData = ingCount.filter((item) => item.Category === "Solid");
   const liqData = ingCount.filter((item) => item.Category === "Liquid");
-
   const dataTwo = [
     { name: 'Group A', value: solidData.length },
     { name: 'Group B', value: liqData.length },
   ];
-
-
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28',];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#cc9999'];
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -105,7 +94,6 @@ const Inventory = () => {
       </text>
     );
   };
-
   return (
     <div className='inventoryPage'>
       <Sidebar />
@@ -128,6 +116,10 @@ const Inventory = () => {
                 onClick={() => { setNavi('Ingredients'); setNav(false) }}>
                 Ingredients
               </div>
+              <div className={`Equipment ${navi === 'Equipment' ? 'activated' : ''}`}
+                onClick={() => { setNavi('Equipment'); setNav(false) }}>
+                Equipment
+              </div>
             </div>
           </div>
           {navToTab ? (
@@ -136,9 +128,14 @@ const Inventory = () => {
             navi === 'Ingredients' ? (
               <Ingredients searchedItem={itemName} />
             ) : (
-              <Caters />
+              navi === 'Equipment' ? (
+                  <Equipment />
+              ) : (
+                <Caters />
+              )
             )
           )}
+
 
         </div>
         <div className="secondInvCon">
@@ -164,17 +161,21 @@ const Inventory = () => {
                 </Pie>
               </PieChart>
               <div className="colorCon">
-                <div className="drinkColor">
-                  <div className="color"></div>
-                  <div className="drinkTitle">Drinks <span className='countItem'>{drinksData.length}</span></div>
-                </div>
                 <div className="snackColor">
                   <div className="color"></div>
                   <div className="snackTitle">Snack <span className='countItem'>{snacksData.length}</span></div>
                 </div>
+                <div className="teaColor croffles">
+                  <div className="color"></div>
+                  <div className="teaTitle">Croffles <span className='countItem'>{CrofflesData.length}</span></div>
+                </div>
+                <div className="teaColor burger">
+                  <div className="color"></div>
+                  <div className="teaTitle">Burger <span className='countItem'>{BurgerData.length}</span></div>
+                </div>
                 <div className="teaColor">
                   <div className="color"></div>
-                  <div className="teaTitle">Tea <span className='countItem'>{teaData.length}</span></div>
+                  <div className="teaTitle">Nachos <span className='countItem'>{NachosData.length}</span></div>
                 </div>
               </div>
             </ResponsiveContainer>
@@ -208,7 +209,7 @@ const Inventory = () => {
                 </div>
                 <div className="snackColor">
                   <div className="color"></div>
-                  <div className="snackTitle">Liquid <span className='countItem'>{liqData .length}</span></div>
+                  <div className="snackTitle">Liquid <span className='countItem'>{liqData.length}</span></div>
                 </div>
               </div>
             </ResponsiveContainer>

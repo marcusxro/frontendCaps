@@ -10,14 +10,14 @@ const Security = () => {
     const [data, setData] = useState([])
     const [uid, setUid] = useState('')
     const [isOwner, setOwner] = useState(null)
-    
+
     useEffect(() => {
         axios.get('http://localhost:8080/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === uid);
                 setLoading(true)
                 setData(response.data)
-                if(!loading) {
+                if (!loading) {
                     if (filteredData[0].Position !== "Owner") {
                         alert("ONLY OWNER CAN ACCESS THIS")
                     } else {
@@ -38,13 +38,13 @@ const Security = () => {
         })
         return () => { unsub() }
     }, [uid])
+
     const [specUid, setSpecUid] = useState('')
     const handleBan = (item) => {
         setSpecUid(item)
     }
     const [boolBan, setBoolBan] = useState(false)
     const banUser = (userUid) => {
-
         axios.put(`http://localhost:8080/ban/${userUid}`, {
             isBanned: boolBan
         }).then(() => {
@@ -58,8 +58,8 @@ const Security = () => {
         <div className='securityCon'>
             <Sidebar />
             {loading ? (
-                    isOwner ? <>
-                        <div className="securityContent">
+                isOwner ? <>
+                    <div className="securityContent">
                         <div className="firstSecCon">
                             <div className="lock">
                                 <img src={lock} alt="" />
@@ -71,7 +71,7 @@ const Security = () => {
                                 Only owners are allowed to enter and make changes here
                             </div>
                             <div className="secGrid">
-        
+
                                 <div className="secGridItem">
                                     <div className="secTitle">
                                         Lorem Ipsum
@@ -120,11 +120,11 @@ const Security = () => {
                                             </div>
                                             <div className="accountAction">
                                                 {item.isBanned === true ? (
-                                                    <button className='Unban' onClick={() => { banUser(item._id); setBoolBan(false) }}>Unban</button>
+                                                    <button className='Unban' onClick={() => { banUser(item._id); setBoolBan(false) }}>Restore</button>
                                                 ) : (
-                                                    specUid !== item._id && <button onClick={() => handleBan(item._id)}>Ban</button>
+                                                    specUid !== item._id && <button onClick={() => handleBan(item._id)}>Archive</button>
                                                 )}
-            
+
                                                 {specUid === item._id ?
                                                     (<div className="accountActionCon">
                                                         <button onClick={() => { handleBan(null); banUser(item._id); setBoolBan(true) }}>confirm</button>
@@ -135,7 +135,7 @@ const Security = () => {
                                         </div>
                                     ))
                                 ) : (<>loading...</>)}
-        
+
                             </div>
                         </div>
                     </div></> : <>YOU ARE NOT ALLOWED HERE</>

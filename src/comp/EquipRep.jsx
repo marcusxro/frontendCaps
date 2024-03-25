@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth'
 import { authentication } from '../authentication'
-const ReportsModal = () => {
 
+
+
+const EquipRep = () => {
     const [incTitle, setTitle] = useState('')
     const [reportType, setType] = useState('')
     const [isResolved, setRes] = useState(false)
@@ -41,10 +43,10 @@ const ReportsModal = () => {
 
     const createReport = (e) => {
         e.preventDefault()
-        if(!incTitle || !reportType ||  !RepDetails) {
+        if (!incTitle || !reportType || !RepDetails) {
             return alert("please type something")
         }
-        axios.post('http://localhost:8080/reportCreate', {
+        axios.post('http://localhost:8080/EquipRep', {
             Incident: incTitle,
             RepType: reportType,
             isResolved: isResolved,
@@ -67,20 +69,20 @@ const ReportsModal = () => {
     return (
         <div className='reportsModal'>
             <div className="creRep">
-                Create report for Products
+                Create report for equipment
             </div>
             <form onSubmit={createReport}>
                 <input value={incTitle} onChange={(e) => { setTitle(e.target.value) }} type="text" placeholder='Enter report title' />
                 <select value={reportType} onChange={(e) => { setType(e.target.value) }}>
                     <option value="">Select report type</option>
-                    <option value="Theft">Theft</option>
-                    <option value="Missing">Missing stocks</option>
-                    <option value="Miscount">Miscount</option>
-                    <option value="Lack of stocks">Lack of stocks</option>
-                    <option value="Other">Other</option>
-                    <option value="Damaged">Damaged</option>
-                    <option value="Spoiled">Spoiled</option>
-                    <option value="Expired">Expired</option>
+                    <option value="Malfunctioning equipment">Malfunctioning equipment</option>
+                    <option value="Equipment breakdown">Equipment breakdown</option>
+                    <option value="Equipment maintenance required">Equipment maintenance required</option>
+                    <option value="Missing equipment">Missing equipment</option>
+                    <option value="Damaged equipment">Damaged equipment</option>
+                    <option value="Spoiled ingredients">Spoiled ingredients</option>
+                    <option value="Inadequate equipment">Inadequate equipment</option>
+                    <option value="Other">Other issue</option>
                 </select>
                 <textarea placeholder='Enter product details' value={RepDetails} onChange={(e) => { setRepDetails(e.target.value) }} />
                 <button type="submit">Submit</button>
@@ -89,4 +91,4 @@ const ReportsModal = () => {
     )
 }
 
-export default ReportsModal
+export default EquipRep
