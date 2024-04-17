@@ -29,7 +29,7 @@ const AddNewIng = () => {
     }
 
     useEffect(() => {
-        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
+        axios.get('http://localhost:8080/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === Uid);
                 setFirst(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -51,7 +51,7 @@ const AddNewIng = () => {
 
     const sendIng = (e) => {
         e.preventDefault()
-        axios.post('https://backendcaps-7zrx.onrender.com/postIng', {
+        axios.post('http://localhost:8080/postIng', {
             IngName: ingName,
             Weight: weight,
             Measure: measurements,
@@ -76,7 +76,7 @@ const AddNewIng = () => {
     const [nameEqual, setNameEq] = useState(null)
     const pNameEl = useRef(null)
     useEffect(() => {
-        axios.get('https://backendcaps-7zrx.onrender.com/getIng')
+        axios.get('http://localhost:8080/getIng')
             .then((res) => {
                 setData(res.data);
             }).catch((err) => {
@@ -125,6 +125,7 @@ const AddNewIng = () => {
                     <option value="Dried">Dried</option>
                     <option value="Powdered">Powdered</option>
                     <option value="Sliced">Sliced</option>
+                    <option value="Syrup">Syrup</option>
                 </select>
                 <input required value={measurements} type="text" placeholder='Enter ingredient measurements' onChange={(e) => { setMeas(e.target.value) }} />
                 <input required value={quantity} type="number" placeholder='Enter ingredient Quantity' onChange={(e) => { setQuan(e.target.value) }} />

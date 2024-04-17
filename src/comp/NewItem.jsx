@@ -25,7 +25,7 @@ const NewItem = () => {
         setExpiry('')
         setOver('')
         setCondition('')
-      }
+    }
 
     const [nameEqual, setNameEq] = useState(null)
     const pNameEl = useRef(null)
@@ -135,6 +135,9 @@ const NewItem = () => {
                         <option value="Burger">Burger</option>
                         <option value="Croffles">Croffles</option>
                         <option value="Nachos">Nachos</option>
+                        <option value="Coffee">Coffee</option>
+                        <option value="Non-Coffee">Non-Coffee</option>
+                        <option value="Fruit Tea">Fruit Tea</option>
                     </select>
                     <input
                         required

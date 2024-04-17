@@ -5,6 +5,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { authentication } from '../authentication';
 import { onAuthStateChanged } from 'firebase/auth';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Categories = () => {
     const [data, setData] = useState([])
@@ -16,7 +18,18 @@ const Categories = () => {
     const [loading, setLoading] = useState(false)
     const [editedExpiry, setExpiry] = useState('')
     const [editedCondition, setCondition] = useState('')
-
+    const notif = (stats) => {
+        toast.success(stats, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
 
     useEffect(() => {
         axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
@@ -43,6 +56,7 @@ const Categories = () => {
         axios.delete(`https://backendcaps-7zrx.onrender.com/item/${id}`)
             .then(() => {
                 console.log("deleted");
+                notif(`item has been successfully deleted!`);
             }).catch((err) => {
                 console.log("error", err);
             });
@@ -67,6 +81,7 @@ const Categories = () => {
                 Date: Date.now()
             }).then(() => {
                 console.log("edited")
+                notif(`item has been successfully deleted!`);
             }).catch((err) => {
                 console.log("error", err)
             })
@@ -103,7 +118,9 @@ const Categories = () => {
 
     return (
         <div className="caterCon">
+            <ToastContainer />
             <Swiper>
+
                 <SwiperSlide>
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
@@ -156,7 +173,13 @@ const Categories = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity)}>Edit</button>}
+                                                    {editIndex === item._id ? (
+                                                        <>
+                                                            <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                            <button onClick={() => handleEdit(null)}>Cancel</button>
+                                                        </>
+                                                    ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
                                                 </>
                                             )}
                                         </td>
@@ -218,8 +241,14 @@ const Categories = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity)}>Edit</button>}
-                                                </>
+                                                {editIndex === item._id ? (
+                                                    <>
+                                                        <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                        <button onClick={() => handleEdit(null)}>Cancel</button>
+                                                    </>
+                                                ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                            </>
                                             )}
                                         </td>
                                     )}
@@ -232,7 +261,7 @@ const Categories = () => {
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
                             <tr>
-                            <th>Product Name</th>
+                                <th>Product Name</th>
                                 <th>Type</th>
                                 <th>Size</th>
                                 <th>Quantity</th>
@@ -280,8 +309,14 @@ const Categories = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity)}>Edit</button>}
-                                                </>
+                                                {editIndex === item._id ? (
+                                                    <>
+                                                        <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                        <button onClick={() => handleEdit(null)}>Cancel</button>
+                                                    </>
+                                                ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                            </>
                                             )}
                                         </td>
                                     )}
@@ -294,7 +329,7 @@ const Categories = () => {
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
                             <tr>
-                            <th>Product Name</th>
+                                <th>Product Name</th>
                                 <th>Type</th>
                                 <th>Size</th>
                                 <th>Quantity</th>
@@ -342,8 +377,14 @@ const Categories = () => {
                                                 </>
                                             ) : (
                                                 <>
-                                                    {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity)}>Edit</button>}
-                                                </>
+                                                {editIndex === item._id ? (
+                                                    <>
+                                                        <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                        <button onClick={() => handleEdit(null)}>Cancel</button>
+                                                    </>
+                                                ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                            </>
                                             )}
                                         </td>
                                     )}

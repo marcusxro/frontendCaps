@@ -40,55 +40,75 @@ const IngRep = () => {
     }, [Uid])
 
 
+    const [image, setImage] = useState(null);
 
-    const createReport = (e) => {
-        e.preventDefault()
-        if(!incTitle || !reportType ||  !RepDetails) {
-            return alert("please type something")
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0]
+        setImage(file)
+        if (file) {
+            console.log(file)
         }
-        axios.post('https://backendcaps-7zrx.onrender.com/IngReport', {
-            Incident: incTitle,
-            RepType: reportType,
-            isResolved: isResolved,
-            RepDetails: RepDetails,
-            Email: Email,
-            Fullname: Fullname,
-            Date: Date.now(),
-            Uid: Uid
 
-        }).then(() => {
-            console.log("details sent")
-            setTitle('')
-            setType('')
-            setRepDetails('')
-        }).catch((err) => {
-            console.log("errpr", err)
-        })
     }
 
-    return (
-        <div className='reportsModal'>
-            <div className="creRep">
-                Create report for Ingredients
-            </div>
-            <form onSubmit={createReport}>
-                <input value={incTitle} onChange={(e) => { setTitle(e.target.value) }} type="text" placeholder='Enter report title' />
-                <select value={reportType} onChange={(e) => { setType(e.target.value) }}>
-                    <option value="">Select report type</option>
-                    <option value="Theft">Theft</option>
-                    <option value="Missing">Missing stocks</option>
-                    <option value="Miscount">Miscount</option>
-                    <option value="Lack of stocks">Lack of stocks</option>
-                    <option value="Other">Other</option>
-                    <option value="Damaged">Damaged</option>
-                    <option value="Spoiled">Spoiled</option>
-                    <option value="Expired">Expired</option>
-                </select>
-                <textarea placeholder='Enter product details' value={RepDetails} onChange={(e) => { setRepDetails(e.target.value) }} />
-                <button type="submit">Submit</button>
-            </form>
+    const createReport = (e) => {
+        e.preventDefault();
+        if (!incTitle || !reportType || !RepDetails ) {
+            return alert("Please fill in all required fields and upload an image.");
+        }
+    
+        const formData = new FormData();
+        formData.append("photoURL", image);
+        formData.append("Uid", Uid);
+        formData.append("Incident", incTitle);
+        formData.append("RepType", reportType);
+        formData.append("isResolved", isResolved);
+        formData.append("RepDetails", RepDetails);
+        formData.append("Email", Email);
+        formData.append("Fullname", Fullname);
+        formData.append("Date", Date.now());
+    
+        axios.post('http://localhost:8080/IngReport', formData)
+          .then(response => {
+              console.log("Details sent:", response.data);
+              setTitle('');
+              setType('');
+              setRepDetails('');
+          })
+          .catch(error => {
+              console.error("Error:", error);
+          });
+    };
+return (
+    <div className='reportsModal'>
+        <div className="creRep">
+            Create report for Ingredients
         </div>
-    )
+        <form onSubmit={createReport}>
+            <input value={incTitle} onChange={(e) => { setTitle(e.target.value) }} type="text" placeholder='Enter report title' />
+            <select value={reportType} onChange={(e) => { setType(e.target.value) }}>
+                <option value="">Select report type</option>
+                <option value="Theft">Theft</option>
+                <option value="Missing">Missing stocks</option>
+                <option value="Miscount">Miscount</option>
+                <option value="Lack of stocks">Lack of stocks</option>
+                <option value="Other">Other</option>
+                <option value="Damaged">Damaged</option>
+                <option value="Spoiled">Spoiled</option>
+                <option value="Expired">Expired</option>
+            </select>
+            <textarea placeholder='Enter product details' value={RepDetails} onChange={(e) => { setRepDetails(e.target.value) }} />
+            <input
+                name='files'
+                type='file'
+                lable="image"
+                accept="image/*"
+                onChange={(e) => { handleImageChange(e) }} />
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+)
 }
 
 export default IngRep

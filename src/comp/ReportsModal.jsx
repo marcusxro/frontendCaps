@@ -15,7 +15,7 @@ const ReportsModal = () => {
 
 
     useEffect(() => {
-        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
+        axios.get('http://localhost:8080/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === Uid);
                 setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -37,32 +37,45 @@ const ReportsModal = () => {
         return () => { unsub() }
     }, [Uid])
 
+    const [image, setImage] = useState(null);
 
 
-    const createReport = (e) => {
-        e.preventDefault()
-        if(!incTitle || !reportType ||  !RepDetails) {
-            return alert("please type something")
-        }
-        axios.post('https://backendcaps-7zrx.onrender.com/reportCreate', {
-            Incident: incTitle,
-            RepType: reportType,
-            isResolved: isResolved,
-            RepDetails: RepDetails,
-            Email: Email,
-            Fullname: Fullname,
-            Date: Date.now(),
-            Uid: Uid
-
-        }).then(() => {
-            console.log("details sent")
-            setTitle('')
-            setType('')
-            setRepDetails('')
-        }).catch((err) => {
-            console.log("errpr", err)
-        })
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0]
+        setImage(file)
+        // if(file) {
+        //    console.log(file)
+        // }
     }
+
+   const createReport = (e) => {
+    e.preventDefault();
+    if (!incTitle || !reportType || !RepDetails ) {
+        return alert("Please fill in all required fields and upload an image.");
+    }
+
+    const formData = new FormData();
+    formData.append("photoURL", image);
+    formData.append("Uid", Uid);
+    formData.append("Incident", incTitle);
+    formData.append("RepType", reportType);
+    formData.append("isResolved", isResolved);
+    formData.append("RepDetails", RepDetails);
+    formData.append("Email", Email);
+    formData.append("Fullname", Fullname);
+    formData.append("Date", Date.now());
+
+    axios.post('http://localhost:8080/uploadAndReportCreate', formData)
+      .then(response => {
+          console.log("Details sent:", response.data);
+          setTitle('');
+          setType('');
+          setRepDetails('');
+      })
+      .catch(error => {
+          console.error("Error:", error);
+      });
+};
 
     return (
         <div className='reportsModal'>
@@ -83,6 +96,13 @@ const ReportsModal = () => {
                     <option value="Expired">Expired</option>
                 </select>
                 <textarea placeholder='Enter product details' value={RepDetails} onChange={(e) => { setRepDetails(e.target.value) }} />
+                <input
+                    name='files'
+                    type='file'
+                    lable="image"
+                    accept="image/*"
+                    onChange={(e) => { handleImageChange(e) }} />
+
                 <button type="submit">Submit</button>
             </form>
         </div>

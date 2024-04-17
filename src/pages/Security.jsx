@@ -4,13 +4,28 @@ import lock from '../images/lock.png'
 import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth'
 import { authentication } from '../authentication'
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Security = () => {
+    document.title = "Security"
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState([])
     const [uid, setUid] = useState('')
     const [isOwner, setOwner] = useState(null)
-
+    const [boolBan, setBoolBan] = useState(false)
+     
+    const notif = (stats) => {
+        toast.success(stats, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
     useEffect(() => {
         axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
@@ -28,7 +43,7 @@ const Security = () => {
             .catch((error) => {
                 console.log(error)
             });
-    }, [data, uid, loading]);
+    }, [data, uid, loading, boolBan]);
 
     useEffect(() => {
         const unsub = onAuthStateChanged(authentication, (acc) => {
@@ -43,12 +58,18 @@ const Security = () => {
     const handleBan = (item) => {
         setSpecUid(item)
     }
-    const [boolBan, setBoolBan] = useState(false)
-    const banUser = (userUid) => {
+
+
+    const banUser = (userUid, usrName) => {
         axios.put(`https://backendcaps-7zrx.onrender.com/ban/${userUid}`, {
             isBanned: boolBan
         }).then(() => {
             console.log("successfully banned")
+            if(boolBan) {
+                notif( `${usrName} has been successfully archived!`);
+            } else {
+                notif( `${usrName} has been successfully restored!`);
+            }
         }).catch((err) => {
             console.log(err)
         })
@@ -57,6 +78,7 @@ const Security = () => {
 
         <div className='securityCon'>
             <Sidebar />
+            <ToastContainer />
             {loading ? (
                 isOwner ? <>
                     <div className="securityContent">
@@ -119,15 +141,15 @@ const Security = () => {
                                                 {item.Position}
                                             </div>
                                             <div className="accountAction">
-                                                {item.isBanned === true ? (
-                                                    <button className='Unban' onClick={() => { banUser(item._id); setBoolBan(false) }}>Restore</button>
+                                                {item.isBanned === true && boolBan === false? (
+                                                    <button className='Unban' onClick={() => { banUser(item._id, item.Firstname + " " + item.Lastname); setBoolBan(false) }}>Restore</button>
                                                 ) : (
                                                     specUid !== item._id && <button onClick={() => handleBan(item._id)}>Archive</button>
                                                 )}
 
                                                 {specUid === item._id ?
                                                     (<div className="accountActionCon">
-                                                        <button onClick={() => { handleBan(null); banUser(item._id); setBoolBan(true) }}>confirm</button>
+                                                        <button onClick={() => { handleBan(null); banUser(item._id, item.Firstname + " " + item.Lastname); setBoolBan(true) }}>confirm</button>
                                                         <button onClick={() => { handleBan(null) }}>cancel</button>
                                                     </div>) : (<></>)
                                                 }

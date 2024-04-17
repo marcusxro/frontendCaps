@@ -69,7 +69,6 @@ const Static = () => {
 
   const cursors = useRef(null)
 
-  document.querySelector('html').style.cursor = "none";
 
   useEffect(() => {
 
@@ -159,7 +158,7 @@ const Static = () => {
                               opacity: 1,
                               duration: 1,
                               onComplete: () => {
-                                gsap.to('.first', {
+                                gsap.to('.Con', {
                                   opacity: 1,
                                   duration: 1
                                 })
@@ -236,7 +235,7 @@ const Static = () => {
   }, [nav]);
 
 
-  const [SlideHori, setSlide] = useState('')
+  const [SlideHori, setSlide] = useState(false)
   const goHori = useRef(null)
 
   const slideLeft = () => {
@@ -254,7 +253,7 @@ const Static = () => {
       opacity: 1,
       x: 0
     })
-
+    setSlide(!SlideHori)
   };
 
   const slideRight = () => {
@@ -272,25 +271,29 @@ const Static = () => {
       opacity: 0,
       x: -100
     })
-
+    setSlide(!SlideHori)
 
   };
 
   const milkTeas = L.icon({
-  iconUrl: milkTea,
-  iconSize: [40, 40], // Adjust the size of the icon as needed
-  iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
-});
+    iconUrl: milkTea,
+    iconSize: [40, 40], // Adjust the size of the icon as needed
+    iconAnchor: [20, 40], // Point of the icon which will correspond to marker's location
+  });
 
   return (
-    <div>
+    <div className='staticHome'>
       <Bg />
       <div className="loader">
         <div className="loads">
           <img src={loader} alt="" />
         </div>
-        <div className="loaderText">
-          Loading {perc}%
+        <div className="bars">
+            <div className="progressBar" style={{width: perc+"%"}}>
+            <div className="loaderText">
+          {perc}%
+        </div>
+            </div>
         </div>
       </div>
       <div className="loaderTwo"></div>
@@ -890,12 +893,45 @@ const Static = () => {
           </div>
           <div className="mapContent">
             <div ref={goHori} className="absoHover">
-              Kindly click the images to slide
+              <div className="hoverText">
+
+                {
+                  SlideHori === false ? (
+                    <> Our shop is located exactly at 4103 Cafe Eunoia, Greengate homes, Imus Cavite <br />
+                      You can start interacting with the map!
+                    </>
+                  ) : (
+                    <>
+                    This is the hardworking employees of Cafe Eunoia!
+                    </>
+                  )
+                }
+              </div>
+              {SlideHori === false ? (
+                <div className="hoverButton" onClick={slideRight}>
+                  <div className="hoverButtonText btnClass">
+                    Kindly click the "navigate" to see the next slide!
+                  </div>
+                  <div className="hoverBtn btnClass">
+                    NAVIGATE
+                  </div>
+                </div>
+              ) : (
+                <div className="hoverButton" onClick={slideLeft}>
+                  <div className="hoverButtonText btnClass">
+                    Kindly click the "navigate" to see the next slide!
+                  </div>
+                  <div className="hoverBtn btnClass">
+                    NAVIGATE
+                  </div>
+                </div>
+              )}
             </div>
-            <div className="firstMap" onClick={slideLeft}>
+
+            <div className="firstMap">
               <img src={shopEmploee} alt="" />
             </div>
-            <div className="secMap" onClick={slideRight}>
+            <div className="secMap">
               <MapContainer className='mapEl' center={[14.3747447, 120.9254805]} zoom={20} style={{ width: '100%', height: '100%' }}>
                 <TileLayer
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

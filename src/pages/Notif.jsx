@@ -4,6 +4,7 @@ import axios from 'axios';
 import moment from 'moment'
 
 const Notif = () => {
+    document.title = "Notification"
     const [loading, setLoading] = useState(false);
     const [bannedUsers, setBannedUsers] = useState([]);
     const [menuUpdates, setMenuUpdates] = useState([]);

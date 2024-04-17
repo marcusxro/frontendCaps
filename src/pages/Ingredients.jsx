@@ -4,6 +4,8 @@ import axios from 'axios';
 import moment from 'moment';
 import { onAuthStateChanged } from 'firebase/auth';
 import { authentication } from '../authentication';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Ingredients = ({ searchedItem }) => {
     const [data, setData] = useState([]);
@@ -20,7 +22,18 @@ const Ingredients = ({ searchedItem }) => {
     const [getPos, setGetPos] = useState('')
     const [loading, setLoading] = useState(false)
     const [fullName, setFullname] = useState('')
-
+    const notif = (stats) => {
+        toast.success(stats, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
 
     useEffect(() => {
         const unsub = onAuthStateChanged(authentication, (acc) => {
@@ -82,7 +95,7 @@ const Ingredients = ({ searchedItem }) => {
         setData(newData);
         setConfirmId(null);
 
-        axios.post(`https://backendcaps-7zrx.onrender.com/DeletedIng`, {
+        axios.post(`http://localhost:8080/DeletedIng`, {
             DeletedIngName: newData[0].IngName,
             DeletedWeight: newData[0].Weight,
             DeletedCategory: newData[0].Category,
@@ -94,7 +107,8 @@ const Ingredients = ({ searchedItem }) => {
             userNameDel: fullName
         }).then(() => {
             console.log("SENT")
-            axios.delete(`https://backendcaps-7zrx.onrender.com/ingItem/${id}`)
+            notif( `${newData[0].IngName} has been successfully deleted!`);
+            axios.delete(`http://localhost:8080/ingItem/${id}`)
                 .then(() => {
                     console.log("deleted");
                 })
@@ -129,7 +143,7 @@ const Ingredients = ({ searchedItem }) => {
                 ExpiryDate: ExpiryDate,
                 Date: Date.now()
             });
-            console.log("edited");
+            notif( `${editValue} has been successfully edited!`);
             setEditIndex(null);
         } catch (error) {
             console.error("error editing item: ", error);
@@ -153,6 +167,7 @@ const Ingredients = ({ searchedItem }) => {
 
     return (
         <div className='ingredientsCon'>
+                      <ToastContainer />
             <div className="searchBar">
                 <input
                     value={quer}
@@ -226,7 +241,12 @@ const Ingredients = ({ searchedItem }) => {
                                         </>
                                     ) : (
                                         <>
-                                            {editIndex === index ? <button onClick={(e) => handleSaveEdit(e, item._id)}>Save</button> : <button onClick={() => handleEdit(index, item.IngName, item.Weight, item.Quantity, item.Brand, item.ExpiryDate)}>Edit</button>}
+                                            {editIndex === index ? (
+                                                <>
+                                                <button onClick={(e) => handleSaveEdit(e, item._id)}>Save</button>
+                                                <button onClick={(e) => handleEdit(null)}>Cancel</button>
+                                                </>
+                                            ) : <button onClick={() => handleEdit(index, item.IngName, item.Weight, item.Quantity, item.Brand, item.ExpiryDate)}>Edit</button>}
 
                                         </>
                                     )}

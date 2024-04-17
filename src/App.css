@@ -7,6 +7,22 @@
   box-sizing: border-box;
 }
 
+.bg {
+  position: fixed;
+  height: 200vh;
+  width: 200vw;
+  top: -50%;
+  left: -50%;
+  background: transparent url('http://assets.iceable.com/img/noise-transparent.png') repeat 0 0;
+  background-repeat: repeat;
+  animation: bg-animation .2s infinite;
+  opacity: 2;
+  z-index: 99999999999999999999999999999999;
+  pointer-events: none;
+  overflow: hidden;
+  /* Restrict overflow specifically for .bg */
+}
+
 header {
   display: flex;
   align-items: center;
@@ -16,7 +32,7 @@ header {
   box-shadow: 1px 14px 22px -14px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 1px 14px 22px -14px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 1px 14px 22px -14px rgba(0, 0, 0, 0.75);
-  z-index: 99999;
+  z-index: 99;
   position: sticky;
   top: 0;
   left: 0;
@@ -220,12 +236,16 @@ canvas {
   background-color: #AFE1AF;
   position: sticky;
   top: 50%;
+  opacity: 0;
 }
 
 .first {
   position: sticky;
   top: 18%;
-  opacity: 0;
+}
+
+.staticHome {
+  background-color: #AFE1AF;
 }
 
 .bookMarkFirst {
@@ -1441,6 +1461,13 @@ form {
   background-color: #AFE1AF;
 }
 
+.sendBtn:hover {
+  background-color: #4f4cb0;
+  color: #AFE1AF;
+  border: 1px solid #c3bd91;
+  transition: all 0.5s ease-in-out;
+}
+
 .reachTexts {
   display: flex;
   flex-direction: column;
@@ -1577,14 +1604,170 @@ form {
   gap: 5px;
   cursor: pointer;
   padding: 10px;
-  color: white;
   font-weight: bold;
+  color: white;
   font-size: 30px;
+}
+
+.buttons a {
+  overflow: visible;
+  position: relative;
+}
+
+.buttons a:nth-child(1)::before {
+  color: bisque;
+  content: 'Dashboard';
+  position: absolute;
+  font-size: 10px;
+  right: -70px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(1)::before {
+  transform: scale(1);
+}
+
+.buttons a:nth-child(2)::before {
+  color: bisque;
+  content: 'Inventory';
+  position: absolute;
+  font-size: 10px;
+  right: -60px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(2)::before {
+  transform: scale(1);
+}
+
+
+.buttons a:nth-child(3)::before {
+  color: bisque;
+  content: 'Transaction Report';
+  position: absolute;
+  font-size: 10px;
+  right: -110px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(3)::before {
+  transform: scale(1);
+}
+
+
+.buttons a:nth-child(4)::before {
+  color: bisque;
+  content: 'Reports';
+  position: absolute;
+  font-size: 10px;
+  right: -50px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(4)::before {
+  transform: scale(1);
+}
+
+.buttons a:nth-child(5)::before {
+  color: bisque;
+  content: 'Security';
+  position: absolute;
+  font-size: 10px;
+  right: -50px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(5)::before {
+  transform: scale(1);
+}
+
+.buttons a:nth-child(6)::before {
+  color: bisque;
+  content: 'Notification';
+  position: absolute;
+  font-size: 10px;
+  right: -70px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(6)::before {
+  transform: scale(1);
+}
+
+.buttons a:nth-child(7)::before {
+  color: bisque;
+  content: 'Communication';
+  position: absolute;
+  font-size: 10px;
+  right: -90px;
+  z-index: 999999;
+  background-color: #0088FE;
+  padding: 5px;
+  border-radius: 5px;
+  overflow: visible;
+  transform: scale(0);
+  transition: 150ms transform;
+  transform-origin: left center;
+
+}
+
+.buttons a:hover:nth-child(7)::before {
+  transform: scale(1);
 }
 
 .logOutCon {
   width: 100%;
 }
+
+
 
 .logOut {
   all: unset;
@@ -1884,10 +2067,6 @@ form {
 }
 
 
-.sideBar {
-  overflow: hidden;
-}
-
 .actives {
   width: 100px;
   padding: 10px;
@@ -2043,6 +2222,9 @@ html::-webkit-scrollbar {
   gap: 10px;
   font-size: 20px;
   color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .logoForSystem {
@@ -2479,10 +2661,13 @@ html::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 10%;
   border-radius: 20px;
   color: white;
   flex-direction: column;
   height: 100%;
+  overflow-y: auto;
+  padding: 20px;
 }
 
 .register {
@@ -2798,13 +2983,102 @@ html::-webkit-scrollbar {
   color: white;
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 20px;
   flex-direction: column;
 }
 
 .drinkColor {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.DriedColor .color {
+  background-color: #FFBB28;
+  height: 20px;
+  width: 20px;
+}
+
+.DriedColor .color {
+  background-color: #FFBB28;
+  height: 20px;
+  width: 20px;
+}
+
+.PowderedColor .color {
+  background-color: #cc9999;
+  height: 20px;
+  width: 20px;
+}
+
+.SyrupColor .color {
+  background-color: #8A2BE2;
+  height: 20px;
+  width: 20px;
+}
+
+.SlicedColor .color {
+  background-color: #FF8042;
+  height: 20px;
+  width: 20px;
+}
+
+.topOneCon {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.bestSellerItemTexts {
+  width: 100%;
+  background-color: #AFE1AF;
+  text-align: center;
+  padding: 10px;
+  font-weight: bold;
+  color: black;
+}
+
+.infoBox {
+  border: 1px solid #4f4cb0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+
+}
+
+.oneItem {
+  background-color: #960018;
+  padding: 5px;
+  border-radius: 20px;
+  color: white;
+  background-color: red;
+}
+
+.secItem {
+  background-color: #FFBB28;
+  padding: 5px;
+  border-radius: 20px;
+  color: black;
+}
+
+.thirdItem {
+  background-color: #7cfc00;
+  color: black;
+  padding: 5px;
+  border-radius: 20px;
+}
+
+.colorIndicator {
   display: flex;
   gap: 10px;
 }
@@ -3032,11 +3306,16 @@ html::-webkit-scrollbar {
   align-items: center;
   border-radius: 30px;
   text-align: center;
+  transition: 0.3s ease-in-out;
+  opacity: 0;
 }
 
 .menuItem:hover {
   transform: translateY(-5px);
-  transition: 0.5s ease-in-out;
+
+  .menuTitle {
+    color: #0088FE;
+  }
 }
 
 .menuItem>button {
@@ -3068,7 +3347,7 @@ html::-webkit-scrollbar {
 }
 
 .menutitle {
-  font-size: 2rem;
+  font-size: clamp(.5rem, 5vw, 1.2rem);
   font-weight: bold;
 
 }
@@ -3078,16 +3357,19 @@ html::-webkit-scrollbar {
   gap: 10px;
   align-items: center;
 }
+
 .slash {
   font-size: 20px;
   font-weight: bold;
 }
+
 .modalTitle {
   background-color: #4f4cb0;
   text-align: center;
   border-radius: 10px;
   color: white;
 }
+
 .dateModal {
   display: flex;
   border-radius: 10px;
@@ -3108,6 +3390,7 @@ html::-webkit-scrollbar {
   width: 58%;
   justify-content: center;
 }
+
 .dateModal input {
   height: 100%;
   width: 50%;
@@ -3260,6 +3543,13 @@ html::-webkit-scrollbar {
   padding: 20px;
   border-radius: 20px;
   height: auto;
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+.reportStatsBtn {
+  display: flex;
+  gap: 10px;
 }
 
 .reportStatsBtnConfirm {
@@ -3268,6 +3558,10 @@ html::-webkit-scrollbar {
   height: 50px;
   flex-direction: row;
   width: 100%;
+}
+
+.imgConBtn {
+  height: auto;
 }
 
 .repConfirm {
@@ -3290,6 +3584,23 @@ html::-webkit-scrollbar {
   border-radius: 20px;
   color: white;
   margin-top: 20px;
+  padding: 2px;
+}
+
+.imgConBtn {
+  width: auto;
+}
+
+.imgConBtn .isThis {
+  all: unset;
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  background-color: #ad8d54;
+  border-radius: 20px;
+  color: white;
+  padding: 2px;
+  margin-top: 20px;
 }
 
 .repCancel {
@@ -3303,6 +3614,10 @@ html::-webkit-scrollbar {
   margin-top: 20px;
 }
 
+.reportStatsBtn button {
+  width: 100%;
+}
+
 .reportTitle {
   font-weight: bold;
   font-size: 25px;
@@ -3312,7 +3627,7 @@ html::-webkit-scrollbar {
   margin-top: 10px;
   overflow: hidden;
   height: 100%;
-  max-height: 80%;
+  max-height: 50%;
   margin-bottom: 30px;
   overflow-y: scroll;
 }
@@ -3326,12 +3641,15 @@ html::-webkit-scrollbar {
   color: #cc9999;
   display: none;
 }
+
 .burger .color {
   background-color: #cc9999;
 }
+
 .croffles .color {
   background-color: #0088FE;
 }
+
 .absoForm {
   height: 50px;
   width: 50px;
@@ -3601,6 +3919,7 @@ html::-webkit-scrollbar {
 
 .reportStatsBtnConfirm>button {
   transition: 0.3s ease-in-out;
+  width: 100%;
 }
 
 .reportStatsBtnConfirm>button:hover {
@@ -3662,11 +3981,64 @@ html::-webkit-scrollbar {
 .learnFirst {
   width: 50%;
   background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.learnFirst img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 .learnSec {
   padding: 10px;
   width: 60%;
+  overflow-y: auto;
+}
+
+.learnFeatures,
+.learnRep {
+  margin-top: 20px;
+}
+
+.caterCon input {
+  width: 50%;
+}
+
+.bars {
+  width: 150px;
+  height: 15px;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.barsCon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.loaderText {
+  font-size: 15px;
+}
+
+.progressBar {
+  background-color: #4f4cb0;
+  height: 15px;
+  overflow: hidden;
+  color: white;
+  width: 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.learnFeatures {
+  list-style-type: disc;
+  list-style: circle;
 }
 
 .exit {
@@ -4279,6 +4651,7 @@ html::-webkit-scrollbar {
 
 .messageCon {
   transition: height 0.5s ease-in-out;
+  opacity: 0;
 }
 
 .contactsForChat {
@@ -4349,6 +4722,7 @@ html::-webkit-scrollbar {
 .tableBody tr td input {
   width: 80%;
 }
+
 .tableBody tr td select {
   padding: 10px;
   border-radius: 20px;
@@ -4357,7 +4731,8 @@ html::-webkit-scrollbar {
   outline: none;
 }
 
-.drinksBody select, input[type="date"] {
+.drinksBody select,
+input[type="date"] {
   padding: 10px;
   border-radius: 20px;
   height: 50px;
@@ -4401,7 +4776,9 @@ html::-webkit-scrollbar {
   justify-content: center;
   border-radius: 10px;
 
-}.AddNewIng input[type="Date"] {
+}
+
+.AddNewIng input[type="Date"] {
   border-radius: 10px;
 
 }
@@ -4410,17 +4787,20 @@ html::-webkit-scrollbar {
   width: auto;
   width: 60%;
 }
+
 .ingredientsCon table tbody select {
   height: 40px;
   border-radius: 20px;
   border: none;
   outline: none;
 }
+
 .ingredientsCon table input[type="Date"] {
   width: auto;
   width: 80%;
 }
-.equipmentTable{
+
+.equipmentTable {
   overflow-y: scroll;
   height: 90%;
   padding-bottom: 180px;
@@ -4433,7 +4813,7 @@ html::-webkit-scrollbar {
   overflow-y: scroll;
 }
 
-.equipmentTable table thead  {
+.equipmentTable table thead {
   background-color: #4f4cb0;
 }
 
@@ -4443,12 +4823,13 @@ html::-webkit-scrollbar {
   color: white;
 }
 
-.equipmentTable table tbody  {
+.equipmentTable table tbody {
   text-align: left;
   color: white;
   background-color: #AFE1AF;
 }
-.equipmentTable table tbody td   {
+
+.equipmentTable table tbody td {
   text-align: left;
   padding: 10px;
   color: black;
@@ -4477,7 +4858,9 @@ html::-webkit-scrollbar {
   border: 1px solid rgba(255, 255, 255, 0.18);
   gap: 10px;
 }
-.newEquipmentText, .newEquipmentCon button {
+
+.newEquipmentText,
+.newEquipmentCon button {
   background-color: #4f4cb0;
   height: 50px;
   text-align: center;
@@ -4485,12 +4868,14 @@ html::-webkit-scrollbar {
   align-items: center;
   justify-content: center;
   color: white;
-  font-weight:  bold;
+  font-weight: bold;
   border-radius: 10px;
   border: none;
   outline: none;
 }
-.newEquipmentCon input, select{
+
+.newEquipmentCon input,
+select {
   height: 50px;
   outline: none;
   border: none;
@@ -4505,18 +4890,19 @@ html::-webkit-scrollbar {
 }
 
 .buttonCon button {
-padding: 10px;
-width: 100%;
-background-color: #4f4cb0;
-border-radius: 10px;
-border: none;
-outline: none;
-height: 50px;
-color: white;
-font-size: 15px;
+  padding: 10px;
+  width: 100%;
+  background-color: #4f4cb0;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  height: 50px;
+  color: white;
+  font-size: 15px;
 }
 
-.buttonCon .save, .buttonCon .CDel {
+.buttonCon .save,
+.buttonCon .CDel {
   padding: 10px;
   width: 100%;
   background-color: green;
@@ -4526,93 +4912,97 @@ font-size: 15px;
   height: 50px;
   color: white;
   font-size: 15px;
-  }
+}
 
-  .EquipmentCon table input {
-    width: 80%;
-    height: 50px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    padding: 10px;
-  }
+.EquipmentCon table input {
+  width: 80%;
+  height: 50px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  padding: 10px;
+}
 
-  .EquipmentCon table select {
-    width: 80%;
-  }
+.EquipmentCon table select {
+  width: 80%;
+}
+
 .menuItem {
   position: relative;
 }
-  .best {
-    height: 100px;
-    width: 100px;
-    top: -5%;
-    left: -5%;
-    position: absolute;
-  }
+
+.best {
+  height: 100px;
+  width: 100px;
+  top: -5%;
+  left: -5%;
+  position: absolute;
+}
+
 .menutitle {
   width: 100%;
   max-width: 50%;
   word-wrap: break-word;
 }
-  .best img {
-    width: 100%;
-    object-fit: contain;
-    height: 100%;
-  }
 
-  .uniqueId {
-    margin-top: 10px;
-    color: #4f4cb0;
-  }
+.best img {
+  width: 100%;
+  object-fit: contain;
+  height: 100%;
+}
 
-  .registerSelect {
-    border: 1px solid black;
-  }
+.uniqueId {
+  margin-top: 10px;
+  color: #4f4cb0;
+}
 
-  .firstHeader {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    height: 40px;
-    margin-bottom: 20px;
-  }
+.registerSelect {
+  border: 1px solid black;
+}
 
-  .headerItem {
-    border: 1px solid #4f4cb0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 30px;
-    border-radius: 20px;
-    cursor: pointer;
-  }
+.firstHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  height: 40px;
+  margin-bottom: 20px;
+}
 
-  .navi {
-    background-color: #00C49F;
-    color: white;
-    border: none;
-  }
+.headerItem {
+  border: 1px solid #4f4cb0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 30px;
+  border-radius: 20px;
+  cursor: pointer;
+}
 
-  .isRes {
-    display: flex;
-    align-self: center;
-    justify-self: center;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+.navi {
+  background-color: #00C49F;
+  color: white;
+  border: none;
+}
 
-  .reportsHeader {
-    z-index: 22;
-  }
+.isRes {
+  display: flex;
+  align-self: center;
+  justify-self: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 
-  .notifCon {
-    width: 100%;
-  }
+.reportsHeader {
+  z-index: 22;
+}
+
+.notifCon {
+  width: 100%;
+}
 
 .notifHeader {
   width: 100%;
@@ -4629,6 +5019,11 @@ font-size: 15px;
   border: 1px solid #4f4cb0;
   border-radius: 20px;
   cursor: pointer;
+  transition: 150ms transform;
+}
+
+.notifItems:hover {
+  transform: scale(1.1);
 }
 
 .notifCon {
@@ -4655,6 +5050,7 @@ font-size: 15px;
   height: 100%;
   padding: 10px;
 }
+
 .skel {
   height: 30px;
   width: 30px;
@@ -4734,14 +5130,16 @@ font-size: 15px;
 }
 
 .mapContent .firstMap {
-  background-color: blue ;
+  background-color: blue;
   width: 50%;
   height: 100%;
 }
+
 .firstMap {
   border-radius: 20px;
   overflow: hidden;
 }
+
 .secMap {
   background-color: bisque;
   width: 50%;
@@ -4762,9 +5160,51 @@ font-size: 15px;
   align-items: center;
   justify-content: center;
   padding: 10px;
+  text-align: center;
   color: white;
+  flex-direction: column;
 }
 
+.hoverText {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hoverButton {
+  height: 20%;
+  background-color: #4f4cb0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnClass {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnClass:nth-child(2) {
+  background-color: #AFE1AF;
+  color: black;
+  font-weight: bold;
+}
+
+.btnClass:nth-child(2):hover {
+  scale: 1.1;
+  transition: all 0.5s ease-in-out;
+}
+
+.learnDesc {
+  margin-top: 20px;
+  color: #ccc;
+}
 
 .firstMap img {
   width: 100%;
@@ -4782,7 +5222,281 @@ font-size: 15px;
   .absoHover {
     display: none;
   }
+
   .secMap {
     opacity: 1;
   }
+}
+
+.ev {
+  background-color: #00C49F;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+  z-index: 9999999;
+  height: 100%;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  gap: 10px;
+}
+
+.evCon {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  gap: 8px;
+}
+
+.evCon button {
+  width: 100%;
+  outline: none;
+  border: none;
+  background-color: #4f4cb0;
+  color: white;
+  border-radius: 20px;
+}
+
+.evCon button:hover {
+  background-color: white;
+  color: #4f4cb0;
+  transition: .3s ease-in-out;
+}
+
+.evidenceImg {
+  height: 90%;
+  width: 100%;
+}
+
+.close {
+  padding: 10px;
+  background-color: #4f4cb0;
+  width: 100px;
+  text-align: center;
+  color: white;
+  border-radius: 20px;
+}
+
+.evidenceImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ha {
+  background-color: #4f4cb0;
+  position: absolute;
+  top: -30%;
+  left: 13%;
+  color: white;
+  padding: 2px;
+  overflow: visible;
+  font-size: 13px;
+  border-radius: 5px;
+  z-index: 99;
+}
+
+.has {
+  background-color: #4f4cb0;
+  position: absolute;
+  color: white;
+  top: -30%;
+  left: 66%;
+  padding: 2px;
+  overflow: visible;
+  font-size: 13px;
+  z-index: 99;
+  border-radius: 5px;
+}
+
+.availability {
+  margin-top: 20px;
+  position: relative;
+}
+
+.severity-high {
+  background-color: #ff6666;
+  color: white;
+}
+
+.severity-medium {
+  background-color: orange;
+}
+
+.severity-low {
+  background-color: #AFE1AF;
+}
+
+.top1 {
+  border: 3px solid #ff6347;
+  border-radius: 10px;
+  box-shadow: 0 0 11px #ff6347;
+}
+
+/* CSS for top2 */
+.top2 {
+  border: 5px dashed #ffd700;
+  border-radius: 15px;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+/* CSS for top3 */
+.top3 {
+  border: 2px double #7cfc00;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #7cfc00;
+}
+
+.menuFirst {
+  height: 100%;
+  width: 100%;
+}
+
+.menuParent {
+  display: flex;
+  gap: 8px;
+}
+
+.rankings {
+  width: 300px;
+  background-color: #4f4cb0;
+  border-radius: 20px;
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 10px;
+}
+
+.rankings {
+  overflow-y: auto;
+}
+
+.rankings .topContent {
+  list-style: decimal;
+  text-align: left;
+}
+
+.topOneText {
+  font-weight: bold;
+}
+
+.reportsChatCon {
+  width: 100%;
+  position: relative;
+}
+
+.severityCon {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  gap: 5px;
+  display: flex;
+}
+
+.severeItem {
+  width: 100%;
+  background-color: #4f4cb0;
+  height: 100%;
+  border-radius: 30px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.severeImg {
+  background-color: #f1f1f1;
+  height: 60%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.severeImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.severeItem:nth-child(2) .severeImg img {
+  width: 90%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.severeItem:nth-child(3) .severeImg img {
+  width: 90%;
+  height: 80%;
+  object-fit: contain;
+}
+
+
+.severeItem:nth-child(1) .severeType {
+  background-color: #ff6666;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.severeItem:nth-child(2) .severeType:nth-child(2) {
+  background-color: orange;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.severeItem:nth-child(3) .severeType:nth-child(2) {
+  background-color: #AFE1AF;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: white;
+}
+
+.severeItems {
+  height: 30%;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 15px;
+  color: white;
+  text-align: justify;
+}
+
+.severeItemz {
+  background-color: #c3bd91;
+  padding: 5px 20px;
+  border-radius: 20px;
+}
+
+.ExpiredItemOfInventory {
+  background-color: #ff6347;
+  color: white;
+}
+
+.DamagedItemOfInventory {
+  background-color: #FF8042;
+  color: white;
+}
+
+.SpoiledItemOfInventory{
+  background-color: #ffd700;
 }

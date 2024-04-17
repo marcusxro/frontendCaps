@@ -4,16 +4,32 @@ import { onAuthStateChanged } from 'firebase/auth'
 import axios from 'axios'
 import { authentication } from '../authentication'
 import moment from 'moment'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Equipment = () => {
     const [quer, setQuer] = useState('')
     const [pos, getPos] = useState('')
     const [newItem, setNewItem] = useState(false)
-
-
     const [uid, setUid] = useState('')
     const [loading, setLoading] = useState(false)
     const [fullName, setFullname] = useState('')
+
+    
+    const notif = (stats) => {
+        toast.success(stats, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
+
+
     useEffect(() => {
         const unsub = onAuthStateChanged(authentication, (acc) => {
             if (acc) {
@@ -81,6 +97,7 @@ const Equipment = () => {
             Name: fullName,
         }).then(() => {
             console.log("details sent!")
+            notif( `${EquipName} has been successfully edited!`);
         }).catch((err) => {
             console.log(err)
         })
@@ -103,6 +120,7 @@ const Equipment = () => {
             axios.delete(`https://backendcaps-7zrx.onrender.com/deleteEquipment/${itemId}`)
                 .then(() => {
                     console.log("deleted")
+                    notif( `${newData[0].EquipmentName} has been successfully deleted!`);
                 }).catch((err) => {
                     console.log(err)
                 })
@@ -118,6 +136,7 @@ const Equipment = () => {
 
     return (
         <div className='EquipmentCon'>
+                      <ToastContainer />
             <div className="searchBar">
                 <input
                     value={quer}

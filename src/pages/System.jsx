@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom'
 import LearnMore from '../comp/LearnMore'
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import Loading from '../comp/Loading'
 
 const System = () => {
   document.title = "Cafe Eunoia | System"
@@ -52,6 +53,7 @@ const System = () => {
   const [intAct, setAct] = useState([])
   const [nonFil, setNonFil] = useState([])
   const [menuData, setMenuData] = useState([])
+
   useEffect(() => {
     axios.get('https://backendcaps-7zrx.onrender.com/menuDetails') 
       .then((response) => {
@@ -65,6 +67,7 @@ const System = () => {
       })
   }, [intAct])
   const [newData, setNewData] = useState([])
+
   useEffect(() => {
     axios.get('https://backendcaps-7zrx.onrender.com/getIng')
       .then((response) => {
@@ -74,6 +77,7 @@ const System = () => {
         console.log(err)
       })
   }, [user])
+
   useEffect(() => {
     const unsub = onAuthStateChanged(authentication, (acc) => {
       if (acc) {
@@ -90,6 +94,7 @@ const System = () => {
     });
     return () => { unsub() };
   }, []);
+
   const [activeTab, setActiveTab] = useState('inventory');
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -104,6 +109,7 @@ const System = () => {
   }, itemsWithPercentage[0]);
   const filteredHighestPercentageItem = itemsWithPercentage.filter(item => item.percentage === highestPercentageItem.percentage);
   const [repData, setRepData] = useState([])
+
   useEffect(() => {
     axios.get('https://backendcaps-7zrx.onrender.com/getReports')
       .then((resp) => {
@@ -113,13 +119,17 @@ const System = () => {
         console.log(err)
       })
   }, [uid])
+
   const [showModal, setModal] = useState(false)
   const toggleModal = useCallback(() => {
     setModal(!showModal)
   }, [showModal])
+  
   return (
     <div className='system'>
-      {user ? (<>
+    {loading === true ? (
+      <>
+        {user ? (<>
         <Sidebar data={"home"} />
         <div className="contentCon">
           <div className="content">
@@ -312,6 +322,8 @@ const System = () => {
       </>) : <></>
       }
       {showModal ? (<LearnMore func={toggleModal} />) : <></>}
+      </>
+    ) : ( <><Loading /> </> )}
     </div >
   )
 }

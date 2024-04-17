@@ -5,6 +5,8 @@ import NewItem from './NewItem';
 import { authentication } from '../authentication';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useLocation } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Table = ({ searchedItem }) => {
   const [data, setData] = useState([]);
@@ -23,14 +25,23 @@ const Table = ({ searchedItem }) => {
   const location = useLocation()
   const [editedExpiry, setExpiry] = useState('')
   const [editedCondition, setCondition] = useState('')
-
-
   useEffect(() => {
     if (location) {
       console.log(location);
     }
   }, [location])
-
+  const notif = (stats) => {
+    toast.success(stats, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  }
   useEffect(() => {
     axios.get('https://backendcaps-7zrx.onrender.com/menuDetails')
       .then((res) => {
@@ -49,14 +60,15 @@ const Table = ({ searchedItem }) => {
     })
     return () => { unsub() }
   }, [uid])
-const [userName, setUsername] = useState('')
+
+  const [userName, setUsername] = useState('')
   useEffect(() => {
     setLoading(false)
     axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
       .then((response) => {
         const filteredData = response.data.filter((item) => item.Uid === uid);
         setGetPos(filteredData[0].Position)
-        setUsername(filteredData[0].Firstname + " " + filteredData[0].Lastname )
+        setUsername(filteredData[0].Firstname + " " + filteredData[0].Lastname)
         setLoading(true)
       })
       .catch((error) => {
@@ -104,6 +116,7 @@ const [userName, setUsername] = useState('')
       axios.delete(`https://backendcaps-7zrx.onrender.com/item/${id}`)
         .then(() => {
           console.log("deleted");
+          notif(`${newDatas[0].ProductName} has been deleted successfully! `)
         }).catch((err) => {
           console.log("error", err);
         });
@@ -124,11 +137,31 @@ const [userName, setUsername] = useState('')
   const handleSaveEdit = async (productId) => {
     console.log(productId);
 
-    try {
-      if(!editValue || !editedWeight || !editedQuan || !editedCondition || !editedExpiry) {
-        return alert("please type something")
+    if (productId === null) {
+      return
+    }
+
+    console.log(editedCondition)
+
+    if (new Date(editedExpiry).getTime() < Date.now()) {
+      if (editedCondition === "Expired") {
+        const confirmed = window.confirm("Are you sure you want to change the condition?");
+        if (!confirmed) {
+          return;
+        }
       }
-      await axios.put(`https://backendcaps-7zrx.onrender.com/editInventory/${productId}`, {
+      const confirmedDate = window.confirm("Are you sure you want to set the expiration date to the current date?");
+      if (!confirmedDate) {
+        return;
+      }
+    }
+
+    if (new Date(editedExpiry).getTime() > Date.now() && editedCondition === "Expired") {
+      return alert("Please change the condition.");
+    }
+
+    try {
+      await axios.put(`http://localhost:8080/editInventory/${productId}`, {
         ProductName: editValue,
         Weight: editedWeight,
         Quantity: editedQuan,
@@ -137,6 +170,7 @@ const [userName, setUsername] = useState('')
         Date: Date.now()
       }).then(() => {
         console.log("edited")
+        notif(`${editValue} has been edited successfully!`)
       }).catch((err) => {
         console.log("error", err)
       });
@@ -146,6 +180,34 @@ const [userName, setUsername] = useState('')
       console.error("error editing item: ", error);
     }
   };
+
+
+
+  useEffect(() => {
+    const expiredItems = data.filter((item) => {
+      return new Date(item.ExpiryDate).getTime() <= Date.now();
+    });
+
+    const freshItems = data.filter((item) => {
+      return new Date(item.ExpiryDate).getTime() > Date.now();
+    });
+
+    if (expiredItems.length > 0) {
+      expiredItems.forEach((item) => {
+        axios.put(`http://localhost:8080/editInventory/${item._id}`, {
+          Condition: "Expired",
+        }).then(() => {
+        }).catch((err) => {
+          console.log("error", err);
+        });
+      });
+    }
+
+
+
+  }, [data]);
+
+
 
   const [click, setClick] = useState(0);
   const viewModal = () => {
@@ -175,8 +237,21 @@ const [userName, setUsername] = useState('')
   }, [quer, data, showItem, location]);
 
 
+  const bgOfCondition = (Condition) => {
+    switch (Condition) {
+      case "Expired":
+        return 'ExpiredItemOfInventory'
+      case "Damaged":
+        return 'DamagedItemOfInventory'
+      case "Spoiled":
+        return 'SpoiledItemOfInventory'
+
+    }
+  }
+
   return (
     <div className="tableCon">
+      <ToastContainer />
       {loading ? (
         <div className="searchBar">
           <input
@@ -223,6 +298,7 @@ const [userName, setUsername] = useState('')
                 <th>Quantity</th>
                 <th>Uploaded on</th>
                 <th>Condition</th>
+
                 <th>Expiry Date</th>
                 <th>Added by</th>
                 {getPos === "Manager" ? null : <th>Action</th>}
@@ -232,14 +308,14 @@ const [userName, setUsername] = useState('')
               {showItem == true ? "No items found!" : ""}
               {filtedItem ? (
                 filtedItem.slice().reverse().map((item) => (
-                  <tr className='productList' key={item._id}>
+                  <tr className={`productList ${bgOfCondition(item.Condition)}`} key={item._id}>
                     <td>{editIndex === item._id ?
                       <input required value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
                     <td>{item.Category}</td>
                     <td>{editIndex === item._id ?
-                      <input required type='number'  value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                      <input required type='number' value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
                     <td>{editIndex === item._id ?
-                      <input required type='number'  value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                      <input required type='number' value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
 
                     <td>{editIndex === item._id ?
@@ -254,7 +330,9 @@ const [userName, setUsername] = useState('')
                       </select>
                       : item.Condition ? item.Condition : "N/A"}</td>
                     <td>{editIndex === item._id ?
-                      <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                      <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ?
+                        (new Date(item.ExpiryDate).getTime() <= Date.now() ? "Expiry Date met" : item.ExpiryDate)
+                        : "N/A"}</td>
                     <td>{item.Fullname}</td>
                     {getPos === "Manager" ? null : (
                       <td className='btnCon'>
@@ -266,7 +344,13 @@ const [userName, setUsername] = useState('')
                           </>
                         ) : (
                           <>
-                            {editIndex === item._id ? <button onClick={() => handleSaveEdit(item._id)}>Save</button> : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+                            {editIndex === item._id ? (
+                              <>
+                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                <button onClick={() => handleEdit(null)}>Cancel</button>
+                              </>
+                            ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
                           </>
                         )}
                       </td>

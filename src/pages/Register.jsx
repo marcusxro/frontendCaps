@@ -6,7 +6,8 @@ import { authentication } from '../authentication'
 import gsap from 'gsap'
 import milkTea from '../images/register.jpg'
 import filipinoBadwords from "filipino-badwords-list"
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const nav = useNavigate()
@@ -21,7 +22,30 @@ const Register = () => {
     document.title = "Create new account"
 
 
-
+const notif = () => {
+    toast.success('Account Created! Please verify your account now.', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+}
+const notifError = () => {
+    toast.error('Error occured please check your input', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+}
     const createAccount = (e) => {
         e.preventDefault()  
         if (password.length <= 5) {
@@ -46,10 +70,8 @@ const Register = () => {
                             .then(() => {
                                 const user = authentication.currentUser;
                                 if (user && !user.emailVerified) {
-                                    setStatus("Account created! please verify your account")
-                                    gsap.to('.accountStatus', {
-                                        backgroundColor: "green"
-                                    })
+                                 
+                                    notif()
                                     console.log(position)
                                     axios.post('https://backendcaps-7zrx.onrender.com/GetAcc', {
                                         Email: email,
@@ -68,16 +90,17 @@ const Register = () => {
                                     nav('/')
                                 }
                             }).catch((err) => {
-                                console.log("error: " + err)
+                                console.log("errors: " + err)
                             })
                     } else {
                         nav("/")
                     }
                 }).catch((err) => {
                     if (err.code === 'auth/email-already-in-use') {
-                        setError(err.errFour);
+                        notifError();
                     } else {
                         console.error('Error:', err.message);
+                        notifError();
                     }
                 })
         }
@@ -116,6 +139,7 @@ const Register = () => {
 
     return (
         <div className='register'>
+          <ToastContainer />
             <div className="registerLeft">
                 <div className="registerImg">
                     <img src={milkTea} alt="" />

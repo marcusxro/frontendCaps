@@ -5,7 +5,12 @@ import { authentication } from '../authentication'
 import axios from 'axios'
 import moment from 'moment'
 import gsap from 'gsap'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const ChatPage = () => {
+    document.title = "Communication"
     const [uid, setUid] = useState('')
     const [userDetails, setUserDetails] = useState([])
     const [messageText, setMessage] = useState('')
@@ -19,7 +24,18 @@ const ChatPage = () => {
         });
         return () => { unsub(); };
     }, [uid]);
-
+    const notif = (stats) => {
+        toast.success(stats, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
     useEffect(() => {
         axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
@@ -36,15 +52,20 @@ const ChatPage = () => {
         axios.get('https://backendcaps-7zrx.onrender.com/getMessage')
             .then((res) => {
                 setMessageData(res.data)
+                gsap.to('.messageCon', {
+                    opacity: 1,
+                    duration: 0.3
+                })
             }).catch((err) => {
                 console.log(err)
             })
     }, [messageData])
 
-    const handleDeleteMessage = (itemId) => {
+    const handleDeleteMessage = (itemId, msg) => {
         axios.delete(`https://backendcaps-7zrx.onrender.com/deleteMessage/${itemId}`)
             .then(() => {
                 console.log("message deleted")
+                notif( `(${msg}) has been successfully unsent!`);
             }).catch((err) => {
                 console.log(err)
             })
@@ -115,6 +136,7 @@ const ChatPage = () => {
     return (
         <div className='chatPage'>
             <Sidebar />
+            <ToastContainer />
             <div className="contactsForChat">
                 <div className="contactsText">
                     Members
@@ -126,7 +148,7 @@ const ChatPage = () => {
                                 {item.Firstname.charAt(0)}
                             </div>
                             <div className="peopleName">
-                                {item.Firstname + " " + item.Lastname}
+                                {(item.Firstname + " " + item.Lastname).substring(0, 15) + "..."}
                             </div>
                         </div>
                     ))}
@@ -151,7 +173,7 @@ const ChatPage = () => {
                             {item.Uid === uid ? (
                                 showBtn && equalID === item._id ? (
                                     <div className="chatMessageButtons">
-                                        <button onClick={() => { handleDeleteMessage(item._id) }} >unsent</button>
+                                        <button onClick={() => { handleDeleteMessage(item._id,item.Message ) }} >unsent</button>
                                     </div>
                                 ) : <></>
                             ) : (<></>)}

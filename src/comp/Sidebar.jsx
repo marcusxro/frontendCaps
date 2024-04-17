@@ -10,7 +10,7 @@ const Sidebar = () => {
   const [loading, setLoad] = useState(false)
 
 
-  useEffect(() => { 
+  useEffect(() => {
     const unsub = onAuthStateChanged(authentication, (acc) => {
       if (acc) {
         setUid(acc.uid)
@@ -33,8 +33,8 @@ const Sidebar = () => {
         console.log(error);
       });
   }, [uid]);
-  
-  
+
+
 
   const handleTab = (tab) => {
     setActiveTab(tab);
@@ -88,63 +88,63 @@ const Sidebar = () => {
 
         {loading ?
           <div className="buttons">
-          <NavLink
-            to="/system"
-            onClick={() => handleTab('home')}
-            className={`btns`}
-          >
-            <ion-icon name="home-outline"></ion-icon>
-            <span> {reports.length + inv.length + menu.length + edited.length}</span>
-          </NavLink>
-          <NavLink
-            to="/system/inventory"
-            onClick={() => handleTab('inventory')}
-            className={`btns`}
-          >
-            <ion-icon name="newspaper-outline"></ion-icon>
-          </NavLink>
-          <NavLink
-            to="/system/menu"
-            onClick={() => handleTab('Menu')}
-            className={`btns`}
-          >
-            <ion-icon name="list-outline" />
-          </NavLink>
-          <NavLink
-            to="/system/report"
-            onClick={() => handleTab('reports')}
-            className={`btns`}
-          >
-            <ion-icon name="folder-open-outline" />
-          </NavLink>
-          {userPos === "Staff" ?
-            (<></>) :
-            <>
-              <NavLink
-                to="/system/security"
-                onClick={() => handleTab('security')}
-                className={`btns`}
-              >
-                <ion-icon name="lock-closed-outline" />
-              </NavLink>
-            </>
-          }
-          <NavLink
-            to="/system/notification"
-            onClick={() => handleTab('notification')}
-            className={`btns`}
-          >
-            <ion-icon name="notifications-outline"></ion-icon>
-          </NavLink>
+            <NavLink
+              to="/system"
+              onClick={() => handleTab('home')}
+              className={`btns`}
+            >
+              <ion-icon name="home-outline"></ion-icon>
+              <span> {reports.length + inv.length + menu.length + edited.length}</span>
+            </NavLink>
+            <NavLink
+              to="/system/inventory"
+              onClick={() => handleTab('inventory')}
+              className={`btns`}
+            >
+              <ion-icon name="newspaper-outline"></ion-icon>
+            </NavLink>
+            <NavLink
+              to="/system/menu"
+              onClick={() => handleTab('Menu')}
+              className={`btns`}
+            >
+              <ion-icon name="list-outline" />
+            </NavLink>
+            <NavLink
+              to="/system/report"
+              onClick={() => handleTab('reports')}
+              className={`btns`}
+            >
+              <ion-icon name="folder-open-outline" />
+            </NavLink>
+            {userPos === "Staff" ?
+              (<></>) :
+              <>
+                <NavLink
+                  to="/system/security"
+                  onClick={() => handleTab('security')}
+                  className={`btns`}
+                >
+                  <ion-icon name="lock-closed-outline" />
+                </NavLink>
+              </>
+            }
+            <NavLink
+              to="/system/notification"
+              onClick={() => handleTab('notification')}
+              className={`btns`}
+            >
+              <ion-icon name="notifications-outline"></ion-icon>
+            </NavLink>
 
-          <NavLink
-            to="/system/Chat"
-            onClick={() => handleTab('notification')}
-            className={`btns`}
-          >
-            <ion-icon name="chatbox-ellipses-outline"></ion-icon>
-          </NavLink>
-        </div>  : 
+            <NavLink
+              to="/system/Chat"
+              onClick={() => handleTab('notification')}
+              className={`btns`}
+            >
+              <ion-icon name="chatbox-ellipses-outline"></ion-icon>
+            </NavLink>
+          </div> :
           <div className="loads">
             Loading..
           </div>

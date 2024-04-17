@@ -2,6 +2,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import { authentication } from '../authentication';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { Link, json } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Forgotpw = () => {
     const [email, setEmail] = useState('');
@@ -11,7 +14,7 @@ const Forgotpw = () => {
     const [cooldown, setCooldown] = useState(0);
     const cooldownHolder = useRef(null)
     document.title = "Forgot password"
-    
+
     useEffect(() => { //if it reaches 3 requests
         if (counter >= 3) {
             setCooldown(3 * counter); //automatically adds a cooldown based on click
@@ -33,10 +36,37 @@ const Forgotpw = () => {
         return () => clearInterval(intervalId);
     }, [cooldown]);
 
+
+    const notifError = (errr) => {
+        toast.error(errr, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
+
+    const notif = (stats) => {
+        toast.success(stats, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+        });
+    }
+
     const resetPassword = (e) => {
         e.preventDefault();
         if (cooldown > 0) {
-            console.log("You are in cooldown. Please wait.");
+            notifError("You are in cooldown. Please wait.");
             return;
         }
         setCounter(counter + 1);
@@ -44,31 +74,35 @@ const Forgotpw = () => {
         sendPasswordResetEmail(authentication, email)
             .then(() => {
                 const user = authentication.currentUser;
-                if (!user.emailVerified) {
-                    setResetStatus('Not verified');
-                    setEmail('')
-                } else {
-                    setResetStatus('Password reset email sent');
-                    setEmail('')
-                }
+                // Refresh the user to ensure the latest data is fetched
+                return user.reload();
+            })
+            .then(() => {
+
+                setResetStatus('Password reset email sent');
+                notif('Password reset email sent')
+
+                setEmail('');
                 setLoading('');
             })
             .catch((error) => {
+                console.error('Error sending or reloading user:', error);
+                // Log the error for debugging
                 if (error.code === 'auth/user-not-found') {
                     setResetStatus('User does not exist');
-                    setEmail('')
                 } else {
                     console.error('Error sending password reset email:', error.message);
-                    setEmail('')
                 }
+                setEmail('');
                 setLoading('');
             });
     };
 
+
     return (
         <div className='pwPage'>
             <p>{loading}</p>
-            {resetStatus && <p>{resetStatus}</p>}
+            <ToastContainer />
             <form
                 className='pwForm'
                 onSubmit={resetPassword}>
