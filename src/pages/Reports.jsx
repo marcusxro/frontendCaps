@@ -58,7 +58,7 @@ const Reports = () => {
   }, [Uid])
 
   useEffect(() => { // for products
-    axios.get('http://localhost:8080/getReports')
+    axios.get('https://backendcaps-7zrx.onrender.com/getReports')
       .then((resp) => {
         setRepData(resp.data)
 
@@ -82,7 +82,7 @@ const Reports = () => {
   const [IngData, setIngData] = useState([])
 
   useEffect(() => { // for ingredients
-    axios.get('http://localhost:8080/getIngRep')
+    axios.get('https://backendcaps-7zrx.onrender.com/getIngRep')
       .then((resp) => {
         setIngData(resp.data)
       }).catch((err) => {
@@ -94,7 +94,7 @@ const Reports = () => {
   const [EquipData, setEquipData] = useState([])
 
   useEffect(() => { // for equipment
-    axios.get('http://localhost:8080/EquipReport')
+    axios.get('https://backendcaps-7zrx.onrender.com/EquipReport')
       .then((resp) => {
         setEquipData(resp.data)
       }).catch((err) => {
@@ -110,7 +110,7 @@ const Reports = () => {
 
 
   const sendEdited = (item, prdName) => {
-    axios.put(`http://localhost:8080/reportEdit/${item}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/reportEdit/${item}`, {
       isResolved: true,
       Uid: Uid,
       Date: Date.now()
@@ -125,7 +125,7 @@ const Reports = () => {
 
 
   const sendEditedIng = (item, prdName) => {
-    axios.put(`http://localhost:8080/IngReport/${item}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/IngReport/${item}`, {
       isResolved: true,
       Uid: Uid,
       Date: Date.now()
@@ -139,7 +139,7 @@ const Reports = () => {
 
 
   const sendEditedEquip = (item, prdName) => {
-    axios.put(`http://localhost:8080/EquipReport/${item}`, {
+    axios.put(`https://backendcaps-7zrx.onrender.com/EquipReport/${item}`, {
       isResolved: true,
       Uid: Uid,
       Date: Date.now()
@@ -175,7 +175,7 @@ const Reports = () => {
   const handleDownload = async () => {
     try {
       // Fetch the image data
-      const response = await fetch(`http://localhost:8080/images/${imgLink}`);
+      const response = await fetch(`https://backendcaps-7zrx.onrender.com/images/${imgLink}`);
       const imageData = await response.blob();
 
       // Create a Blob object from the image data
@@ -311,7 +311,7 @@ const Reports = () => {
               {seeImg !== false &&
                 <div className="ev">
                   <div className="evidenceImg">
-                    <img src={`http://localhost:8080/images/${imgLink}`} alt="" />
+                    <img src={`https://backendcaps-7zrx.onrender.com/images/${imgLink}`} alt="" />
                   </div>
                   <div className="evCon">
                     <button onClick={() => { setSeeImg(!seeImg) }}>close</button>
@@ -474,7 +474,7 @@ const Reports = () => {
             {seeImg !== false &&
               <div className="ev">
                 <div className="evidenceImg">
-                  <img src={`http://localhost:8080/images/${imgLink}`} alt="" />
+                  <img src={`https://backendcaps-7zrx.onrender.com/images/${imgLink}`} alt="" />
                 </div>
                 <div className="evCon">
                   <button onClick={() => { setSeeImg(!seeImg) }}>close</button>
@@ -639,7 +639,7 @@ const Reports = () => {
             {seeImg !== false &&
               <div className="ev">
                 <div className="evidenceImg">
-                  <img src={`http://localhost:8080/images/${imgLink}`} alt="" />
+                  <img src={`https://backendcaps-7zrx.onrender.com/images/${imgLink}`} alt="" />
                 </div>
                 <div className="evCon">
                   <button onClick={() => { setSeeImg(!seeImg) }}>close</button>

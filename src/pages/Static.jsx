@@ -147,6 +147,9 @@ const Static = () => {
                     gsap.to('.loaderTwo', {
                       display: "none"
                     })
+                    gsap.to('header', {
+                      opacity: 1
+                    })
                     gsap.to('h1', {
                       opacity: 1,
                       duration: .8,

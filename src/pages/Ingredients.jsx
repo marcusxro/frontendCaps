@@ -95,7 +95,7 @@ const Ingredients = ({ searchedItem }) => {
         setData(newData);
         setConfirmId(null);
 
-        axios.post(`http://localhost:8080/DeletedIng`, {
+        axios.post(`https://backendcaps-7zrx.onrender.com/DeletedIng`, {
             DeletedIngName: newData[0].IngName,
             DeletedWeight: newData[0].Weight,
             DeletedCategory: newData[0].Category,
@@ -108,7 +108,7 @@ const Ingredients = ({ searchedItem }) => {
         }).then(() => {
             console.log("SENT")
             notif( `${newData[0].IngName} has been successfully deleted!`);
-            axios.delete(`http://localhost:8080/ingItem/${id}`)
+            axios.delete(`https://backendcaps-7zrx.onrender.com/ingItem/${id}`)
                 .then(() => {
                     console.log("deleted");
                 })

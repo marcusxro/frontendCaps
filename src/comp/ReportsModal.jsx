@@ -15,7 +15,7 @@ const ReportsModal = () => {
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/accInfos')
+        axios.get('https://backendcaps-7zrx.onrender.com/accInfos')
             .then((response) => {
                 const filteredData = response.data.filter((item) => item.Uid === Uid);
                 setFullname(filteredData[0].Firstname + " " + filteredData[0].Lastname)
@@ -65,7 +65,7 @@ const ReportsModal = () => {
     formData.append("Fullname", Fullname);
     formData.append("Date", Date.now());
 
-    axios.post('http://localhost:8080/uploadAndReportCreate', formData)
+    axios.post('https://backendcaps-7zrx.onrender.com/uploadAndReportCreate', formData)
       .then(response => {
           console.log("Details sent:", response.data);
           setTitle('');

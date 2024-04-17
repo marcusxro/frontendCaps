@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.1.0",
+  "homepage": "https://cafeeunoia.onrender.com",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^4.1.0",

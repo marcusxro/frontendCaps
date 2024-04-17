@@ -69,7 +69,7 @@ const IngRep = () => {
         formData.append("Fullname", Fullname);
         formData.append("Date", Date.now());
     
-        axios.post('http://localhost:8080/IngReport', formData)
+        axios.post('https://backendcaps-7zrx.onrender.com/IngReport', formData)
           .then(response => {
               console.log("Details sent:", response.data);
               setTitle('');

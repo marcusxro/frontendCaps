@@ -69,12 +69,18 @@ const Inventory = () => {
   const snacksData = data.filter((item) => item.Category === "Snacks");
   const NachosData = data.filter((item) => item.Category === "Nachos");
   const BurgerData = data.filter((item) => item.Category === "Burger");
+  const CoffeeData = data.filter((item) => item.Category === "Coffee");
+  const NonCoffeeData = data.filter((item) => item.Category === "Non-Coffee");
+  const FruitTea = data.filter((item) => item.Category === "Fruit Tea");
 
   const datas = [
     { name: 'Group A', value: CrofflesData.length },
     { name: 'Group B', value: snacksData.length },
     { name: 'Group C', value: NachosData.length },
     { name: 'Group D', value: BurgerData.length },
+    { name: 'Group E', value: CoffeeData.length },
+    { name: 'Group F', value: NonCoffeeData.length },
+    { name: 'Group G', value: FruitTea.length },
   ];
 
   const solidData = ingCount.filter((item) => item.Category === "Fresh");
@@ -93,7 +99,7 @@ const Inventory = () => {
     { name: 'Group F', value: SyrupData.length },
 
   ];
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#cc9999'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#cc9999',  '#FF8042', '#8A2BE2', '  #960018'];
   const COLORTWO = ['#0088FE', '#00C49F', '#FFBB28', '#cc9999', '#FF8042', '#8A2BE2'];
 
   const COLORTHREE = ['#0088FE', '#00C49F', '#FFBB28', '#cc9999', '#FF8042', '#8A2BE2', '  #960018'];
@@ -222,9 +228,21 @@ const Inventory = () => {
                   <div className="color"></div>
                   <div className="teaTitle">Burger <span className='countItem'>{BurgerData.length}</span></div>
                 </div>
-                <div className="teaColor">
+                <div className="teaColor Nachos">
                   <div className="color"></div>
                   <div className="teaTitle">Nachos <span className='countItem'>{NachosData.length}</span></div>
+                </div>
+                <div className="teaColor Coffee">
+                  <div className="color"></div>
+                  <div className="teaTitle">Coffee <span className='countItem'>{CoffeeData.length}</span></div>
+                </div>
+                <div className="teaColor NonCoffee">
+                  <div className="color"></div>
+                  <div className="teaTitle">Non-Coffee <span className='countItem'>{NonCoffeeData.length}</span></div>
+                </div>
+                <div className="teaColor Fruit">
+                  <div className="color"></div>
+                  <div className="teaTitle">Fruit Tea <span className='countItem'>{FruitTea.length}</span></div>
                 </div>
               </div>
             </ResponsiveContainer>

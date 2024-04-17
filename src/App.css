@@ -37,6 +37,7 @@ header {
   top: 0;
   left: 0;
   background-color: white;
+  opacity: 0;
 }
 
 .logo {
@@ -644,6 +645,7 @@ canvas {
   flex-direction: column;
   gap: 10px;
   font-size: 25px;
+  z-index: 100;
 }
 
 .loaderTwo {
@@ -660,6 +662,7 @@ canvas {
   flex-direction: column;
   gap: 10px;
   font-size: 25px;
+  z-index: 100;
 }
 
 .loads {
@@ -3119,6 +3122,17 @@ html::-webkit-scrollbar {
 
 }
 
+.Coffee > .color{
+background-color: #FF8042;
+}
+
+.NonCoffee > .color {
+  background-color: #8A2BE2;
+}
+
+.Fruit >.color {
+  background-color: #960018;
+}
 
 .caterCon {
   max-height: 900px;
