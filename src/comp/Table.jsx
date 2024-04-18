@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import moment from 'moment';
 import NewItem from './NewItem';
@@ -60,6 +60,8 @@ const Table = ({ searchedItem }) => {
     })
     return () => { unsub() }
   }, [uid])
+
+
 
   const [userName, setUsername] = useState('')
   useEffect(() => {
@@ -134,79 +136,73 @@ const Table = ({ searchedItem }) => {
     setExpiry(Expiry)
   };
 
+
+
+  //  useEffect(() => {
+  //      const expiredItems = data.filter((item) => {
+  //        return new Date(item.ExpiryDate).getTime() <= Date.now();
+  //      });
+    
+  //      if (expiredItems.length > 0) {
+  //        expiredItems.forEach((item) => {
+  //          axios.put(`https:backendcaps-7zrx.onrender.com/editInventory/${item._id}`, {
+  //            Condition: "Expired",
+  //          }).catch((err) => {
+  //            console.log("error", err);
+  //          });
+  //        });
+  //      }
+  //    }, [data]);
+
   const handleSaveEdit = async (productId) => {
-    console.log(productId);
-
-    if (productId === null) {
-      return
+    console.log("handleSaveEdit called with productId:", productId);
+  
+    if (!productId || !editedCondition) {
+      console.log("Invalid productId or editedCondition");
+      return;
     }
-
-    console.log(editedCondition)
-
-    if (new Date(editedExpiry).getTime() < Date.now()) {
-      if (editedCondition === "Expired") {
-        const confirmed = window.confirm("Are you sure you want to change the condition?");
+  
+    try {
+      const editedExpiryTime = new Date(editedExpiry).getTime();
+      console.log("editedExpiryTime:", editedExpiryTime);
+  
+      if (editedExpiryTime < Date.now() && editedCondition !== "Expired") {
+        const confirmed = window.confirm("Are you sure you want to change the condition and set the expiration date to the current date?");
         if (!confirmed) {
+          console.log("User cancelled the operation");
           return;
         }
       }
-      const confirmedDate = window.confirm("Are you sure you want to set the expiration date to the current date?");
-      if (!confirmedDate) {
+  
+      if (editedExpiryTime > Date.now() && editedCondition === "Expired") {
+        alert("The condition cannot be set to 'Expired' for a future expiry date.");
         return;
       }
-    }
-
-    if (new Date(editedExpiry).getTime() > Date.now() && editedCondition === "Expired") {
-      return alert("Please change the condition.");
-    }
-
-    try {
-      await axios.put(`http://localhost:8080/editInventory/${productId}`, {
+  
+      const payload = {
         ProductName: editValue,
         Weight: editedWeight,
         Quantity: editedQuan,
         Condition: editedCondition,
         ExpiryDate: editedExpiry,
+        EditedUid: userName,
         Date: Date.now()
-      }).then(() => {
-        console.log("edited")
-        notif(`${editValue} has been edited successfully!`)
-      }).catch((err) => {
-        console.log("error", err)
-      });
-
+      };
+  
+      console.log("Sending payload:", payload);
+  
+      await axios.put(`https://backendcaps-7zrx.onrender.com/editInventory/${productId}`, payload);
+  
+      console.log("edited");
+      notif(`${editValue} has been edited successfully!`);
       setEditIndex(null);
+  
     } catch (error) {
       console.error("error editing item: ", error);
     }
   };
-
-
-
-  useEffect(() => {
-    const expiredItems = data.filter((item) => {
-      return new Date(item.ExpiryDate).getTime() <= Date.now();
-    });
-
-    const freshItems = data.filter((item) => {
-      return new Date(item.ExpiryDate).getTime() > Date.now();
-    });
-
-    if (expiredItems.length > 0) {
-      expiredItems.forEach((item) => {
-        axios.put(`http://localhost:8080/editInventory/${item._id}`, {
-          Condition: "Expired",
-        }).then(() => {
-        }).catch((err) => {
-          console.log("error", err);
-        });
-      });
-    }
-
-
-
-  }, [data]);
-
+  
+  
 
 
   const [click, setClick] = useState(0);
@@ -219,6 +215,7 @@ const Table = ({ searchedItem }) => {
     }
   };
   const [showItem, setShow] = useState(false)
+
   useEffect(() => {
     const filteredData = data.filter(item => {
       if (typeof quer === 'string') {
@@ -236,18 +233,27 @@ const Table = ({ searchedItem }) => {
     setLoading(true);
   }, [quer, data, showItem, location]);
 
-
-  const bgOfCondition = (Condition) => {
+  
+  const bgOfCondition = (Condition, exDate) => {
+    const editedExpiryTime = new Date(exDate).getTime();
+    const currentTime = Date.now();
+  
+    if (editedExpiryTime <= currentTime) {
+      return 'ExpiredItemOfInventory';
+    }
+  
     switch (Condition) {
       case "Expired":
-        return 'ExpiredItemOfInventory'
+        return 'ExpiredItemOfInventory';
       case "Damaged":
-        return 'DamagedItemOfInventory'
+        return 'DamagedItemOfInventory';
       case "Spoiled":
-        return 'SpoiledItemOfInventory'
-
+        return 'SpoiledItemOfInventory';
+      default:
+        return '';
     }
   }
+  
 
   return (
     <div className="tableCon">
@@ -298,9 +304,9 @@ const Table = ({ searchedItem }) => {
                 <th>Quantity</th>
                 <th>Uploaded on</th>
                 <th>Condition</th>
-
                 <th>Expiry Date</th>
                 <th>Added by</th>
+                <th>Last edited by</th>
                 {getPos === "Manager" ? null : <th>Action</th>}
               </tr>
             </thead>
@@ -308,7 +314,7 @@ const Table = ({ searchedItem }) => {
               {showItem == true ? "No items found!" : ""}
               {filtedItem ? (
                 filtedItem.slice().reverse().map((item) => (
-                  <tr className={`productList ${bgOfCondition(item.Condition)}`} key={item._id}>
+                  <tr className={`productList ${bgOfCondition(item.Condition, item.ExpiryDate)}`} key={item._id}>
                     <td>{editIndex === item._id ?
                       <input required value={editValue} onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
                     <td>{item.Category}</td>
@@ -319,21 +325,26 @@ const Table = ({ searchedItem }) => {
                     <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
 
                     <td>{editIndex === item._id ?
-                      <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
-                        <option value="">Enter product condition</option>
-                        <option value="Fresh">Fresh</option>
-                        <option value="Frozen">Frozen</option>
-                        <option value="Expired">Expired</option>
-                        <option value="Damaged">Damaged</option>
-                        <option value="Spoiled">Spoiled</option>
-                        <option value="Prepared">Prepared</option>
-                      </select>
+                    <select onChange={(e) => { 
+                      console.log("Selected condition:", e.target.value); 
+                      setCondition(e.target.value);
+                    }} value={editedCondition || item.Condition || ""}>
+                                    
+                      <option value="Frozen">Frozen</option>
+                      <option value="Fresh">Fresh</option>
+                      <option value="Expired">Expired</option>
+                      <option value="Damaged">Damaged</option>
+                      <option value="Spoiled">Spoiled</option>
+                      <option value="Prepared">Prepared</option>
+                    </select>
+                    
                       : item.Condition ? item.Condition : "N/A"}</td>
                     <td>{editIndex === item._id ?
                       <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ?
                         (new Date(item.ExpiryDate).getTime() <= Date.now() ? "Expiry Date met" : item.ExpiryDate)
                         : "N/A"}</td>
                     <td>{item.Fullname}</td>
+                    <td>{item.EditedUid}</td>
                     {getPos === "Manager" ? null : (
                       <td className='btnCon'>
                         <button onClick={() => handleDelete(item._id)}>Delete</button>
@@ -346,7 +357,9 @@ const Table = ({ searchedItem }) => {
                           <>
                             {editIndex === item._id ? (
                               <>
-                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                {editedExpiry === new Date().getTime() ? 
+                                  <button></button> :                    <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                              }
                                 <button onClick={() => handleEdit(null)}>Cancel</button>
                               </>
                             ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
