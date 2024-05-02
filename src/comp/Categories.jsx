@@ -44,6 +44,10 @@ const Categories = () => {
     const snacksData = data.filter((item) => item.Category === "Snacks");
     const CrofflesData = data.filter((item) => item.Category === "Croffles");
     const BurgerData = data.filter((item) => item.Category === "Burger");
+    const CoffeeData = data.filter((item) => item.Category === "Coffee");
+    const NonData = data.filter((item) => item.Category === "Non-Coffee");
+    const FruitData = data.filter((item) => item.Category === "Fruit Tea");
+
 
     const handleDelete = (index) => {
         setConfirmIndex(index);
@@ -137,58 +141,66 @@ const Categories = () => {
                             </tr>
                         </thead>
                         <tbody className='drinksBody'>
-                            {NachosData.map((item) => (
-                                <tr className='tdForDrink' key={item._id}>
-                                    <td>{editIndex === item._id ?
-                                        <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
-                                    <td>{item.Category}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
-                                    <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
-                                    <td>{editIndex === item._id ?
-                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
-                                            <option value="">Enter product condition</option>
-                                            <option value="Fresh">Fresh</option>
-                                            <option value="Frozen">Frozen</option>
-                                            <option value="Expired">Expired</option>
-                                            <option value="Damaged">Damaged</option>
-                                            <option value="Spoiled">Spoiled</option>
-                                            <option value="Prepared">Prepared</option>
-                                        </select>
-
-                                        : item.Condition ? item.Condition : "N/A"}</td>
-
-                                    <td>{editIndex === item._id ?
-                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
-                                    <td>{item.Fullname}</td>
-                                    {getPos === "Manager" ? (<></>) : (
-                                        <td className='btnCon'>
-                                            <button onClick={() => handleDelete(item._id)}>Delete</button>
-                                            {confirmIndex === item._id ? (
-                                                <>
-                                                    <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
-                                                    <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    {editIndex === item._id ? (
-                                                        <>
-                                                            <button onClick={() => handleSaveEdit(item._id)}>Save</button>
-                                                            <button onClick={() => handleEdit(null)}>Cancel</button>
-                                                        </>
-                                                    ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
-
-                                                </>
-                                            )}
-                                        </td>
-                                    )}
+                            {NachosData.length === 0 ? (
+                                <tr>
+                                    <td colSpan="8">No Nachos data</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                NachosData.map((item) => (
+                                    <tr className='tdForDrink' key={item._id}>
+                                        <td>{editIndex === item._id ?
+                                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                                        <td>{item.Category}</td>
+                                        <td>{editIndex === item._id ?
+                                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                                        <td>{editIndex === item._id ?
+                                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                        <td>{editIndex === item._id ?
+                                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                                <option value="">Enter product condition</option>
+                                                <option value="Fresh">Fresh</option>
+                                                <option value="Frozen">Frozen</option>
+                                                <option value="Expired">Expired</option>
+                                                <option value="Damaged">Damaged</option>
+                                                <option value="Spoiled">Spoiled</option>
+                                                <option value="Prepared">Prepared</option>
+                                            </select>
+
+                                            : item.Condition ? item.Condition : "N/A"}</td>
+
+                                        <td>{editIndex === item._id ?
+                                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                                        <td>{item.Fullname}</td>
+                                        {getPos === "Manager" ? (<></>) : (
+                                            <td className='btnCon'>
+                                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                                {confirmIndex === item._id ? (
+                                                    <>
+                                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        {editIndex === item._id ? (
+                                                            <>
+                                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                                <button onClick={() => handleEdit(null)}>Cancel</button>
+                                                            </>
+                                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                                    </>
+                                                )}
+                                            </td>
+                                        )}
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </SwiperSlide>
+
+
                 <SwiperSlide>
                     <table className='drinksCon'>
                         <thead className='drinkTitles'>
@@ -205,196 +217,446 @@ const Categories = () => {
                             </tr>
                         </thead>
                         <tbody className='drinksBody'>
-                            {snacksData.map((item) => (
-                                <tr className='tdForDrink' key={item._id}>
-                                    <td>{editIndex === item._id ?
-                                        <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
-                                    <td>{item.Category}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
-                                    <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
-                                    <td>{editIndex === item._id ?
-                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
-                                            <option value="">Enter product condition</option>
-                                            <option value="Fresh">Fresh</option>
-                                            <option value="Frozen">Frozen</option>
-                                            <option value="Expired">Expired</option>
-                                            <option value="Damaged">Damaged</option>
-                                            <option value="Spoiled">Spoiled</option>
-                                            <option value="Prepared">Prepared</option>
-                                        </select>
-
-                                        : item.Condition ? item.Condition : "N/A"}</td>
-
-                                    <td>{editIndex === item._id ?
-                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
-                                    <td>{item.Fullname}</td>
-                                    {getPos === "Manager" ? (<></>) : (
-                                        <td className='btnCon'>
-                                            <button onClick={() => handleDelete(item._id)}>Delete</button>
-                                            {confirmIndex === item._id ? (
-                                                <>
-                                                    <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
-                                                    <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                {editIndex === item._id ? (
-                                                    <>
-                                                        <button onClick={() => handleSaveEdit(item._id)}>Save</button>
-                                                        <button onClick={() => handleEdit(null)}>Cancel</button>
-                                                    </>
-                                                ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
-
-                                            </>
-                                            )}
-                                        </td>
-                                    )}
+                            {snacksData.length === 0 ? (
+                                <tr>
+                                    <td colSpan="8">No Snacks data</td>
                                 </tr>
-                            ))}
+                            ) : (
+                                snacksData.map((item) => (
+                                    <tr className='tdForDrink' key={item._id}>
+                                        <td>{editIndex === item._id ?
+                                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                                        <td>{item.Category}</td>
+                                        <td>{editIndex === item._id ?
+                                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                                        <td>{editIndex === item._id ?
+                                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                                        <td>{editIndex === item._id ?
+                                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                                <option value="">Enter product condition</option>
+                                                <option value="Fresh">Fresh</option>
+                                                <option value="Frozen">Frozen</option>
+                                                <option value="Expired">Expired</option>
+                                                <option value="Damaged">Damaged</option>
+                                                <option value="Spoiled">Spoiled</option>
+                                                <option value="Prepared">Prepared</option>
+                                            </select>
+
+                                            : item.Condition ? item.Condition : "N/A"}</td>
+
+                                        <td>{editIndex === item._id ?
+                                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                                        <td>{item.Fullname}</td>
+                                        {getPos === "Manager" ? (<></>) : (
+                                            <td className='btnCon'>
+                                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                                {confirmIndex === item._id ? (
+                                                    <>
+                                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        {editIndex === item._id ? (
+                                                            <>
+                                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                                <button onClick={() => handleEdit(null)}>Cancel</button>
+                                                            </>
+                                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                                    </>
+                                                )}
+                                            </td>
+                                        )}
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </SwiperSlide>
+
+
                 <SwiperSlide>
-                    <table className='drinksCon'>
-                        <thead className='drinkTitles'>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Type</th>
-                                <th>Size</th>
-                                <th>Quantity</th>
-                                <th>Uploaded on</th>
-                                <th>Condition</th>
-                                <th>Expiry Date</th>
-                                <th>Added by</th>
-                                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
-                            </tr>
-                        </thead>
-                        <tbody className='drinksBody'>
-                            {CrofflesData.map((item) => (
-                                <tr className='tdForDrink' key={item._id}>
-                                    <td>{editIndex === item._id ?
-                                        <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
-                                    <td>{item.Category}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
-                                    <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
-                                    <td>{editIndex === item._id ?
-                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
-                                            <option value="">Enter product condition</option>
-                                            <option value="Fresh">Fresh</option>
-                                            <option value="Frozen">Frozen</option>
-                                            <option value="Expired">Expired</option>
-                                            <option value="Damaged">Damaged</option>
-                                            <option value="Spoiled">Spoiled</option>
-                                            <option value="Prepared">Prepared</option>
-                                        </select>
+    <table className='drinksCon'>
+        <thead className='drinkTitles'>
+            <tr>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Uploaded on</th>
+                <th>Condition</th>
+                <th>Expiry Date</th>
+                <th>Added by</th>
+                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
+            </tr>
+        </thead>
+        <tbody className='drinksBody'>
+            {CoffeeData.length === 0 ? (
+                <tr>
+                    <td colSpan="8">No Coffee data</td>
+                </tr>
+            ) : (
+                CoffeeData.map((item) => (
+                    <tr className='tdForDrink' key={item._id}>
+                        <td>{editIndex === item._id ?
+                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                        <td>{item.Category}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                        <td>{editIndex === item._id ?
+                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                <option value="">Enter product condition</option>
+                                <option value="Fresh">Fresh</option>
+                                <option value="Frozen">Frozen</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Damaged">Damaged</option>
+                                <option value="Spoiled">Spoiled</option>
+                                <option value="Prepared">Prepared</option>
+                            </select>
 
-                                        : item.Condition ? item.Condition : "N/A"}</td>
+                            : item.Condition ? item.Condition : "N/A"}</td>
 
-                                    <td>{editIndex === item._id ?
-                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
-                                    <td>{item.Fullname}</td>
-                                    {getPos === "Manager" ? (<></>) : (
-                                        <td className='btnCon'>
-                                            <button onClick={() => handleDelete(item._id)}>Delete</button>
-                                            {confirmIndex === item._id ? (
-                                                <>
-                                                    <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
-                                                    <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                {editIndex === item._id ? (
-                                                    <>
-                                                        <button onClick={() => handleSaveEdit(item._id)}>Save</button>
-                                                        <button onClick={() => handleEdit(null)}>Cancel</button>
-                                                    </>
-                                                ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
-
+                        <td>{editIndex === item._id ?
+                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                        <td>{item.Fullname}</td>
+                        {getPos === "Manager" ? (<></>) : (
+                            <td className='btnCon'>
+                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                {confirmIndex === item._id ? (
+                                    <>
+                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        {editIndex === item._id ? (
+                                            <>
+                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                <button onClick={() => handleEdit(null)}>Cancel</button>
                                             </>
-                                            )}
-                                        </td>
-                                    )}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <table className='drinksCon'>
-                        <thead className='drinkTitles'>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Type</th>
-                                <th>Size</th>
-                                <th>Quantity</th>
-                                <th>Uploaded on</th>
-                                <th>Condition</th>
-                                <th>Expiry Date</th>
-                                <th>Added by</th>
-                                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
-                            </tr>
-                        </thead>
-                        <tbody className='drinksBody'>
-                            {BurgerData.map((item) => (
-                                <tr className='tdForDrink' key={item._id}>
-                                    <td>{editIndex === item._id ?
-                                        <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
-                                    <td>{item.Category}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
-                                    <td>{editIndex === item._id ?
-                                        <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
-                                    <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
-                                    <td>{editIndex === item._id ?
-                                        <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
-                                            <option value="">Enter product condition</option>
-                                            <option value="Fresh">Fresh</option>
-                                            <option value="Frozen">Frozen</option>
-                                            <option value="Expired">Expired</option>
-                                            <option value="Damaged">Damaged</option>
-                                            <option value="Spoiled">Spoiled</option>
-                                            <option value="Prepared">Prepared</option>
-                                        </select>
+                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
 
-                                        : item.Condition ? item.Condition : "N/A"}</td>
+                                    </>
+                                )}
+                            </td>
+                        )}
+                    </tr>
+                ))
+            )}
+        </tbody>
+    </table>
+</SwiperSlide>
 
-                                    <td>{editIndex === item._id ?
-                                        <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
-                                    <td>{item.Fullname}</td>
-                                    {getPos === "Manager" ? (<></>) : (
-                                        <td className='btnCon'>
-                                            <button onClick={() => handleDelete(item._id)}>Delete</button>
-                                            {confirmIndex === item._id ? (
-                                                <>
-                                                    <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
-                                                    <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                {editIndex === item._id ? (
-                                                    <>
-                                                        <button onClick={() => handleSaveEdit(item._id)}>Save</button>
-                                                        <button onClick={() => handleEdit(null)}>Cancel</button>
-                                                    </>
-                                                ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+              
 
+<SwiperSlide>
+    <table className='drinksCon'>
+        <thead className='drinkTitles'>
+            <tr>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Uploaded on</th>
+                <th>Condition</th>
+                <th>Expiry Date</th>
+                <th>Added by</th>
+                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
+            </tr>
+        </thead>
+        <tbody className='drinksBody'>
+            {CrofflesData.length === 0 ? (
+                <tr>
+                    <td colSpan="8">No Croffles data</td>
+                </tr>
+            ) : (
+                CrofflesData.map((item) => (
+                    <tr className='tdForDrink' key={item._id}>
+                        <td>{editIndex === item._id ?
+                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                        <td>{item.Category}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                        <td>{editIndex === item._id ?
+                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                <option value="">Enter product condition</option>
+                                <option value="Fresh">Fresh</option>
+                                <option value="Frozen">Frozen</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Damaged">Damaged</option>
+                                <option value="Spoiled">Spoiled</option>
+                                <option value="Prepared">Prepared</option>
+                            </select>
+
+                            : item.Condition ? item.Condition : "N/A"}</td>
+
+                        <td>{editIndex === item._id ?
+                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                        <td>{item.Fullname}</td>
+                        {getPos === "Manager" ? (<></>) : (
+                            <td className='btnCon'>
+                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                {confirmIndex === item._id ? (
+                                    <>
+                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        {editIndex === item._id ? (
+                                            <>
+                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                <button onClick={() => handleEdit(null)}>Cancel</button>
                                             </>
-                                            )}
-                                        </td>
-                                    )}
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </SwiperSlide>
+                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                    </>
+                                )}
+                            </td>
+                        )}
+                    </tr>
+                ))
+            )}
+        </tbody>
+    </table>
+</SwiperSlide>
+
+
+<SwiperSlide>
+    <table className='drinksCon'>
+        <thead className='drinkTitles'>
+            <tr>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Uploaded on</th>
+                <th>Condition</th>
+                <th>Expiry Date</th>
+                <th>Added by</th>
+                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
+            </tr>
+        </thead>
+        <tbody className='drinksBody'>
+            {BurgerData.length === 0 ? (
+                <tr>
+                    <td colSpan="8">No Burger data</td>
+                </tr>
+            ) : (
+                BurgerData.map((item) => (
+                    <tr className='tdForDrink' key={item._id}>
+                        <td>{editIndex === item._id ?
+                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                        <td>{item.Category}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                        <td>{editIndex === item._id ?
+                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                <option value="">Enter product condition</option>
+                                <option value="Fresh">Fresh</option>
+                                <option value="Frozen">Frozen</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Damaged">Damaged</option>
+                                <option value="Spoiled">Spoiled</option>
+                                <option value="Prepared">Prepared</option>
+                            </select>
+
+                            : item.Condition ? item.Condition : "N/A"}</td>
+
+                        <td>{editIndex === item._id ?
+                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                        <td>{item.Fullname}</td>
+                        {getPos === "Manager" ? (<></>) : (
+                            <td className='btnCon'>
+                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                {confirmIndex === item._id ? (
+                                    <>
+                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        {editIndex === item._id ? (
+                                            <>
+                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                <button onClick={() => handleEdit(null)}>Cancel</button>
+                                            </>
+                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                    </>
+                                )}
+                            </td>
+                        )}
+                    </tr>
+                ))
+            )}
+        </tbody>
+    </table>
+</SwiperSlide>
+
+<SwiperSlide>
+    <table className='drinksCon'>
+        <thead className='drinkTitles'>
+            <tr>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Uploaded on</th>
+                <th>Condition</th>
+                <th>Expiry Date</th>
+                <th>Added by</th>
+                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
+            </tr>
+        </thead>
+        <tbody className='drinksBody'>
+            {NonData.length === 0 ? (
+                <tr>
+                    <td colSpan="8">No Non-Coffee data</td>
+                </tr>
+            ) : (
+                NonData.map((item) => (
+                    <tr className='tdForDrink' key={item._id}>
+                        <td>{editIndex === item._id ?
+                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                        <td>{item.Category}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                        <td>{editIndex === item._id ?
+                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                <option value="">Enter product condition</option>
+                                <option value="Fresh">Fresh</option>
+                                <option value="Frozen">Frozen</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Damaged">Damaged</option>
+                                <option value="Spoiled">Spoiled</option>
+                                <option value="Prepared">Prepared</option>
+                            </select>
+
+                            : item.Condition ? item.Condition : "N/A"}</td>
+
+                        <td>{editIndex === item._id ?
+                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                        <td>{item.Fullname}</td>
+                        {getPos === "Manager" ? (<></>) : (
+                            <td className='btnCon'>
+                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                {confirmIndex === item._id ? (
+                                    <>
+                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        {editIndex === item._id ? (
+                                            <>
+                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                <button onClick={() => handleEdit(null)}>Cancel</button>
+                                            </>
+                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                    </>
+                                )}
+                            </td>
+                        )}
+                    </tr>
+                ))
+            )}
+        </tbody>
+    </table>
+</SwiperSlide>
+<SwiperSlide>
+    <table className='drinksCon'>
+        <thead className='drinkTitles'>
+            <tr>
+                <th>Product Name</th>
+                <th>Type</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Uploaded on</th>
+                <th>Condition</th>
+                <th>Expiry Date</th>
+                <th>Added by</th>
+                {getPos === "Manager" ? (<></>) : (<th>Actions</th>)}
+            </tr>
+        </thead>
+        <tbody className='drinksBody'>
+            {FruitData.length === 0 ? (
+                <tr>
+                    <td colSpan="8">No Fruit Tea data</td>
+                </tr>
+            ) : (
+                FruitData.map((item) => (
+                    <tr className='tdForDrink' key={item._id}>
+                        <td>{editIndex === item._id ?
+                            <input value={editValue} className='ingInput' onChange={(e) => setEditValue(e.target.value)} /> : item.ProductName}</td>
+                        <td>{item.Category}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedWeight} onChange={(e) => setWeight(e.target.value)} /> : item.Weight}</td>
+                        <td>{editIndex === item._id ?
+                            <input type='number' className='ingInput' required value={editedQuan} onChange={(e) => setQuan(e.target.value)} /> : item.Quantity}</td>
+                        <td>{moment(new Date(parseInt(item.Date, 10))).fromNow()}</td>
+                        <td>{editIndex === item._id ?
+                            <select onChange={(e) => { setCondition(e.target.value) }} value={editedCondition}>
+                                <option value="">Enter product condition</option>
+                                <option value="Fresh">Fresh</option>
+                                <option value="Frozen">Frozen</option>
+                                <option value="Expired">Expired</option>
+                                <option value="Damaged">Damaged</option>
+                                <option value="Spoiled">Spoiled</option>
+                                <option value="Prepared">Prepared</option>
+                            </select>
+
+                            : item.Condition ? item.Condition : "N/A"}</td>
+
+                        <td>{editIndex === item._id ?
+                            <input type='Date' required value={editedExpiry} onChange={(e) => setExpiry(e.target.value)} /> : item.ExpiryDate ? item.ExpiryDate : "N/A"}</td>
+                        <td>{item.Fullname}</td>
+                        {getPos === "Manager" ? (<></>) : (
+                            <td className='btnCon'>
+                                <button onClick={() => handleDelete(item._id)}>Delete</button>
+                                {confirmIndex === item._id ? (
+                                    <>
+                                        <button className='confirmBtn' onClick={() => { handleConfirmDelete(item._id) }}>Confirm</button>
+                                        <button className='cancelBtn' onClick={() => setConfirmIndex(null)}>Cancel</button>
+                                    </>
+                                ) : (
+                                    <>
+                                        {editIndex === item._id ? (
+                                            <>
+                                                <button onClick={() => handleSaveEdit(item._id)}>Save</button>
+                                                <button onClick={() => handleEdit(null)}>Cancel</button>
+                                            </>
+                                        ) : <button onClick={() => handleEdit(item._id, item.ProductName, item.Weight, item.Quantity, item.Condition, item.ExpiryDate)}>Edit</button>}
+
+                                    </>
+                                )}
+                            </td>
+                        )}
+                    </tr>
+                ))
+            )}
+        </tbody>
+    </table>
+</SwiperSlide>
+
+
             </Swiper>
-        </div>
+        </div >
     )
 }
 

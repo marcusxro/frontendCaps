@@ -1609,7 +1609,10 @@ form {
   padding: 10px;
   font-weight: bold;
   color: white;
-  font-size: 30px;
+  font-size: clamp(.5rem, 7vw, 1.5rem);
+}
+.activatedTabcd {
+  background-color: #00C49F;
 }
 
 .buttons a {
@@ -4544,6 +4547,7 @@ background-color: #FF8042;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow-wrap: break-word;
   flex-direction: column;
 }
 
@@ -5513,4 +5517,78 @@ select {
 
 .SpoiledItemOfInventory{
   background-color: #ffd700;
+}
+
+.searchBar .info {
+  color: #4f4cb0;
+ font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}.searchBar .info:hover {
+  color: #00C49F;
+
+}
+
+
+.StatusModal {
+
+  background: rgba( 255, 255, 255, 0.25 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 10px );
+  -webkit-backdrop-filter: blur( 4px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  transform: translate(-50%, -50%);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: black;
+}
+
+.StatusModal .buttonCon {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.StatusModal .buttonCon button{
+  width: 30%;
+}.StatusModal .buttonCon button:hover{
+background-color: #960018;
+}
+
+
+.StatusModal .colorCon {
+  color: black;
+}
+.StatusModal .colorCon .colorItem {
+  display: flex;
+  gap: 10px;
+}
+.StatusModal .colorCon .colorItem .redCol {
+  height: 20px;
+  width: 20px;
+  background-color: #ff6347;
+}
+
+.StatusModal .colorCon .colorItem .spolCol {
+  height: 20px;
+  width: 20px;
+  background-color: #FFBB28;
+}.StatusModal .colorCon .colorItem .damCol {
+  height: 20px;
+  width: 20px;
+  background-color: #FF8042;
+}.StatusModal .colorCon .colorItem .otherCol {
+  height: 20px;
+  width: 20px;
+  background-color: #AFE1AF;
 }

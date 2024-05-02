@@ -246,17 +246,17 @@ const Menu = () => {
                     </div>
                     <div className="warning">
                       {
-                        parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 100 ?
+                        parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) >= 100 ?
                           <div className='warningMenu' style={{ color: 'red' }}>Stock Count Exceeds Capacity (Please Update)</div> :
-                          parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 90 ?
+                          parseInt((item.Quantity / item.OverQuan * 100).toFixed(2))  >=  90 ?
                             <div className='warningMenu' style={{ color: 'red' }}>Stock Running Dangerously Low (Please Update)</div> :
-                            parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 80 ?
+                            parseInt((item.Quantity / item.OverQuan * 100).toFixed(2))  >=  80 ?
                               <div className='warningMenu' style={{ color: 'orange' }}>Stock Level Low (Update Required)</div> :
-                              parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 60 ?
+                              parseInt((item.Quantity / item.OverQuan * 100).toFixed(2))  >=  60 ?
                                 <div className='warningMenu' style={{ color: 'yellow' }}>Consider Updating Stock</div> :
-                                (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 30 ?
+                                (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2))  >=  30 ?
                                   <div className='warningMenu' style={{ color: 'blue' }}>Adequate Stock</div> :
-                                  (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2)) > 0.000 ?
+                                  (parseInt((item.Quantity / item.OverQuan * 100).toFixed(2))  >= 0.000 ?
                                     <div className='warningMenu' style={{ color: 'green' }}>Stock in Abundance</div> :
                                     null
 

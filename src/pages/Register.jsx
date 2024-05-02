@@ -35,7 +35,7 @@ const notif = () => {
         });
 }
 const notifError = () => {
-    toast.error('Error occured please check your input', {
+    toast.error('Error occured please check your inputs', {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -46,6 +46,7 @@ const notifError = () => {
         theme: "dark",
         });
 }
+
     const createAccount = (e) => {
         e.preventDefault()  
         if (password.length <= 5) {
@@ -56,6 +57,7 @@ const notifError = () => {
                 backgroundColor: "red"
             })
         }
+
         else if (password !== repeat) {
             setStatus("password are not the same")
             gsap.to('.accountStatus', {
@@ -73,7 +75,7 @@ const notifError = () => {
                                  
                                     notif()
                                     console.log(position)
-                                    axios.post('https://backendcaps-7zrx.onrender.com/GetAcc', {
+                                    axios.post('http://localhost:8080/GetAcc', {
                                         Email: email,
                                         Firstname: firstname,
                                         Lastname: lastname,

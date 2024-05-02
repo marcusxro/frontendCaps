@@ -311,7 +311,7 @@ const Reports = () => {
               {seeImg !== false &&
                 <div className="ev">
                   <div className="evidenceImg">
-                    <img src={`https://backendcaps-7zrx.onrender.com/images/${imgLink}`} alt="" />
+                    <img src={`http://localhost:8080/images/${imgLink}`} alt="" />
                   </div>
                   <div className="evCon">
                     <button onClick={() => { setSeeImg(!seeImg) }}>close</button>
